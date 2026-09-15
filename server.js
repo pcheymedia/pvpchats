@@ -36,7 +36,6 @@ const htmlIcerik = `
         header { background: #131720; border-bottom: 1px solid #1f2633; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         .logo { color: #f59e0b; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
         
-        /* Ekranlar */
         #room-screen, #whatsapp-screen { flex: 1; padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
         #whatsapp-screen { display: none; }
         
@@ -53,7 +52,6 @@ const htmlIcerik = `
         .ad-gold-box { border: 2px dashed #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; font-weight: bold; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); text-decoration: none; display: block; margin-top: auto; transition: 0.2s; }
         .ad-gold-box:hover { background: rgba(255, 215, 0, 0.12); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
 
-        /* WhatsApp Link Kartları */
         .wp-link-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; transition: 0.2s; }
         .wp-link-card:hover { border-color: #22c55e; }
         .wp-link-card.disabled { opacity: 0.5; pointer-events: none; }
@@ -116,13 +114,11 @@ const htmlIcerik = `
         <div class="logo">⚔️ PvPChats</div>
     </header>
 
-    <!-- ANA EKRAN (Odalar ve Reklam) -->
     <div id="room-screen">
         <div class="section-title">Açık Server Odaları</div>
         <div id="room-list"></div>
 
         <div class="section-title" style="margin-top: 10px; color: #22c55e;">💬 Diğer</div>
-        <!-- WHATSAPP EKRANINA GEÇİŞ BUTONU -->
         <div class="room-card" style="border-color: #22c55e;" onclick="openWhatsAppScreen()">
             <div class="room-info">
                 <div class="room-icon" style="font-size: 1.8rem;">📱</div>
@@ -134,20 +130,17 @@ const htmlIcerik = `
             <div style="color: #22c55e; font-size: 1.2rem;">➔</div>
         </div>
 
-        <!-- TEK KALAN ALTIN REKLAM ALANI (En Altta) -->
         <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı Hakkında" class="ad-gold-box" style="margin-top: 20px;">
             📢 BURAYA REKLAM VEREBİLİRSİNİZ<br><span style="font-size: 0.75rem; font-weight: normal; color: #94a3b8;">(İletişim İçin Tıklayın)</span>
         </a>
     </div>
 
-    <!-- YENİ WHATSAPP GRUPLARI EKRANI -->
     <div id="whatsapp-screen">
         <div class="chat-subhead" style="margin: -20px -16px 14px -16px; padding: 12px 16px;">
             <button class="btn-back" onclick="closeWhatsAppScreen()">◀ Geri Dön</button>
             <div class="room-title-active" style="color: #22c55e;">Ticaret Grupları</div>
         </div>
         
-        <!-- 1. GRUP (AKTİF - LİNK EKLENDİ) -->
         <a href="https://chat.whatsapp.com/LNuQT84609G0jROoroz9r0?mode=gi_t" target="_blank" class="wp-link-card">
             <div style="display: flex; align-items: center;">
                 <div style="font-size: 1.8rem; margin-right: 14px;">🟢</div>
@@ -159,7 +152,6 @@ const htmlIcerik = `
             <div style="color: #22c55e;">➔</div>
         </a>
 
-        <!-- 2. GRUP (BOŞ) -->
         <a href="#" class="wp-link-card disabled">
             <div style="display: flex; align-items: center;">
                 <div style="font-size: 1.8rem; margin-right: 14px;">🔒</div>
@@ -170,7 +162,6 @@ const htmlIcerik = `
             </div>
         </a>
 
-        <!-- 3. GRUP (BOŞ) -->
         <a href="#" class="wp-link-card disabled">
             <div style="display: flex; align-items: center;">
                 <div style="font-size: 1.8rem; margin-right: 14px;">🔒</div>
@@ -253,7 +244,23 @@ const htmlIcerik = `
         let lastMsgTime = 0;
         let attachedImageData = null; 
 
-        // WHATSAPP EKRAN YÖNETİMİ
+        // GÜVENLİK FİLTRESİ (XSS KORUMASI)
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"'\`=\\/]/g, function (s) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    '/': '&#x2F;',
+                    '\`': '&#x60;',
+                    '=': '&#x3D;'
+                }[s];
+            });
+        }
+
         function openWhatsAppScreen() {
             roomScreen.style.display = 'none';
             whatsappScreen.style.display = 'flex';
@@ -306,7 +313,7 @@ const htmlIcerik = `
 
         function joinRoom() {
             if (!nicknameInput.value.trim()) return;
-            myUsername = nicknameInput.value.trim();
+            myUsername = escapeHTML(nicknameInput.value.trim()); // İsimleri de filtrele
             
             nicknameModal.style.display = 'none';
             roomScreen.style.display = 'none';
@@ -406,22 +413,26 @@ const htmlIcerik = `
         }
 
         function appendMessage(data) {
+            // Zararlı kodları temizle
+            const safeUser = escapeHTML(data.user);
+            const safeText = escapeHTML(data.text);
+            
             const lowerName = data.user.toLowerCase();
             const isVIP = lowerName.includes('vip') || lowerName.includes('admin') || lowerName === 'fazlican' || lowerName === 'fazlıcan' || lowerName === 'can';
             const vipClass = isVIP ? 'vip-glow' : '';
             const vipMsgClass = isVIP ? 'vip-msg' : '';
 
-            let displayName = isVIP ? getCleanName(data.user) : data.user;
+            let displayName = isVIP ? getCleanName(safeUser) : safeUser;
 
-            const imageHtml = data.image ? \`<img src="\${data.image}" class="msg-image" onclick="window.open('\${data.image}', '_blank')">\` : '';
-            const textHtml = data.text ? \`<div>\${data.text}</div>\` : '';
+            const imageHtml = data.image ? \`<img src="\${escapeHTML(data.image)}" class="msg-image" onclick="window.open('\${escapeHTML(data.image)}', '_blank')">\` : '';
+            const textHtml = safeText ? \`<div>\${safeText}</div>\` : '';
 
             const container = document.createElement('div');
             container.className = 'msg-container';
             container.innerHTML = \`
                 <div class="msg-info">
-                    <span class="author \${vipClass}" onclick="openPM('\${data.user}')">\${displayName}</span>
-                    <span class="time">\${data.time}</span>
+                    <span class="author \${vipClass}" onclick="openPM('\${safeUser}')">\${displayName}</span>
+                    <span class="time">\${escapeHTML(data.time)}</span>
                 </div>
                 <div class="msg \${vipMsgClass}">
                     \${textHtml}
@@ -474,7 +485,7 @@ const htmlIcerik = `
                 
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'pm-msg self';
-                msgDiv.innerText = text;
+                msgDiv.innerText = text; // innerText güvenlidir
                 pmMessages.appendChild(msgDiv);
                 pmMessages.scrollTop = pmMessages.scrollHeight;
                 
@@ -496,7 +507,7 @@ const htmlIcerik = `
             
             const msgDiv = document.createElement('div');
             msgDiv.className = 'pm-msg';
-            msgDiv.innerText = data.text;
+            msgDiv.innerText = data.text; // innerText güvenlidir
             pmMessages.appendChild(msgDiv);
             pmMessages.scrollTop = pmMessages.scrollHeight;
         });
