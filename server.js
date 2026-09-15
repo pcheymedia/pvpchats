@@ -167,7 +167,6 @@ const htmlIcerik = `
         const chatInput = document.getElementById('chat-input');
         const toast = document.getElementById('toast');
         
-        // PM Elementleri
         const pmPopup = document.getElementById('private-chat-popup');
         const pmTargetName = document.getElementById('pm-target-name');
         const pmMessages = document.getElementById('pm-messages');
@@ -179,13 +178,11 @@ const htmlIcerik = `
         let targetPMUser = '';
         let lastMsgTime = 0;
 
-        // Rastgele isim üret
         function randomNick() {
             const prefixes = ['Savasci', 'Ninja', 'Sura', 'Saman', 'Kral', 'Reis', 'Pro'];
             nicknameInput.value = prefixes[Math.floor(Math.random() * prefixes.length)] + Math.floor(Math.random() * 9999);
         }
 
-        // 1. Oda Listesini Çiz
         function renderRooms(counts) {
             roomListDiv.innerHTML = '';
             sunucular.forEach(s => {
@@ -222,7 +219,6 @@ const htmlIcerik = `
             selectedRoom = null;
         }
 
-        // 2. Odaya Katıl
         function joinRoom() {
             if (!nicknameInput.value.trim()) return;
             myUsername = nicknameInput.value.trim();
@@ -244,11 +240,10 @@ const htmlIcerik = `
             pmPopup.style.display = 'none';
         }
 
-        // 3. Mesaj Gönder (Anti-Spam Korumalı)
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const now = Date.now();
-            if (now - lastMsgTime < 2000) { // 2 Saniye Koruması
+            if (now - lastMsgTime < 2000) { 
                 toast.style.display = 'block';
                 setTimeout(() => toast.style.display = 'none', 2000);
                 return;
@@ -260,7 +255,6 @@ const htmlIcerik = `
             }
         });
 
-        // Ekrana Mesaj Yazdır (Geçmiş ve Yeni)
         function appendMessage(data) {
             const isVIP = data.user.toLowerCase().includes('vip') || data.user.toLowerCase().includes('admin');
             const vipClass = isVIP ? 'vip-glow' : '';
@@ -300,13 +294,12 @@ const htmlIcerik = `
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
-        // 4. Özel Mesajlaşma (Facebook Stili)
         function openPM(targetUser) {
-            if (targetUser === myUsername) return; // Kendine mesaj atamaz
+            if (targetUser === myUsername) return; 
             targetPMUser = targetUser;
             pmTargetName.innerText = targetUser;
             pmPopup.style.display = 'flex';
-            pmMessages.innerHTML = ''; // Yeni sohbette pencereyi temizle
+            pmMessages.innerHTML = ''; 
             pmInput.focus();
         }
 
@@ -320,7 +313,6 @@ const htmlIcerik = `
             if (text && targetPMUser) {
                 socket.emit('private_message', { to: targetPMUser, text: text });
                 
-                // Kendi mesajını ekrana yazdır
                 const msgDiv = document.createElement('div');
                 msgDiv.className = 'pm-msg self';
                 msgDiv.innerText = text;
@@ -336,12 +328,11 @@ const htmlIcerik = `
         }
 
         socket.on('receive_private_message', (data) => {
-            // Eğer pencere kapalıysa veya başkasıyla konuşuyorsak pencereyi aç
             if (pmPopup.style.display !== 'flex' || targetPMUser !== data.from) {
                 targetPMUser = data.from;
                 pmTargetName.innerText = data.from;
                 pmPopup.style.display = 'flex';
-                pmMessages.innerHTML = ''; // Mevcut ekranı temizle
+                pmMessages.innerHTML = ''; 
             }
             
             const msgDiv = document.createElement('div');
@@ -361,7 +352,6 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    // Bağlanan kullanıcıya mevcut oda sayılarını gönder
     socket.emit('room_counts', odaSayilari);
 
     socket.on('join_room', (data) => {
@@ -369,7 +359,7 @@ io.on('connection', (socket) => {
         
         socket.username = username;
         socket.room = room;
-        aktifKullanicilar[username] = socket.id; // Özel mesaj için kaydet
+        aktifKullanicilar[username] = socket.id; 
 
         socket.join(room);
         
@@ -377,23 +367,23 @@ io.on('connection', (socket) => {
             odaSayilari[room]++;
         }
         
-        io.emit('room_counts', odaSayilari); // Herkese güncel sayıları ilet
-        socket.emit('room_history', odaGecmisi[room]); // Geçmiş 300 mesajı yolla
-        io.to(room).emit('sys_message', \`\${username} odaya katıldı.\`);
+        io.emit('room_counts', odaSayilari); 
+        socket.emit('room_history', odaGecmisi[room]); 
+        
+        // HATA BURADAYDI: Kesme işaretleri düzeltildi.
+        io.to(room).emit('sys_message', `${username} odaya katıldı.`);
     });
 
     socket.on('send_message', (data) => {
         const now = Date.now();
         const lastTime = sonMesajZamani[socket.id] || 0;
 
-        // Sunucu Tarafı Anti-Spam (2 Saniye)
         if (now - lastTime < 2000) return;
         sonMesajZamani[socket.id] = now;
 
         const timeString = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         const msgData = { user: socket.username, text: data.text, time: timeString };
 
-        // Mesaj geçmişine ekle (Max 300)
         if (odaGecmisi[data.room]) {
             odaGecmisi[data.room].push(msgData);
             if (odaGecmisi[data.room].length > 300) {
@@ -418,7 +408,9 @@ io.on('connection', (socket) => {
         if (socket.room && odaSayilari[socket.room] > 0) {
             odaSayilari[socket.room]--;
             io.emit('room_counts', odaSayilari);
-            io.to(socket.room).emit('sys_message', \`\${socket.username} odadan ayrıldı.\`);
+            
+            // HATA BURADAYDI: Kesme işaretleri düzeltildi.
+            io.to(socket.room).emit('sys_message', `${socket.username} odadan ayrıldı.`);
             socket.leave(socket.room);
             socket.room = null;
         }
@@ -431,12 +423,15 @@ io.on('connection', (socket) => {
         if (socket.room && odaSayilari[socket.room] > 0) {
             odaSayilari[socket.room]--;
             io.emit('room_counts', odaSayilari);
-            io.to(socket.room).emit('sys_message', \`\${socket.username} bağlantıyı kopardı.\`);
+            
+            // HATA BURADAYDI: Kesme işaretleri düzeltildi.
+            io.to(socket.room).emit('sys_message', `${socket.username} bağlantıyı kopardı.`);
         }
     });
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(\`Sunucu \${PORT} portunda başarıyla çalışıyor.\`);
+    // HATA BURADAYDI: Kesme işaretleri düzeltildi.
+    console.log(`Sunucu ${PORT} portunda başarıyla çalışıyor.`);
 });
