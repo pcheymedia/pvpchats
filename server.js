@@ -66,7 +66,6 @@ const htmlIcerik = `
         .msg-info .time { color: #64748b; }
         .msg { background: #131720; padding: 10px 14px; border-radius: 8px; border: 1px solid #1f2633; word-break: break-word; font-size: 0.95rem; line-height: 1.4; color: #fff; }
         
-        /* YAZILARIN ALTIN RENGİ OLDUĞU KISIM */
         .vip-glow { color: #ffd700 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); font-weight: 900 !important; }
         .msg.vip-msg { border-color: #ffd700; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); color: #ffd700 !important; font-weight: bold; }
 
@@ -243,16 +242,27 @@ const htmlIcerik = `
             }
         });
 
+        // Ekranda görünecek ismi temizleyen ufak sihirbazlık
+        function getCleanName(name) {
+            let clean = name.replace(/admin/gi, '').replace(/vip/gi, '').trim();
+            return clean || name;
+        }
+
         function appendMessage(data) {
-            const isVIP = data.user.toLowerCase().includes('vip') || data.user.toLowerCase().includes('admin');
+            const lowerName = data.user.toLowerCase();
+            // Fazlican yazılırsa veya Admin/VIP eklenirse altın rengi yap!
+            const isVIP = lowerName.includes('vip') || lowerName.includes('admin') || lowerName === 'fazlican' || lowerName === 'fazlıcan';
             const vipClass = isVIP ? 'vip-glow' : '';
             const vipMsgClass = isVIP ? 'vip-msg' : '';
+
+            // Admin ve VIP kelimelerini gizle
+            let displayName = isVIP ? getCleanName(data.user) : data.user;
 
             const container = document.createElement('div');
             container.className = 'msg-container';
             container.innerHTML = \`
                 <div class="msg-info">
-                    <span class="author \${vipClass}" onclick="openPM('\${data.user}')">\${data.user}</span>
+                    <span class="author \${vipClass}" onclick="openPM('\${data.user}')">\${displayName}</span>
                     <span class="time">\${data.time}</span>
                 </div>
                 <div class="msg \${vipMsgClass}">\${data.text}</div>
@@ -285,7 +295,7 @@ const htmlIcerik = `
         function openPM(targetUser) {
             if (targetUser === myUsername) return; 
             targetPMUser = targetUser;
-            pmTargetName.innerText = targetUser;
+            pmTargetName.innerText = getCleanName(targetUser);
             pmPopup.style.display = 'flex';
             pmMessages.innerHTML = ''; 
             pmInput.focus();
@@ -318,7 +328,7 @@ const htmlIcerik = `
         socket.on('receive_private_message', (data) => {
             if (pmPopup.style.display !== 'flex' || targetPMUser !== data.from) {
                 targetPMUser = data.from;
-                pmTargetName.innerText = data.from;
+                pmTargetName.innerText = getCleanName(data.from);
                 pmPopup.style.display = 'flex';
                 pmMessages.innerHTML = ''; 
             }
