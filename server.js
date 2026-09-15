@@ -4,7 +4,6 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-// maxHttpBufferSize artırıldı ki resimler (Base64) engellenmesin (10MB sınır)
 const io = new Server(server, { cors: { origin: "*" }, maxHttpBufferSize: 1e7 });
 
 const sunucular = [
@@ -37,7 +36,10 @@ const htmlIcerik = `
         header { background: #131720; border-bottom: 1px solid #1f2633; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         .logo { color: #f59e0b; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
         
-        #room-screen { flex: 1; padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        /* Ekranlar */
+        #room-screen, #whatsapp-screen { flex: 1; padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        #whatsapp-screen { display: none; }
+        
         .section-title { font-size: 0.85rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; }
         
         .room-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
@@ -48,14 +50,15 @@ const htmlIcerik = `
         .room-details p { font-size: 0.8rem; color: #94a3b8; }
         .room-count { background: #1e2430; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #334155; }
         
-        .ad-banner-container { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
-        .ad-gold-box { border: 2px dashed #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; font-weight: bold; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .ad-gold-box { border: 2px dashed #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; font-weight: bold; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); text-decoration: none; display: block; margin-top: auto; transition: 0.2s; }
         .ad-gold-box:hover { background: rgba(255, 215, 0, 0.12); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
-        
-        .wp-trade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-        @media (max-width: 480px) { .wp-trade-grid { grid-template-columns: 1fr; } }
-        .wp-gold-card { border: 2px solid #ffd700; background: radial-gradient(circle at center, rgba(255, 215, 0, 0.08) 0%, rgba(19, 23, 32, 0.95) 100%); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; box-shadow: 0 0 8px rgba(255, 215, 0, 0.2); text-decoration: none; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; min-height: 80px; }
-        .wp-gold-card span { font-size: 0.8rem; color: #94a3b8; font-weight: normal; }
+
+        /* WhatsApp Link Kartları */
+        .wp-link-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; transition: 0.2s; }
+        .wp-link-card:hover { border-color: #22c55e; }
+        .wp-link-card.disabled { opacity: 0.5; pointer-events: none; }
+        .wp-link-info h3 { font-size: 1rem; margin-bottom: 2px; color: #22c55e; }
+        .wp-link-info p { font-size: 0.8rem; color: #94a3b8; }
 
         #nickname-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #131720; padding: 24px; border-radius: 12px; border: 1px solid #334155; width: 100%; max-width: 350px; text-align: center; }
@@ -78,9 +81,7 @@ const htmlIcerik = `
         .msg-info .time { color: #64748b; }
         .msg { background: #131720; padding: 10px 14px; border-radius: 8px; border: 1px solid #1f2633; word-break: break-word; font-size: 0.95rem; line-height: 1.4; color: #fff; }
         
-        /* GÖRSEL MESAJ STİLİ */
         .msg-image { max-width: 100%; max-height: 250px; border-radius: 6px; margin-top: 8px; border: 1px solid #334155; cursor: pointer; object-fit: contain; background: #000; }
-
         .vip-glow { color: #ffd700 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); font-weight: 900 !important; }
         .msg.vip-msg { border-color: #ffd700; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); color: #ffd700 !important; font-weight: bold; }
 
@@ -90,7 +91,6 @@ const htmlIcerik = `
         #form-container { background: #131720; border-top: 1px solid #1f2633; padding: 12px; }
         form { display: flex; gap: 8px; align-items: center; }
         
-        /* FOTOĞRAF EKLEME BUTONU */
         .btn-attach { background: #334155; color: #fff; border: none; padding: 0 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.2rem; height: 100%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-attach.attached { background: #22c55e; color: #fff; }
         
@@ -116,49 +116,70 @@ const htmlIcerik = `
         <div class="logo">⚔️ PvPChats</div>
     </header>
 
+    <!-- ANA EKRAN (Odalar ve Reklam) -->
     <div id="room-screen">
         <div class="section-title">Açık Server Odaları</div>
         <div id="room-list"></div>
 
-        <div class="section-title" style="margin-top: 10px;">🌟 Sponsor & Reklam Alanları</div>
-        <div class="ad-banner-container">
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı 1 Hakkında" class="ad-gold-box">
-                📢 BURAYA REKLAM VEREBİLİRSİNİZ (İletişim İçin Tıklayın)
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı 2 Hakkında" class="ad-gold-box">
-                ⚔️ BURAYA REKLAM VEREBİLİRSİNİZ (İletişim İçin Tıklayın)
-            </a>
+        <div class="section-title" style="margin-top: 10px; color: #22c55e;">💬 Diğer</div>
+        <!-- WHATSAPP EKRANINA GEÇİŞ BUTONU -->
+        <div class="room-card" style="border-color: #22c55e;" onclick="openWhatsAppScreen()">
+            <div class="room-info">
+                <div class="room-icon" style="font-size: 1.8rem;">📱</div>
+                <div class="room-details">
+                    <h3 style="color: #22c55e;">WhatsApp Ticaret Grupları</h3>
+                    <p>Gruplara katılmak için tıklayın</p>
+                </div>
+            </div>
+            <div style="color: #22c55e; font-size: 1.2rem;">➔</div>
         </div>
 
-        <div class="section-title" style="margin-top: 16px; color: #22c55e;">
-            <span>💬 WhatsApp Ticaret Grupları</span>
+        <!-- TEK KALAN ALTIN REKLAM ALANI (En Altta) -->
+        <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı Hakkında" class="ad-gold-box" style="margin-top: 20px;">
+            📢 BURAYA REKLAM VEREBİLİRSİNİZ<br><span style="font-size: 0.75rem; font-weight: normal; color: #94a3b8;">(İletişim İçin Tıklayın)</span>
+        </a>
+    </div>
+
+    <!-- YENİ WHATSAPP GRUPLARI EKRANI -->
+    <div id="whatsapp-screen">
+        <div class="chat-subhead" style="margin: -20px -16px 14px -16px; padding: 12px 16px;">
+            <button class="btn-back" onclick="closeWhatsAppScreen()">◀ Geri Dön</button>
+            <div class="room-title-active" style="color: #22c55e;">Ticaret Grupları</div>
         </div>
-        <div class="wp-trade-grid">
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 1" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 2" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 3" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 4" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 5" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 6" class="wp-gold-card">
-                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
-                <span>WhatsApp Grubu Katılım / Reklam</span>
-            </a>
-        </div>
+        
+        <!-- 1. GRUP (AKTİF - LİNK EKLENDİ) -->
+        <a href="https://chat.whatsapp.com/LNuQT84609G0jROoroz9r0?mode=gi_t" target="_blank" class="wp-link-card">
+            <div style="display: flex; align-items: center;">
+                <div style="font-size: 1.8rem; margin-right: 14px;">🟢</div>
+                <div class="wp-link-info">
+                    <h3>1. Ticaret Grubu (Aktif)</h3>
+                    <p>Tıklayın ve hemen katılın</p>
+                </div>
+            </div>
+            <div style="color: #22c55e;">➔</div>
+        </a>
+
+        <!-- 2. GRUP (BOŞ) -->
+        <a href="#" class="wp-link-card disabled">
+            <div style="display: flex; align-items: center;">
+                <div style="font-size: 1.8rem; margin-right: 14px;">🔒</div>
+                <div class="wp-link-info">
+                    <h3 style="color: #94a3b8;">2. Grup (Çok Yakında)</h3>
+                    <p>Şu an aktif değil</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- 3. GRUP (BOŞ) -->
+        <a href="#" class="wp-link-card disabled">
+            <div style="display: flex; align-items: center;">
+                <div style="font-size: 1.8rem; margin-right: 14px;">🔒</div>
+                <div class="wp-link-info">
+                    <h3 style="color: #94a3b8;">3. Grup (Çok Yakında)</h3>
+                    <p>Şu an aktif değil</p>
+                </div>
+            </div>
+        </a>
     </div>
 
     <div id="nickname-modal">
@@ -182,11 +203,8 @@ const htmlIcerik = `
         <div id="form-container">
             <div id="toast" class="toast">Mesaj göndermek için biraz bekle!</div>
             <form id="chat-form">
-                <!-- GİZLİ DOSYA SEÇİCİ -->
                 <input type="file" id="image-input" accept="image/*" style="display: none;">
-                <!-- GÖRSEL EKLEME BUTONU -->
                 <button type="button" class="btn-attach" id="btn-attach" title="Görsel Ekle">+</button>
-                
                 <input id="chat-input" autocomplete="off" placeholder="Mesaj gönder..." />
                 <button class="btn-send" type="submit">Gönder</button>
             </form>
@@ -210,6 +228,7 @@ const htmlIcerik = `
         const socket = io();
         const roomListDiv = document.getElementById('room-list');
         const roomScreen = document.getElementById('room-screen');
+        const whatsappScreen = document.getElementById('whatsapp-screen');
         const chatScreen = document.getElementById('chat-screen');
         const nicknameModal = document.getElementById('nickname-modal');
         const nicknameInput = document.getElementById('nickname-input');
@@ -232,7 +251,17 @@ const htmlIcerik = `
         let myUsername = '';
         let targetPMUser = '';
         let lastMsgTime = 0;
-        let attachedImageData = null; // Seçilen görselin base64 datası
+        let attachedImageData = null; 
+
+        // WHATSAPP EKRAN YÖNETİMİ
+        function openWhatsAppScreen() {
+            roomScreen.style.display = 'none';
+            whatsappScreen.style.display = 'flex';
+        }
+        function closeWhatsAppScreen() {
+            whatsappScreen.style.display = 'none';
+            roomScreen.style.display = 'flex';
+        }
 
         function randomNick() {
             const prefixes = ['Savasci', 'Ninja', 'Sura', 'Saman', 'Kral', 'Reis', 'Pro'];
@@ -284,7 +313,7 @@ const htmlIcerik = `
             chatScreen.style.display = 'flex';
             activeRoomName.innerText = selectedRoom.ad;
             messagesDiv.innerHTML = '';
-            resetAttachment(); // Odaya girerken eski görseli temizle
+            resetAttachment(); 
 
             socket.emit('join_room', { room: selectedRoom.id, username: myUsername });
         }
@@ -298,7 +327,6 @@ const htmlIcerik = `
             resetAttachment();
         }
 
-        // FOTOĞRAF SEÇİMİ VE SIKIŞTIRMA İŞLEMİ
         btnAttach.addEventListener('click', () => {
             imageInput.click();
         });
@@ -307,7 +335,6 @@ const htmlIcerik = `
             const file = e.target.files[0];
             if (!file) return;
 
-            // Görseli okuyup canvas ile boyutunu düşürüyoruz (Sunucu çökmemesi için)
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = event => {
@@ -316,7 +343,7 @@ const htmlIcerik = `
                 img.onload = () => {
                     let width = img.width;
                     let height = img.height;
-                    const MAX_SIZE = 800; // Maksimum genişlik veya yükseklik
+                    const MAX_SIZE = 800; 
                     
                     if (width > MAX_SIZE || height > MAX_SIZE) {
                         if (width > height) {
@@ -334,9 +361,8 @@ const htmlIcerik = `
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    attachedImageData = canvas.toDataURL('image/jpeg', 0.7); // %70 Kalite JPEG
+                    attachedImageData = canvas.toDataURL('image/jpeg', 0.7); 
                     
-                    // Buton tasarımını değiştir (Dosya seçildi uyarısı)
                     btnAttach.classList.add('attached');
                     btnAttach.innerText = '🖼️';
                 }
@@ -354,7 +380,6 @@ const htmlIcerik = `
             e.preventDefault();
             const textValue = chatInput.value.trim();
             
-            // Eğer ne yazı var ne de resim, gönderme
             if (!textValue && !attachedImageData) return;
 
             const now = Date.now();
@@ -388,7 +413,6 @@ const htmlIcerik = `
 
             let displayName = isVIP ? getCleanName(data.user) : data.user;
 
-            // Eğer resim varsa <img> etiketi oluştur, tıklayınca büyük açılsın
             const imageHtml = data.image ? \`<img src="\${data.image}" class="msg-image" onclick="window.open('\${data.image}', '_blank')">\` : '';
             const textHtml = data.text ? \`<div>\${data.text}</div>\` : '';
 
@@ -515,7 +539,6 @@ io.on('connection', (socket) => {
         sonMesajZamani[socket.id] = now;
 
         const timeString = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        // Görsel verisini (data.image) mesaja dahil et
         const msgData = { user: socket.username, text: data.text, image: data.image, time: timeString };
 
         if (odaGecmisi[data.room]) {
