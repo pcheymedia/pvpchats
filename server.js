@@ -6,7 +6,6 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// 1. GÜNCEL SUNUCU LİSTESİ
 const sunucular = [
     { id: 'harbi2', ad: 'Harbi2', ikon: '⚔️', aciklama: 'Emek Server Odası' },
     { id: 'risalemt2', ad: 'RisaleMt2', ikon: '🛡️', aciklama: 'Orta Emek Server' },
@@ -15,11 +14,10 @@ const sunucular = [
     { id: 'mykomobile', ad: 'MykoMobile', ikon: '📱', aciklama: 'Mobil PvP Deneyimi' }
 ];
 
-// 2. ODA SAYILARI VE GEÇMİŞ HAFIZASI
 const odaSayilari = { harbi2: 0, risalemt2: 0, lova2: 0, rohan2: 0, mykomobile: 0 };
-const odaGecmisi = { harbi2: [], risalemt2: [], lova2: [], rohan2: [], mykomobile: [] }; // Son 300 mesaj
-const sonMesajZamani = {}; // Anti-spam için
-const aktifKullanicilar = {}; // Kullanıcı adı -> Socket ID eşleşmesi (Özel mesaj için)
+const odaGecmisi = { harbi2: [], risalemt2: [], lova2: [], rohan2: [], mykomobile: [] }; 
+const sonMesajZamani = {}; 
+const aktifKullanicilar = {}; 
 
 const htmlIcerik = `
 <!DOCTYPE html>
@@ -32,14 +30,12 @@ const htmlIcerik = `
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background: #0b0d11; color: #f1f5f9; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
         
-        /* GM Banner */
         .gm-banner { background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b); color: #000; text-align: center; padding: 12px; font-weight: 900; font-size: 15px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); text-transform: uppercase; letter-spacing: 1px; }
         .gm-banner a { color: #000; text-decoration: none; border-bottom: 1px solid #000; }
         
         header { background: #131720; border-bottom: 1px solid #1f2633; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
         .logo { color: #f59e0b; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
         
-        /* Ana Ekran */
         #room-screen { flex: 1; padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
         .room-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
         .room-card:hover { border-color: #f59e0b; }
@@ -49,7 +45,6 @@ const htmlIcerik = `
         .room-details p { font-size: 0.8rem; color: #94a3b8; }
         .room-count { background: #1e2430; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #334155; }
         
-        /* Modal (Kullanıcı Adı) */
         #nickname-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #131720; padding: 24px; border-radius: 12px; border: 1px solid #334155; width: 100%; max-width: 350px; text-align: center; }
         .modal-content h3 { color: #f59e0b; margin-bottom: 16px; font-size: 1.1rem; }
@@ -59,7 +54,6 @@ const htmlIcerik = `
         .btn-join { width: 100%; background: #f59e0b; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; }
         .btn-cancel { width: 100%; background: transparent; color: #94a3b8; border: none; padding: 10px; margin-top: 8px; cursor: pointer; font-size: 0.9rem; }
         
-        /* Sohbet Ekranı */
         #chat-screen { display: none; flex: 1; flex-direction: column; height: calc(100dvh - 57px); }
         .chat-subhead { background: #181d28; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1f2633; }
         .btn-back { background: transparent; border: none; color: #94a3b8; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 4px; font-weight: 600; }
@@ -72,9 +66,9 @@ const htmlIcerik = `
         .msg-info .time { color: #64748b; }
         .msg { background: #131720; padding: 10px 14px; border-radius: 8px; border: 1px solid #1f2633; word-break: break-word; font-size: 0.95rem; line-height: 1.4; color: #fff; }
         
-        /* VIP Glow Efekti */
+        /* YAZILARIN ALTIN RENGİ OLDUĞU KISIM */
         .vip-glow { color: #ffd700 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); font-weight: 900 !important; }
-        .msg.vip-msg { border-color: #ffd700; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+        .msg.vip-msg { border-color: #ffd700; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); color: #ffd700 !important; font-weight: bold; }
 
         .sys { text-align: center; color: #64748b; font-size: 0.75rem; margin: 6px 0; font-style: italic; }
         .toast { text-align: center; color: #ef4444; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; display: none; }
@@ -85,7 +79,6 @@ const htmlIcerik = `
         #chat-input:focus { border-color: #38bdf8; }
         .btn-send { background: #38bdf8; color: #000; border: none; padding: 0 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
-        /* Facebook Tarzı Özel Mesaj (Mini Popup) */
         #private-chat-popup { display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; background: #131720; border: 1px solid #334155; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; flex-direction: column; overflow: hidden; }
         .pm-header { background: #1e293b; padding: 10px; font-weight: bold; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
         .pm-close { cursor: pointer; color: #ef4444; font-weight: bold; }
@@ -98,20 +91,17 @@ const htmlIcerik = `
     </style>
 </head>
 <body>
-    <!-- GM Admin Banner -->
     <div class="gm-banner">👑 Admin İletişim: <a href="mailto:fazlicaniletisim@gmail.com">fazlicaniletisim@gmail.com</a> 👑</div>
 
     <header>
         <div class="logo">⚔️ PvPChats</div>
     </header>
 
-    <!-- Oda Seçim Ekranı -->
     <div id="room-screen">
         <div style="font-size: 0.85rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px;">Açık Server Odaları</div>
         <div id="room-list"></div>
     </div>
 
-    <!-- İsim Seçme Modalı -->
     <div id="nickname-modal">
         <div class="modal-content">
             <h3>Sohbete Katıl</h3>
@@ -124,7 +114,6 @@ const htmlIcerik = `
         </div>
     </div>
 
-    <!-- Ana Sohbet Ekranı -->
     <div id="chat-screen">
         <div class="chat-subhead">
             <button class="btn-back" onclick="leaveRoom()">◀ Odalara Dön</button>
@@ -140,7 +129,6 @@ const htmlIcerik = `
         </div>
     </div>
 
-    <!-- Özel Mesaj (PM) Popup -->
     <div id="private-chat-popup">
         <div class="pm-header">
             <span id="pm-target-name">Kullanıcı</span>
@@ -369,8 +357,6 @@ io.on('connection', (socket) => {
         
         io.emit('room_counts', odaSayilari); 
         socket.emit('room_history', odaGecmisi[room]); 
-        
-        // HATA BURADAYDI: Kesme işaretleri düzeltildi.
         io.to(room).emit('sys_message', `${username} odaya katıldı.`);
     });
 
@@ -408,8 +394,6 @@ io.on('connection', (socket) => {
         if (socket.room && odaSayilari[socket.room] > 0) {
             odaSayilari[socket.room]--;
             io.emit('room_counts', odaSayilari);
-            
-            // HATA BURADAYDI: Kesme işaretleri düzeltildi.
             io.to(socket.room).emit('sys_message', `${socket.username} odadan ayrıldı.`);
             socket.leave(socket.room);
             socket.room = null;
@@ -423,8 +407,6 @@ io.on('connection', (socket) => {
         if (socket.room && odaSayilari[socket.room] > 0) {
             odaSayilari[socket.room]--;
             io.emit('room_counts', odaSayilari);
-            
-            // HATA BURADAYDI: Kesme işaretleri düzeltildi.
             io.to(socket.room).emit('sys_message', `${socket.username} bağlantıyı kopardı.`);
         }
     });
@@ -432,6 +414,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    // HATA BURADAYDI: Kesme işaretleri düzeltildi.
     console.log(`Sunucu ${PORT} portunda başarıyla çalışıyor.`);
 });
