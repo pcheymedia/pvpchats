@@ -4,7 +4,8 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+// maxHttpBufferSize artırıldı ki resimler (Base64) engellenmesin (10MB sınır)
+const io = new Server(server, { cors: { origin: "*" }, maxHttpBufferSize: 1e7 });
 
 const sunucular = [
     { id: 'harbi2', ad: 'Harbi2', ikon: '⚔️', aciklama: 'Emek Server Odası' },
@@ -25,7 +26,7 @@ const htmlIcerik = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PvPChats - Odalar</title>
+    <title>PvPChats - Odalar & Ticaret</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background: #0b0d11; color: #f1f5f9; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
@@ -37,6 +38,8 @@ const htmlIcerik = `
         .logo { color: #f59e0b; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
         
         #room-screen { flex: 1; padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+        .section-title { font-size: 0.85rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; }
+        
         .room-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
         .room-card:hover { border-color: #f59e0b; }
         .room-info { display: flex; align-items: center; gap: 14px; }
@@ -45,6 +48,15 @@ const htmlIcerik = `
         .room-details p { font-size: 0.8rem; color: #94a3b8; }
         .room-count { background: #1e2430; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #334155; }
         
+        .ad-banner-container { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
+        .ad-gold-box { border: 2px dashed #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; font-weight: bold; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .ad-gold-box:hover { background: rgba(255, 215, 0, 0.12); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
+        
+        .wp-trade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+        @media (max-width: 480px) { .wp-trade-grid { grid-template-columns: 1fr; } }
+        .wp-gold-card { border: 2px solid #ffd700; background: radial-gradient(circle at center, rgba(255, 215, 0, 0.08) 0%, rgba(19, 23, 32, 0.95) 100%); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; box-shadow: 0 0 8px rgba(255, 215, 0, 0.2); text-decoration: none; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; min-height: 80px; }
+        .wp-gold-card span { font-size: 0.8rem; color: #94a3b8; font-weight: normal; }
+
         #nickname-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #131720; padding: 24px; border-radius: 12px; border: 1px solid #334155; width: 100%; max-width: 350px; text-align: center; }
         .modal-content h3 { color: #f59e0b; margin-bottom: 16px; font-size: 1.1rem; }
@@ -66,6 +78,9 @@ const htmlIcerik = `
         .msg-info .time { color: #64748b; }
         .msg { background: #131720; padding: 10px 14px; border-radius: 8px; border: 1px solid #1f2633; word-break: break-word; font-size: 0.95rem; line-height: 1.4; color: #fff; }
         
+        /* GÖRSEL MESAJ STİLİ */
+        .msg-image { max-width: 100%; max-height: 250px; border-radius: 6px; margin-top: 8px; border: 1px solid #334155; cursor: pointer; object-fit: contain; background: #000; }
+
         .vip-glow { color: #ffd700 !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.8); font-weight: 900 !important; }
         .msg.vip-msg { border-color: #ffd700; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); color: #ffd700 !important; font-weight: bold; }
 
@@ -73,10 +88,15 @@ const htmlIcerik = `
         .toast { text-align: center; color: #ef4444; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; display: none; }
         
         #form-container { background: #131720; border-top: 1px solid #1f2633; padding: 12px; }
-        form { display: flex; gap: 8px; }
+        form { display: flex; gap: 8px; align-items: center; }
+        
+        /* FOTOĞRAF EKLEME BUTONU */
+        .btn-attach { background: #334155; color: #fff; border: none; padding: 0 14px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.2rem; height: 100%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-attach.attached { background: #22c55e; color: #fff; }
+        
         #chat-input { flex: 1; background: #0b0d11; border: 1px solid #334155; color: #fff; padding: 12px; border-radius: 8px; outline: none; font-size: 1rem; }
         #chat-input:focus { border-color: #38bdf8; }
-        .btn-send { background: #38bdf8; color: #000; border: none; padding: 0 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn-send { background: #38bdf8; color: #000; border: none; padding: 0 16px; border-radius: 8px; font-weight: 700; cursor: pointer; height: 100%; }
 
         #private-chat-popup { display: none; position: fixed; bottom: 20px; right: 20px; width: 300px; background: #131720; border: 1px solid #334155; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 2000; flex-direction: column; overflow: hidden; }
         .pm-header { background: #1e293b; padding: 10px; font-weight: bold; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
@@ -97,8 +117,48 @@ const htmlIcerik = `
     </header>
 
     <div id="room-screen">
-        <div style="font-size: 0.85rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px;">Açık Server Odaları</div>
+        <div class="section-title">Açık Server Odaları</div>
         <div id="room-list"></div>
+
+        <div class="section-title" style="margin-top: 10px;">🌟 Sponsor & Reklam Alanları</div>
+        <div class="ad-banner-container">
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı 1 Hakkında" class="ad-gold-box">
+                📢 BURAYA REKLAM VEREBİLİRSİNİZ (İletişim İçin Tıklayın)
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=Reklam Alanı 2 Hakkında" class="ad-gold-box">
+                ⚔️ BURAYA REKLAM VEREBİLİRSİNİZ (İletişim İçin Tıklayın)
+            </a>
+        </div>
+
+        <div class="section-title" style="margin-top: 16px; color: #22c55e;">
+            <span>💬 WhatsApp Ticaret Grupları</span>
+        </div>
+        <div class="wp-trade-grid">
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 1" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 2" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 3" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 4" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 5" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+            <a href="mailto:fazlicaniletisim@gmail.com?subject=WhatsApp Reklam 6" class="wp-gold-card">
+                <b>⚜️ BURAYA REKLAM VEREBİLİRSİNİZ</b>
+                <span>WhatsApp Grubu Katılım / Reklam</span>
+            </a>
+        </div>
     </div>
 
     <div id="nickname-modal">
@@ -122,8 +182,13 @@ const htmlIcerik = `
         <div id="form-container">
             <div id="toast" class="toast">Mesaj göndermek için biraz bekle!</div>
             <form id="chat-form">
-                <input id="chat-input" autocomplete="off" placeholder="Mesaj gönder..." required />
-                <button class="btn-send">Gönder</button>
+                <!-- GİZLİ DOSYA SEÇİCİ -->
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+                <!-- GÖRSEL EKLEME BUTONU -->
+                <button type="button" class="btn-attach" id="btn-attach" title="Görsel Ekle">+</button>
+                
+                <input id="chat-input" autocomplete="off" placeholder="Mesaj gönder..." />
+                <button class="btn-send" type="submit">Gönder</button>
             </form>
         </div>
     </div>
@@ -159,11 +224,15 @@ const htmlIcerik = `
         const pmMessages = document.getElementById('pm-messages');
         const pmInput = document.getElementById('pm-input');
 
+        const imageInput = document.getElementById('image-input');
+        const btnAttach = document.getElementById('btn-attach');
+
         const sunucular = ${JSON.stringify(sunucular)};
         let selectedRoom = null;
         let myUsername = '';
         let targetPMUser = '';
         let lastMsgTime = 0;
+        let attachedImageData = null; // Seçilen görselin base64 datası
 
         function randomNick() {
             const prefixes = ['Savasci', 'Ninja', 'Sura', 'Saman', 'Kral', 'Reis', 'Pro'];
@@ -215,6 +284,7 @@ const htmlIcerik = `
             chatScreen.style.display = 'flex';
             activeRoomName.innerText = selectedRoom.ad;
             messagesDiv.innerHTML = '';
+            resetAttachment(); // Odaya girerken eski görseli temizle
 
             socket.emit('join_room', { room: selectedRoom.id, username: myUsername });
         }
@@ -225,24 +295,86 @@ const htmlIcerik = `
             chatScreen.style.display = 'none';
             roomScreen.style.display = 'flex';
             pmPopup.style.display = 'none';
+            resetAttachment();
+        }
+
+        // FOTOĞRAF SEÇİMİ VE SIKIŞTIRMA İŞLEMİ
+        btnAttach.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Görseli okuyup canvas ile boyutunu düşürüyoruz (Sunucu çökmemesi için)
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = event => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    let width = img.width;
+                    let height = img.height;
+                    const MAX_SIZE = 800; // Maksimum genişlik veya yükseklik
+                    
+                    if (width > MAX_SIZE || height > MAX_SIZE) {
+                        if (width > height) {
+                            height *= MAX_SIZE / width;
+                            width = MAX_SIZE;
+                        } else {
+                            width *= MAX_SIZE / height;
+                            height = MAX_SIZE;
+                        }
+                    }
+                    
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    attachedImageData = canvas.toDataURL('image/jpeg', 0.7); // %70 Kalite JPEG
+                    
+                    // Buton tasarımını değiştir (Dosya seçildi uyarısı)
+                    btnAttach.classList.add('attached');
+                    btnAttach.innerText = '🖼️';
+                }
+            }
+        });
+
+        function resetAttachment() {
+            attachedImageData = null;
+            imageInput.value = '';
+            btnAttach.classList.remove('attached');
+            btnAttach.innerText = '+';
         }
 
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const textValue = chatInput.value.trim();
+            
+            // Eğer ne yazı var ne de resim, gönderme
+            if (!textValue && !attachedImageData) return;
+
             const now = Date.now();
             if (now - lastMsgTime < 2000) { 
                 toast.style.display = 'block';
                 setTimeout(() => toast.style.display = 'none', 2000);
                 return;
             }
-            if (chatInput.value.trim()) {
-                socket.emit('send_message', { room: selectedRoom.id, text: chatInput.value });
-                chatInput.value = '';
-                lastMsgTime = now;
-            }
+            
+            socket.emit('send_message', { 
+                room: selectedRoom.id, 
+                text: textValue,
+                image: attachedImageData 
+            });
+            
+            chatInput.value = '';
+            resetAttachment();
+            lastMsgTime = now;
         });
 
-        // Ekranda görünecek ismi temizleyen ufak sihirbazlık
         function getCleanName(name) {
             let clean = name.replace(/admin/gi, '').replace(/vip/gi, '').trim();
             return clean || name;
@@ -250,13 +382,15 @@ const htmlIcerik = `
 
         function appendMessage(data) {
             const lowerName = data.user.toLowerCase();
-            // Fazlican yazılırsa veya Admin/VIP eklenirse altın rengi yap!
-            const isVIP = lowerName.includes('vip') || lowerName.includes('admin') || lowerName === 'fazlican' || lowerName === 'fazlıcan';
+            const isVIP = lowerName.includes('vip') || lowerName.includes('admin') || lowerName === 'fazlican' || lowerName === 'fazlıcan' || lowerName === 'can';
             const vipClass = isVIP ? 'vip-glow' : '';
             const vipMsgClass = isVIP ? 'vip-msg' : '';
 
-            // Admin ve VIP kelimelerini gizle
             let displayName = isVIP ? getCleanName(data.user) : data.user;
+
+            // Eğer resim varsa <img> etiketi oluştur, tıklayınca büyük açılsın
+            const imageHtml = data.image ? \`<img src="\${data.image}" class="msg-image" onclick="window.open('\${data.image}', '_blank')">\` : '';
+            const textHtml = data.text ? \`<div>\${data.text}</div>\` : '';
 
             const container = document.createElement('div');
             container.className = 'msg-container';
@@ -265,7 +399,10 @@ const htmlIcerik = `
                     <span class="author \${vipClass}" onclick="openPM('\${data.user}')">\${displayName}</span>
                     <span class="time">\${data.time}</span>
                 </div>
-                <div class="msg \${vipMsgClass}">\${data.text}</div>
+                <div class="msg \${vipMsgClass}">
+                    \${textHtml}
+                    \${imageHtml}
+                </div>
             \`;
             messagesDiv.appendChild(container);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -378,7 +515,8 @@ io.on('connection', (socket) => {
         sonMesajZamani[socket.id] = now;
 
         const timeString = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        const msgData = { user: socket.username, text: data.text, time: timeString };
+        // Görsel verisini (data.image) mesaja dahil et
+        const msgData = { user: socket.username, text: data.text, image: data.image, time: timeString };
 
         if (odaGecmisi[data.room]) {
             odaGecmisi[data.room].push(msgData);
