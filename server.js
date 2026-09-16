@@ -7,18 +7,8 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" }, maxHttpBufferSize: 1e7 });
 
 const sunucular = [
-    { 
-        id: 'harbi2', 
-        ad: 'Harbi2', 
-        logoImg: 'https://i.ibb.co/3k5fH4R/harbi2-logo.png', 
-        aciklama: 'Emek Server Odası' 
-    },
-    { 
-        id: 'misali2', 
-        ad: 'Misali2', 
-        logoImg: 'https://i.ibb.co/nMNsV40/misali2-logo.png', 
-        aciklama: 'Global Hard Emek' 
-    },
+    { id: 'harbi2', ad: 'Harbi2', ikon: '⚔️', aciklama: 'Emek Server Odası' },
+    { id: 'misali2', ad: 'Misali2', ikon: '🏹', aciklama: 'Global Hard Emek' },
     { id: 'risalemt2', ad: 'RisaleMt2', ikon: '🛡️', aciklama: 'Orta Emek Server' },
     { id: 'lova2', ad: 'Lova2', ikon: '🔥', aciklama: 'VSlik PvP Server' },
     { id: 'rohan2', ad: 'Rohan2', ikon: '🐉', aciklama: 'Hard Emek Odası' },
@@ -52,41 +42,13 @@ const htmlIcerik = `
         
         .section-title { font-size: 0.85rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; }
         
-        .room-card { background: #131720; border: 1px solid #1f2633; padding: 14px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; }
-        .room-card:hover { border-color: #f59e0b; transform: translateY(-2px); }
+        .room-card { background: #131720; border: 1px solid #1f2633; padding: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; }
+        .room-card:hover { border-color: #f59e0b; }
         .room-info { display: flex; align-items: center; gap: 14px; }
-        .room-icon { font-size: 1.8rem; display: flex; align-items: center; justify-content: center; min-width: 50px; }
-        
-        /* Animasyonlu Logo Stilleri */
-        .animated-logo-container {
-            width: 70px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .animated-logo-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.45));
-            animation: flameGlow 3s ease-in-out infinite alternate;
-        }
-        @keyframes flameGlow {
-            0% {
-                filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.4)) brightness(1);
-                transform: scale(0.97);
-            }
-            100% {
-                filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)) brightness(1.1);
-                transform: scale(1.03);
-            }
-        }
-
+        .room-icon { font-size: 1.8rem; }
         .room-details h3 { font-size: 1rem; color: #fff; margin-bottom: 2px; }
         .room-details p { font-size: 0.8rem; color: #94a3b8; }
-        .room-count { background: #1e2430; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #334155; white-space: nowrap; }
+        .room-count { background: #1e2430; color: #38bdf8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; border: 1px solid #334155; }
         
         .ad-gold-box { border: 2px dashed #ffd700; background: rgba(255, 215, 0, 0.05); border-radius: 12px; padding: 14px; text-align: center; color: #ffd700; font-weight: bold; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); text-decoration: none; display: block; margin-top: auto; transition: 0.2s; }
         .ad-gold-box:hover { background: rgba(255, 215, 0, 0.12); box-shadow: 0 0 15px rgba(255, 215, 0, 0.35); }
@@ -304,14 +266,9 @@ const htmlIcerik = `
                 const card = document.createElement('div');
                 card.className = 'room-card';
                 card.onclick = () => openModal(s.id);
-                
-                const iconHtml = s.logoImg 
-                    ? \`<div class="animated-logo-container"><img src="\${s.logoImg}" class="animated-logo-img" alt="\${s.ad}"></div>\` 
-                    : \`<div class="room-icon">\${s.ikon}</div>\`;
-
                 card.innerHTML = \`
                     <div class="room-info">
-                        \${iconHtml}
+                        <div class="room-icon">\${s.ikon}</div>
                         <div class="room-details">
                             <h3>\${s.ad}</h3>
                             <p>\${s.aciklama}</p>
