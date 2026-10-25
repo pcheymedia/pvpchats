@@ -4,392 +4,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090b12">
-<title>NEXUS v365 | Email Intelligence</title>
+<meta name="theme-color" content="#070910">
+<title>NEXUS // DIGITAL LIFE</title>
 <style>
-:root{color-scheme:dark;--bg:#090b12;--panel:#111522;--line:#293147;--text:#edf1fa;--muted:#8b96ae;--red:#ff405b;--green:#35dfa0;--blue:#72a9ff;--purple:#b59aff}
+:root{--bg:#070910;--panel:#101421;--line:#273047;--text:#eef3ff;--muted:#8995ad;--a:#8b7cff;--b:#38e5c1;--c:#ff6584}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 50% -15%,#25203b 0%,var(--bg) 55%);color:var(--text);font:14px Inter,system-ui,sans-serif;min-height:100vh}
-header{height:70px;padding:0 max(4%,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#090b12ed;position:sticky;top:0;z-index:4;backdrop-filter:blur(14px)}
-.brand{font-size:21px;font-weight:900;letter-spacing:2px}.brand b{color:var(--red)}
-.status{font:10px monospace;color:var(--green);border:1px solid #35dfa044;padding:8px 11px;border-radius:20px}
-main{max-width:1180px;margin:38px auto;padding:0 18px 55px}
-.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--red)}
-h1{font-size:clamp(29px,4vw,43px);margin:12px 0}
-.sub{color:var(--muted);line-height:1.8;max-width:740px}
-.panel,.stat,.card{background:#111522e8;border:1px solid var(--line);border-radius:13px}
-.panel{padding:21px;margin-top:19px}
-.search{display:flex;gap:10px}
-input{flex:1;min-width:0;background:#090d17;border:1px solid #30394e;border-radius:9px;padding:16px;color:white;font:14px monospace;outline:none}
-input:focus{border-color:var(--red)}
-button{border:0;border-radius:9px;padding:14px 21px;background:var(--red);color:white;font-weight:800;cursor:pointer}
-button:disabled{opacity:.5;cursor:wait}
-.note,.small{font-size:12px;color:var(--muted);line-height:1.8}
-.hidden{display:none!important}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:17px}
-.stat,.card{padding:17px;min-width:0}
-.label{color:var(--muted);font:10px monospace;letter-spacing:1px;text-transform:uppercase}
-.value{font-size:24px;font-weight:850;margin-top:12px;overflow-wrap:anywhere}
-.section-title{font-size:16px;margin:0 0 15px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
-.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.pastes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card h3{margin:0 0 10px;font-size:15px;overflow-wrap:anywhere}
-.pill{display:inline-block;border-radius:20px;padding:5px 9px;font:10px monospace;background:#252b3c;color:#c5cee0}
-.ok{color:var(--green)}.bad{color:var(--red)}.blue{color:var(--blue)}.purple{color:var(--purple)}
-.alert{padding:13px;border:1px solid var(--line);border-radius:9px;line-height:1.8}
-a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
-footer{color:var(--muted);font-size:11px;line-height:1.9;margin-top:30px}
-.loader{width:14px;height:14px;border:2px solid #ffffff55;border-top-color:white;border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){header{padding:0 13px}main{margin-top:25px;padding:0 12px 35px}.search{flex-direction:column}.search button{width:100%}.grid,.results,.pastes{grid-template-columns:1fr}.panel{padding:15px}.status{font-size:9px}}
+body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--b);outline-offset:3px}
+.top{position:sticky;top:0;z-index:5;background:#090b13ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:15px max(18px,calc((100% - 1200px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px}
+.logo{font-size:19px;font-weight:900;letter-spacing:3px}.logo span{color:var(--b)}
+.mono{font:10px ui-monospace,monospace;letter-spacing:1px;color:var(--muted)}
+.live{color:var(--b);border:1px solid #38e5c155;border-radius:20px;padding:7px 10px;font:10px monospace}
+main{max-width:1200px;padding:24px 18px 50px;margin:auto}
+.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at 75% 15%,#31245b 0,transparent 45%),linear-gradient(135deg,#111628,#090b13 75%);padding:clamp(24px,5vw,55px)}
+.hero h1{font-size:clamp(34px,7vw,72px);line-height:1.02;letter-spacing:-3px;margin:17px 0}
+.hero h1 span{color:var(--b)}
+.hero p{max-width:600px;color:var(--muted);line-height:1.8}
+.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--b)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{background:var(--b);color:#06110f;border:0;border-radius:8px;padding:11px 15px;font-weight:800}
+.btn.alt{background:#191f31;color:var(--text);border:1px solid var(--line)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.metric,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.metric{padding:15px}.metric strong{display:block;font-size:23px;margin-top:9px}
+.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
+.panel{padding:17px;min-width:0;margin-bottom:14px}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.heading h2{font-size:14px;margin:0;letter-spacing:.3px}
+canvas{display:block;width:100%;height:300px;background:#080b13;border:1px solid #202940;border-radius:9px}
+.canvas-small{height:220px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.smallbtn{border:1px solid var(--line);border-radius:7px;background:#171d2d;color:var(--text);padding:8px 11px;font-size:12px}
+.smallbtn.active{border-color:var(--b);color:var(--b)}
+.range{width:120px;accent-color:var(--b)}
+select,input[type=text]{background:#0a0e19;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:9px;min-width:0}
+select{max-width:100%}
+.note{font-size:12px;color:var(--muted);line-height:1.8}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;color:#c4cce0;font-size:13px}
+.idea{min-height:125px;padding:15px;border:1px solid #343051;border-radius:9px;background:linear-gradient(135deg,#17162b,#101421);line-height:1.8}
+.tag{display:inline-block;font:10px monospace;color:var(--b);background:#38e5c116;border:1px solid #38e5c133;border-radius:5px;padding:5px 7px;margin-bottom:10px}
+.list{display:grid;gap:8px}
+.entry{padding:11px;background:#0b0f19;border:1px solid #222b3e;border-radius:8px;line-height:1.7}
+footer{border-top:1px solid var(--line);padding-top:17px;color:var(--muted);font-size:11px;line-height:1.9}
+#toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#1a2435;border:1px solid #38e5c155;padding:11px 15px;border-radius:9px;transition:.2s;z-index:10}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.hero h1{letter-spacing:-2px}.top{padding:13px}.hide-mobile{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">NEXUS<b>.</b><span style="font:10px monospace;color:#8b96ae"> INTELLIGENCE</span></div>
-  <div class="status">● CLIENT READY</div>
+<header class="top">
+  <div><div class="logo">NEXUS<span> //</span> LIFE</div><div class="mono">AN INTERACTIVE DIGITAL LAB</div></div>
+  <div class="live" id="live">● SYSTEM ONLINE</div>
 </header>
 
 <main>
-  <div class="eyebrow">EMAIL EXPOSURE / THREAT INTELLIGENCE</div>
-  <h1>Global Exposure Dashboard.</h1>
-  <p class="sub">Bilinen veri ihlallerini, paste özetlerini, açığa çıkan veri türlerini ve risk göstergelerini tek panelde incele.</p>
+<section class="hero">
+  <div class="eyebrow">EXPERIMENTAL ENVIRONMENT / 001</div>
+  <h1>Explore the<br><span>Unknown.</span></h1>
+  <p>Bir evreni gözlemlemekle yetinme. Kurallarını değiştir. Kaosu izle. Dijital yaşamın nasıl şekillendiğini keşfet. Bu küçük laboratuvar tarayıcının içinde çalışır.</p>
+  <div class="actions">
+    <button class="btn" onclick="document.querySelector('#universe').scrollIntoView({behavior:'smooth'})">Evreni keşfet ↘</button>
+    <button class="btn alt" onclick="newDiscovery()">Beni şaşırt ✳</button>
+  </div>
+</section>
 
-  <section class="panel">
-    <form id="scanForm" class="search">
-      <input id="email" type="email" maxlength="254" required
-        autocomplete="email" placeholder="ornek@eposta.com"
-        aria-label="Analiz edilecek e-posta">
-      <button id="scanBtn" type="submit">↗ DEEP SCAN</button>
-    </form>
-    <p class="note">Sorgular XposedOrNot API'sine gönderilir. Yalnızca kontrol etmeye yetkili olduğun e-posta adreslerini kullan. API yanıtları kapsam ve hız sınırlarına tabidir.</p>
-  </section>
+<section class="metrics">
+  <div class="metric"><div class="mono">PARTICLE COUNT</div><strong id="particleCount">120</strong></div>
+  <div class="metric"><div class="mono">SIMULATION TIME</div><strong id="simTime">0.0s</strong></div>
+  <div class="metric"><div class="mono">LIFE AGENTS</div><strong id="agentCount">32</strong></div>
+  <div class="metric"><div class="mono">LOCAL CLOCK</div><strong id="clock">--:--:--</strong></div>
+</section>
 
-  <section id="dashboard" class="hidden">
-    <div class="grid">
-      <div class="stat"><div class="label">Target</div><div id="outEmail" class="value" style="font-size:14px">—</div><p class="small">Sorgulanan e-posta</p></div>
-      <div class="stat"><div class="label">Breach records</div><div id="outCount" class="value">—</div><p class="small">Benzersiz ihlal adı</p></div>
-      <div class="stat"><div class="label">Paste records</div><div id="pasteCount" class="value">—</div><p class="small">Kaynak özet sayısı</p></div>
-      <div class="stat"><div class="label">Scan status</div><div id="outStatus" class="value" style="font-size:16px">—</div><p id="outNote" class="small"></p></div>
-    </div>
+<div class="grid">
+<section class="panel" id="universe">
+  <div class="heading"><h2>01 / PARTICLE UNIVERSE</h2><span class="mono">INTERACTIVE</span></div>
+  <canvas id="space" aria-label="Fareyle etkileşime giren parçacık evreni"></canvas>
+  <div class="controls">
+    <button class="smallbtn active" id="motionBtn" onclick="toggleMotion()">Durdur</button>
+    <button class="smallbtn" onclick="resetSpace()">Yeniden oluştur</button>
+    <button class="smallbtn" onclick="burst()">✳ Kozmik patlama</button>
+    <label class="mono">YOĞUNLUK <input id="density" class="range" type="range" min="35" max="240" value="120"></label>
+  </div>
+  <p class="note">İmleci hareket ettir. Parçacıklar yaklaşır, uzaklaşır ve aralarında bağlar oluşur. Dokunmatik ekranlarda parmağını sürükleyebilirsin.</p>
+</section>
 
-    <div class="panel">
-      <h2 class="section-title">01 / Target intelligence</h2>
-      <div class="grid" style="margin-top:0">
-        <div class="stat"><div class="label">Domain</div><div id="domain" class="value" style="font-size:16px">—</div></div>
-        <div class="stat"><div class="label">First exposure</div><div id="firstExposure" class="value" style="font-size:15px">Bilinmiyor</div></div>
-        <div class="stat"><div class="label">Last exposure</div><div id="lastExposure" class="value" style="font-size:15px">Bilinmiyor</div></div>
-        <div class="stat"><div class="label">Data types</div><div id="dataTypes" class="value" style="font-size:13px">Bilinmiyor</div></div>
-      </div>
-    </div>
+<section class="panel">
+  <div class="heading"><h2>02 / CHAOS LAB</h2><span class="mono">LORENZ SYSTEM</span></div>
+  <canvas id="chaos" class="canvas-small" aria-label="Lorenz kaos sistemi simülasyonu"></canvas>
+  <div class="controls">
+    <label class="mono">RHO <input id="rho" class="range" type="range" min="10" max="50" value="28"></label>
+    <button class="smallbtn" onclick="resetChaos()">Sıfırla</button>
+    <button class="smallbtn" onclick="perturbChaos()">Başlangıcı değiştir</button>
+  </div>
+  <p class="note">Lorenz sistemi, basit deterministik kuralların ne kadar karmaşık davranışlar üretebileceğini gösterir. Bu görsel bir matematik simülasyonudur.</p>
+</section>
 
-    <div class="panel">
-      <div class="section-head">
-        <h2 class="section-title" style="margin:0">02 / Breach intelligence</h2>
-        <span id="breachBadge" class="pill">WAITING</span>
-      </div>
-      <div id="message" class="alert small">Sorgu bekleniyor.</div>
-      <div id="breaches" class="results" style="margin-top:14px"></div>
-    </div>
+<section class="panel">
+  <div class="heading"><h2>03 / ARTIFICIAL LIFE</h2><span class="mono">BOIDS MODEL</span></div>
+  <canvas id="life" class="canvas-small" aria-label="Birbirleriyle etkileşen dijital ajanlar"></canvas>
+  <div class="controls">
+    <button class="smallbtn active" id="lifeBtn" onclick="toggleLife()">Yaşamı durdur</button>
+    <button class="smallbtn" onclick="resetLife()">Yeni popülasyon</button>
+  </div>
+  <p class="note">Ajanlar birbirlerine yaklaşır, çarpışmalardan kaçınır ve komşularının yönüne uyum sağlar. Karmaşık kolektif davranışlar basit kurallardan doğar.</p>
+</section>
 
-    <div class="panel">
-      <div class="section-head">
-        <h2 class="section-title" style="margin:0">03 / Paste intelligence</h2>
-        <span class="pill">PASTE SUMMARY</span>
-      </div>
-      <div id="pasteMessage" class="alert small">Paste özeti bekleniyor.</div>
-      <div id="pastes" class="pastes" style="margin-top:14px"></div>
-    </div>
+<section class="panel">
+  <div class="heading"><h2>04 / IDEA ENGINE</h2><span class="mono">GENERATIVE THINKING</span></div>
+  <div class="idea">
+    <div class="tag" id="ideaTag">RANDOM EXPERIMENT</div>
+    <div id="ideaText">Yeni bir keşif üretmek için aşağıdaki düğmeye bas.</div>
+  </div>
+  <div class="controls">
+    <select id="ideaCategory" aria-label="Fikir kategorisi">
+      <option value="all">Her kategoriden</option>
+      <option value="science">Bilim</option>
+      <option value="art">Sanat</option>
+      <option value="tech">Teknoloji</option>
+      <option value="life">Yaşam</option>
+    </select>
+    <button class="btn" onclick="generateIdea()">Fikir üret ↗</button>
+    <button class="smallbtn" onclick="copyIdea()">Kopyala</button>
+  </div>
+  <div id="ideaHistory" class="list" style="margin-top:13px"></div>
+</section>
 
-    <div class="panel">
-      <h2 class="section-title">04 / Exposure metrics</h2>
-      <div class="grid" style="margin-top:0">
-        <div class="stat"><div class="label">Exposed records</div><div id="recordsTotal" class="value">—</div></div>
-        <div class="stat"><div class="label">Industries</div><div id="industries" class="value" style="font-size:14px">—</div></div>
-        <div class="stat"><div class="label">Password risk</div><div id="passwordRisk" class="value" style="font-size:14px">Bilinmiyor</div></div>
-        <div class="stat"><div class="label">Risk score</div><div id="riskScore" class="value">—</div></div>
-      </div>
-      <p class="note">Risk değerleri yalnızca API yanıtında mevcutsa gösterilir; hesaplanamayan alanlar uydurulmaz.</p>
-    </div>
+<section class="panel">
+  <div class="heading"><h2>05 / DAILY OBSERVATORY</h2><span class="mono">FIELD NOTES</span></div>
+  <div class="idea">
+    <div class="tag">TODAY'S QUESTION</div>
+    <div id="question" style="font-size:17px;line-height:1.7"></div>
+  </div>
+  <div class="controls">
+    <button class="smallbtn" onclick="newQuestion()">Başka bir soru ↻</button>
+    <button class="smallbtn" onclick="copyText(document.getElementById('question').textContent)">Soruyu kopyala</button>
+  </div>
+  <p class="note">Bunlar düşünce deneyleri ve keşif önerileridir; dış dünyadan canlı haber veya kişisel veri toplamazlar.</p>
+</section>
 
-    <div class="panel">
-      <h2 class="section-title">05 / Recommended actions</h2>
-      <div class="alert small">
-        <p>✓ Etkilenen hizmetlerde parolanı değiştir.</p>
-        <p>✓ Aynı parolayı başka hesaplarda kullandıysan onları da değiştir.</p>
-        <p>✓ İki faktörlü doğrulamayı veya geçiş anahtarlarını etkinleştir.</p>
-        <p>✓ Hesabındaki aktif oturumları, kurtarma seçeneklerini ve yönlendirme kurallarını kontrol et.</p>
-        <p>✓ <a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener noreferrer">Bilinen parola ihlali kontrolünü aç ↗</a></p>
-      </div>
-    </div>
-  </section>
+<section class="panel">
+  <div class="heading"><h2>06 / SYSTEM CONSOLE</h2><span class="mono">LOCAL TELEMETRY</span></div>
+  <div id="console" class="list" aria-live="polite"></div>
+  <div class="controls">
+    <button class="smallbtn" onclick="logEvent('Kullanıcı yeni bir gözlem başlattı.')">Gözlem başlat</button>
+    <button class="smallbtn" onclick="exportNotes()">Notları dışa aktar</button>
+    <button class="smallbtn" onclick="clearConsole()">Temizle</button>
+  </div>
+  <p class="note">Konsol yalnızca bu sayfada gerçekleşen yerel etkileşimleri kaydeder. Sunucuya gönderim yapılmaz.</p>
+</section>
+</div>
 
-  <footer>
-    Source: XposedOrNot public API.<br>
-    Bu panel gerçek parolaları, parola hash'lerini veya çalınmış hesap bilgilerini döndürmez. API'nin sağladığı ihlal metaverilerini ve analitik özetleri gösterir. Sonuç bulunmaması kesin güvenlik kanıtı değildir.
-  </footer>
+<footer>
+  NEXUS // DIGITAL LIFE · LOCAL EXPERIMENTAL ENVIRONMENT<br>
+  Simülasyonlar JavaScript ile tarayıcıda hesaplanır. Harici API, hesap, takip çerezi veya arka plan veri gönderimi kullanılmaz.<br>
+  <span id="footerTime"></span>
+</footer>
 </main>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
-const $ = id => document.getElementById(id);
-let scanId = 0;
+const $=id=>document.getElementById(id);
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let running=true,lifeRunning=true,elapsed=0,lastFrame=0,toastTimer;
+const pointer={x:-1000,y:-1000};
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-function text(value, fallback = "Bilinmiyor") {
-  if (value === null || value === undefined || value === "") return fallback;
-  if (Array.isArray(value)) return value.map(x => text(x, "")).filter(Boolean).join(", ") || fallback;
-  if (typeof value === "object") return fallback;
-  return String(value);
+function notify(s){
+  const t=$("toast");t.textContent=s;t.classList.add("show");
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
 }
-function first(obj, keys) {
-  for (const k of keys) if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== "") return obj[k];
-  return null;
+function logEvent(s){
+  const row=document.createElement("div");row.className="entry";
+  const time=document.createElement("span");time.className="mono";time.textContent=new Date().toLocaleTimeString();
+  const msg=document.createElement("div");msg.textContent=s;
+  row.append(time,msg);$("console").prepend(row);
+  while($("console").children.length>8)$("console").lastElementChild.remove();
 }
-function list(value) {
-  if (Array.isArray(value)) return value.flat(Infinity);
-  return value == null ? [] : [value];
-}
-function setStatus(title, cls, note) {
-  $("outStatus").textContent = title;
-  $("outStatus").className = "value " + cls;
-  $("outNote").textContent = note || "";
-}
-function setMessage(id, value, cls = "") {
-  $(id).textContent = value;
-  $(id).className = "alert small " + cls;
-}
-function card(titleText, fields, badgeText) {
-  const el = document.createElement("article");
-  el.className = "card";
-  const h = document.createElement("h3");
-  h.textContent = titleText;
-  el.appendChild(h);
-
-  if (badgeText) {
-    const badge = document.createElement("span");
-    badge.className = "pill";
-    badge.textContent = badgeText;
-    el.appendChild(badge);
+function copyText(s){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(s).then(()=>notify("Panoya kopyalandı.")).catch(()=>notify("Kopyalama desteklenmiyor."));
+  }else{
+    const ta=document.createElement("textarea");ta.value=s;ta.style.position="fixed";ta.style.opacity="0";document.body.append(ta);ta.select();
+    try{document.execCommand("copy");notify("Kopyalandı.");}catch(e){notify("Kopyalama başarısız.");}
+    ta.remove();
   }
-
-  for (const [label, val] of fields) {
-    if (val === null || val === undefined || val === "") continue;
-    const p = document.createElement("p");
-    p.className = "small";
-    const b = document.createElement("strong");
-    b.style.color = "#dce4f5";
-    b.textContent = label + ": ";
-    p.append(b, document.createTextNode(text(val)));
-    el.appendChild(p);
-  }
-  return el;
 }
-function detailedRecords(data) {
-  const root = data?.ExposedBreaches;
-  if (Array.isArray(root)) return root;
-  if (root && Array.isArray(root.breaches_details)) return root.breaches_details;
-  if (root && Array.isArray(root.breaches)) return root.breaches;
-  if (Array.isArray(data?.breaches_details)) return data.breaches_details;
-  if (Array.isArray(data?.Breaches_Details)) return data.Breaches_Details;
-  return [];
+function updateClock(){
+  const d=new Date();$("clock").textContent=d.toLocaleTimeString("tr-TR");
+  $("footerTime").textContent="Yerel saat: "+d.toLocaleString("tr-TR")+" · Oturum yalnızca bu tarayıcıda çalışır.";
 }
-function breachNames(data) {
-  const raw = data?.breaches ?? data?.BreachesSummary?.site ?? data?.BreachesSummary?.breaches;
-  return [...new Set(list(raw).filter(x => typeof x === "string").flatMap(x => x.split(/[;,]/)).map(x => x.trim()).filter(Boolean))];
+setInterval(updateClock,1000);updateClock();
+
+const space=$("space"),sctx=space.getContext("2d");
+let particles=[],sw=0,sh=0;
+function resizeCanvas(canvas,ctx){
+  const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {w:rect.width,h:rect.height};
 }
-function renderBreaches(data, fallbackData) {
-  const container = $("breaches");
-  container.replaceChildren();
-
-  let records = detailedRecords(data);
-  if (!records.length && fallbackData) records = detailedRecords(fallbackData);
-
-  if (records.length) {
-    for (const b of records) {
-      const name = first(b, ["breach", "name", "breachName", "breach_id", "title", "Name"]) || "İhlal kaydı";
-      const types = first(b, ["xposed_data", "exposedData", "exposed_data", "data_types", "DataClasses"]);
-      const fields = [
-        ["Domain", first(b, ["domain", "Domain"])],
-        ["İhlal tarihi", first(b, ["breachedDate", "breach_date", "xposed_date", "breachDate", "date"])],
-        ["Açıklama", first(b, ["details", "description", "exposureDescription"])],
-        ["Veri türleri", types],
-        ["Etkilenen kayıtlar", first(b, ["xposed_records", "exposedRecords", "records", "record_count"])],
-        ["Risk", first(b, ["risk", "riskLevel", "password_risk", "passwordRisk"])],
-        ["Sektör", first(b, ["industry", "sector"])],
-        ["Kaynak", first(b, ["referenceURL", "reference", "references"])]
-      ];
-      container.appendChild(card(name, fields, "BREACH RECORD"));
+function makeParticle(){
+  return{x:rand(0,sw),y:rand(0,sh),vx:rand(-.35,.35),vy:rand(-.35,.35),r:rand(1,2.5),phase:rand(0,6.28)};
+}
+function resetSpace(){
+  const d=resizeCanvas(space,sctx);sw=d.w;sh=d.h;
+  particles=Array.from({length:+$("density").value},makeParticle);
+  $("particleCount").textContent=particles.length;
+}
+$("density").addEventListener("input",resetSpace);
+function attachPointer(canvas){
+  function move(e){const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top}
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerleave",()=>{pointer.x=-1000;pointer.y=-1000});
+}
+attachPointer(space);
+function burst(){
+  for(const p of particles){const a=rand(0,Math.PI*2),v=rand(1,4);p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v;}
+  logEvent("Parçacık sistemine enerji verildi.");notify("Kozmik patlama!");
+}
+function toggleMotion(){
+  running=!running;$("motionBtn").textContent=running?"Durdur":"Devam et";
+  $("live").textContent=running?"● SYSTEM ONLINE":"Ⅱ SYSTEM PAUSED";
+}
+function drawSpace(dt){
+  const d=resizeCheck(space,sctx,sw,sh);sw=d.w;sh=d.h;
+  sctx.fillStyle="#080b13";sctx.fillRect(0,0,sw,sh);
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i];
+    if(running){
+      p.x+=p.vx*dt;p.y+=p.vy*dt;
+      if(p.x<0||p.x>sw)p.vx*=-1;if(p.y<0||p.y>sh)p.vy*=-1;
+      const dx=p.x-pointer.x,dy=p.y-pointer.y,dist=Math.hypot(dx,dy);
+      if(dist<115&&dist>0){const f=(115-dist)/115;p.vx+=dx/dist*f*.09;p.vy+=dy/dist*f*.09;}
+      const speed=Math.hypot(p.vx,p.vy);if(speed>1.4){p.vx*=.95;p.vy*=.95;}
     }
-    $("breachBadge").textContent = records.length + " DETAILS";
-    return records.length;
-  }
-
-  const names = breachNames(data).concat(breachNames(fallbackData || {}));
-  const unique = [...new Set(names)];
-  for (const name of unique) {
-    container.appendChild(card(name, [
-      ["İhlal tarihi", null],
-      ["Veri türleri", null],
-      ["Açıklama", "Temel API yanıtında ayrıntı bulunmuyor."]
-    ], "BREACH NAME"));
-  }
-  $("breachBadge").textContent = unique.length + " NAMES";
-  return unique.length;
-}
-function renderAnalytics(data) {
-  const summary = data?.BreachesSummary || {};
-  const metrics = data?.BreachMetrics || data?.breachMetrics || {};
-  const allTypes = first(data, ["xposed_data", "XposedData"]) ||
-    first(summary, ["xposed_data", "exposed_data", "data_types"]);
-
-  $("firstExposure").textContent = text(first(summary, ["first_breach", "firstBreach", "first_seen"]));
-  $("lastExposure").textContent = text(first(summary, ["latest_breach", "last_breach", "latestBreach", "last_seen"]));
-  $("dataTypes").textContent = text(allTypes);
-
-  const records = first(summary, ["exposed_records", "records", "total_records"]) ||
-    first(metrics, ["exposed_records", "total_records", "records"]);
-  $("recordsTotal").textContent = text(records);
-
-  const industries = first(metrics, ["industry", "industries", "affected_industries"]);
-  $("industries").textContent = text(industries);
-
-  const passRisk = first(metrics, ["password_strength", "password_risk", "passwordRisk", "risk_level"]);
-  $("passwordRisk").textContent = text(passRisk);
-
-  const score = first(metrics, ["risk_score", "riskScore", "risk"]);
-  $("riskScore").textContent = text(score);
-}
-function renderPastes(data) {
-  const container = $("pastes");
-  container.replaceChildren();
-
-  const summary = data?.PastesSummary || data?.pastes_summary || {};
-  const raw = data?.ExposedPastes || data?.exposed_pastes || [];
-  const records = Array.isArray(raw) ? raw : [];
-
-  const count = first(summary, ["count", "Count", "total", "paste_count"]);
-  const latest = first(summary, ["latest", "most_recent", "mostRecent", "date"]);
-  $("pasteCount").textContent = text(count, records.length ? records.length : "—");
-
-  if (records.length) {
-    setMessage("pasteMessage", records.length + " ayrıntılı paste kaydı döndürüldü.");
-    for (const p of records) {
-      if (!p || typeof p !== "object") continue;
-      container.appendChild(card(
-        text(first(p, ["source", "title", "name"]), "Paste kaydı"),
-        [
-          ["Tarih", first(p, ["date", "addedDate", "timestamp"])],
-          ["Kayıt kimliği", first(p, ["id", "identifier"])],
-          ["Kaynak", first(p, ["source", "url"])]
-        ],
-        "PASTE RECORD"
-      ));
-    }
-  } else if (count !== null || latest !== null) {
-    setMessage("pasteMessage",
-      "Paste özeti: " + text(count, "Sayı belirtilmemiş") +
-      " kayıt; son görülme: " + text(latest) +
-      ". Ayrıntılı kayıtlar bu yanıtta bulunmuyor.");
-  } else {
-    $("pasteCount").textContent = "—";
-    setMessage("pasteMessage", "Bu API yanıtında paste özeti yok. Bu durum kesinlikle paste bulunmadığı anlamına gelmez.");
-  }
-}
-async function getJson(url) {
-  const response = await fetch(url, {headers:{"Accept":"application/json"}});
-  if (!response.ok) {
-    const error = new Error("HTTP_" + response.status);
-    error.status = response.status;
-    throw error;
-  }
-  return response.json();
-}
-
-$("scanForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  const email = $("email").value.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert("Geçerli bir e-posta adresi gir.");
-    return;
-  }
-
-  const id = ++scanId;
-  const btn = $("scanBtn");
-  $("dashboard").classList.remove("hidden");
-  $("outEmail").textContent = email;
-  $("domain").textContent = email.split("@").pop();
-  $("outCount").textContent = "…";
-  $("pasteCount").textContent = "…";
-  $("breaches").replaceChildren();
-  $("pastes").replaceChildren();
-  $("breachBadge").textContent = "QUERYING";
-  setStatus("SORGULANIYOR", "blue", "Birden fazla API kaynağı kontrol ediliyor.");
-  setMessage("message", "İhlal analitiği sorgulanıyor…");
-  setMessage("pasteMessage", "Paste özeti sorgulanıyor…");
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span>SCANNING';
-  $("dashboard").scrollIntoView({behavior:"smooth",block:"start"});
-
-  const base = "https://api.xposedornot.com/v1/";
-  const analyticsUrl = base + "breach-analytics?email=" + encodeURIComponent(email);
-  const checkUrl = base + "check-email/" + encodeURIComponent(email) + "?details=true";
-  let analytics = null, check = null, errors = [];
-
-  try {
-    // Seri çağrılar: ücretsiz API hız limitlerine saygı göstermek için.
-    try { analytics = await getJson(analyticsUrl); }
-    catch (e) { errors.push("Analitik: " + e.message); }
-
-    if (id !== scanId) return;
-
-    await new Promise(resolve => setTimeout(resolve, 700));
-
-    try { check = await getJson(checkUrl); }
-    catch (e) { errors.push("İhlal kontrolü: " + e.message); }
-
-    if (id !== scanId) return;
-
-    const count = renderBreaches(analytics || {}, check || {});
-    if (analytics) renderAnalytics(analytics);
-    renderPastes(analytics || {});
-
-    if (count > 0) {
-      $("outCount").textContent = String(count);
-      setStatus("İHLAL BULUNDU", "bad", "Kaynak yanıtında ihlal kayıtları bulundu.");
-      setMessage("message",
-        "Bulgular API yanıtlarından birleştirildi. Ayrıntısı olmayan alanlar tahmin edilmedi.",
-        "bad");
-    } else if (analytics || check) {
-      $("outCount").textContent = "0";
-      setStatus("KAYIT YOK", "ok", "Yanıtlarda gösterilebilir ihlal adı bulunmadı.");
-      setMessage("message",
-        "Bu yanıtlar eşleşen ihlal adı sağlamadı. Tüm sızıntıların kapsandığı garanti edilmez.",
-        "ok");
-    } else {
-      $("outCount").textContent = "—";
-      setStatus("DOĞRULANAMADI", "bad", "Her iki sorgu da başarısız oldu.");
-      setMessage("message", errors.join(" | "), "bad");
-    }
-
-    if (errors.length) {
-      const p = document.createElement("p");
-      p.className = "small";
-      p.textContent = "Bazı kaynaklar yanıt vermedi: " + errors.join("; ");
-      $("breaches").prepend(p);
-    }
-  } catch (err) {
-    if (id !== scanId) return;
-    setStatus("HATA", "bad", "Sonuç doğrulanamadı.");
-    setMessage("message", err.message, "bad");
-  } finally {
-    if (id === scanId) {
-      btn.disabled = false;
-      btn.textContent = "↗ DEEP SCAN";
+    sctx.beginPath();sctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    sctx.fillStyle=`hsla(${165+p.phase*8},85%,${65+Math.sin(elapsed+p.phase)*15}%,.9)`;sctx.fill();
+    for(let j=i+1;j<particles.length;j++){
+      const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,dist=Math.hypot(dx,dy);
+      if(dist<76){
+        sctx.beginPath();sctx.moveTo(p.x,p.y);sctx.lineTo(q.x,q.y);
+        sctx.strokeStyle=`rgba(87,180,205,${(1-dist/76)*.22})`;sctx.lineWidth=.7;sctx.stroke();
+      }
     }
   }
+}
+function resizeCheck(canvas,ctx,w,h){
+  const r=canvas.getBoundingClientRect();
+  if(Math.abs(r.width-w)>1||Math.abs(r.height-h)>1)return resizeCanvas(canvas,ctx);
+  return{w,h};
+}
+
+const chaos=$("chaos"),cctx=chaos.getContext("2d");
+let cw=0,ch=0,lorenz={x:.1,y:0,z:0},trail=[],rho=28;
+function resetChaos(){
+  const d=resizeCanvas(chaos,cctx);cw=d.w;ch=d.h;
+  lorenz={x:.1+rand(-.001,.001),y:0,z:0};trail=[];
+}
+function perturbChaos(){
+  lorenz.x+=.15;lorenz.y-=.1;logEvent("Kaos sisteminin başlangıç koşulu değiştirildi.");notify("Başlangıç koşulu değişti.");
+}
+$("rho").addEventListener("input",()=>{rho=+$("rho").value;});
+function drawChaos(){
+  const d=resizeCheck(chaos,cctx,cw,ch);cw=d.w;ch=d.h;
+  cctx.fillStyle="#080b13";cctx.fillRect(0,0,cw,ch);
+  cctx.strokeStyle="#182238";cctx.lineWidth=1;
+  for(let x=0;x<cw;x+=30){cctx.beginPath();cctx.moveTo(x,0);cctx.lineTo(x,ch);cctx.stroke();}
+  for(let y=0;y<ch;y+=30){cctx.beginPath();cctx.moveTo(0,y);cctx.lineTo(cw,y);cctx.stroke();}
+  if(running){
+    for(let i=0;i<7;i++){
+      const dt=.004,sigma=10,beta=8/3;
+      const dx=sigma*(lorenz.y-lorenz.x),dy=lorenz.x*(rho-lorenz.z)-lorenz.y,dz=lorenz.x*lorenz.y-beta*lorenz.z;
+      lorenz.x+=dx*dt;lorenz.y+=dy*dt;lorenz.z+=dz*dt;
+      trail.push({x:lorenz.x,y:lorenz.z});
+    }
+    if(trail.length>1800)trail.splice(0,7);
+  }
+  if(trail.length>1){
+    cctx.beginPath();
+    trail.forEach((p,i)=>{
+      const x=cw/2+p.x*5.4,y=ch*.78-p.y*3.4;
+      if(i===0)cctx.moveTo(x,y);else cctx.lineTo(x,y);
+    });
+    cctx.strokeStyle="#9a88ff";cctx.lineWidth=1.35;cctx.stroke();
+  }
+  cctx.fillStyle="#8995ad";cctx.font="10px monospace";cctx.fillText("ρ = "+rho+"  ·  σ = 10  ·  β = 2.667",10,16);
+}
+
+const life=$("life"),lctx=life.getContext("2d");
+let lw=0,lh=0,agents=[];
+function newAgent(){return{x:rand(0,lw),y:rand(0,lh),vx:rand(-1,1),vy:rand(-1,1)}}
+function resetLife(){
+  const d=resizeCanvas(life,lctx);lw=d.w;lh=d.h;
+  agents=Array.from({length:32},newAgent);$("agentCount").textContent=agents.length;
+}
+function toggleLife(){lifeRunning=!lifeRunning;$("lifeBtn").textContent=lifeRunning?"Yaşamı durdur":"Yaşamı başlat";}
+function drawLife(){
+  const d=resizeCheck(life,lctx,lw,lh);lw=d.w;lh=d.h;
+  lctx.fillStyle="#080b13";lctx.fillRect(0,0,lw,lh);
+  if(lifeRunning){
+    for(let i=0;i<agents.length;i++){
+      const a=agents[i];let ax=0,ay=0,cx=0,cy=0,n=0,sx=0,sy=0;
+      for(let j=0;j<agents.length;j++){
+        if(i===j)continue;const b=agents[j],dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);
+        if(dist<48&&dist>0){cx+=b.x;cy+=b.y;sx+=b.vx;sy+=b.vy;n++;if(dist<17){ax-=dx/dist;ay-=dy/dist;}}
+      }
+      if(n){a.vx+=(cx/n-a.x)*.0009+ (sx/n-a.vx)*.035+ax*.025;a.vy+=(cy/n-a.y)*.0009+(sy/n-a.vy)*.035+ay*.025;}
+      const speed=Math.hypot(a.vx,a.vy)||1;a.vx=a.vx/speed*1.15;a.vy=a.vy/speed*1.15;
+      a.x=(a.x+a.vx+lw)%lw;a.y=(a.y+a.vy+lh)%lh;
+    }
+  }
+  for(const a of agents){
+    lctx.beginPath();lctx.arc(a.x,a.y,2.5,0,Math.PI*2);lctx.fillStyle="#38e5c1";lctx.fill();
+    lctx.beginPath();lctx.moveTo(a.x,a.y);lctx.lineTo(a.x-a.vx*8,a.y-a.vy*8);lctx.strokeStyle="#38e5c155";lctx.stroke();
+  }
+}
+
+const ideaSets={
+science:[
+["GÖZLEM","Bir bitkinin büyümesini zaman atlamalı gözlemle ve ışık yönüyle ilişkisini ölç."],
+["KAOS","İki sarkaç modelini farklı başlangıç açılarıyla çalıştırıp hareketlerini karşılaştır."],
+["SES","Aynı melodinin farklı frekanslarda nasıl algılandığını interaktif bir ses haritasında göster."],
+["DOĞA","Karınca kolonilerinin yol bulma davranışını basit ajanlarla simüle et."],
+["UZAY","Gezegenlerin yörüngelerini değiştirerek sistemin kararlılığını görselleştir."]
+],
+art:[
+["ÜRETİM","Fare hareketinden canlı renk izleri oluşturan bir generatif sanat eseri tasarla."],
+["FORM","Tek bir geometrik şekilden yüz farklı kompozisyon üret."],
+["SES","Her parçacığın konumunu bir nota ile eşleştirerek görsel bir enstrüman yap."],
+["RENK","Günün saatine göre dönüşen soyut bir dijital manzara oluştur."]
+],
+tech:[
+["ARAÇ","Kişisel notlarını tamamen tarayıcı içinde arayıp etiketleyebileceğin bir bilgi kutusu yap."],
+["GİZLİLİK","Bir web sayfasının hangi verileri yerel olarak tuttuğunu açıklayan bir gizlilik görselleştiricisi oluştur."],
+["VERİ","Küçük bir veri kümesini farklı grafiklere dönüştüren etkileşimli bir araç tasarla."],
+["SİMÜLASYON","Kuyrukta bekleyen kişilerin sayısını değiştirerek bekleme süresini modelle."]
+],
+life:[
+["ALIŞKANLIK","Bir alışkanlığın 30 gün içindeki ilerlemesini gösteren sade bir takip aracı oluştur."],
+["ÖĞRENME","Öğrendiğin kavramları aralarında bağlantılar kurarak bir bilgi haritasına dönüştür."],
+["DENEY","Bir hafta boyunca dikkat dağıtıcıları gözlemleyip hangi koşullarda odaklandığını kaydet."],
+["SORU","Bir konuda fikrini değiştirebilecek en güçlü kanıtın ne olacağını yaz."]
+]};
+let ideaHistory=[];
+function generateIdea(){
+  const cat=$("ideaCategory").value;
+  const keys=cat==="all"?Object.keys(ideaSets):[cat];
+  const pool=keys.flatMap(k=>ideaSets[k].map(x=>({category:k,title:x[0],text:x[1]})));
+  const available=pool.filter(x=>!ideaHistory.some(h=>h.text===x.text));
+  const item=(available.length?available:pool)[Math.floor(Math.random()*(available.length||pool.length))];
+  $("ideaTag").textContent=item.title+" / "+item.category.toUpperCase();
+  $("ideaText").textContent=item.text;
+  ideaHistory.unshift(item);ideaHistory=ideaHistory.slice(0,5);
+  const row=document.createElement("div");row.className="entry";
+  const tag=document.createElement("span");tag.className="tag";tag.textContent=item.title;
+  const txt=document.createElement("div");txt.textContent=item.text;row.append(tag,txt);
+  $("ideaHistory").prepend(row);
+  while($("ideaHistory").children.length>4)$("ideaHistory").lastElementChild.remove();
+  logEvent("Yeni fikir üretildi: "+item.title);
+}
+function copyIdea(){copyText($("ideaText").textContent);}
+
+const questions=[
+"Bir sistemde küçük bir değişiklik büyük sonuçlar doğuruyorsa, hangi değişkeni kontrol etmek istersin?",
+"Bir gün boyunca internet olmasaydı, hangi dijital alışkanlığının aslında gereksiz olduğunu fark ederdin?",
+"Birbirinden bağımsız görünen iki fikri nasıl tek bir projede birleştirebilirsin?",
+"Bir şeyi gerçekten anladığını nasıl ölçebilirsin: açıklayarak mı, tahmin ederek mi, inşa ederek mi?",
+"Bir yapay yaşam sisteminde davranışın ortaya çıkması için en az hangi kurallar gerekir?",
+"Bir harita, temsil ettiği gerçeklikten hangi bilgileri saklamak zorundadır?",
+"Rastgelelik ile karmaşıklık arasındaki farkı deneysel olarak nasıl gösterebilirsin?",
+"Bir aracı daha akıllı yapmak mı, daha anlaşılır yapmak mı daha değerlidir?",
+"Bir gözlemcinin varlığı ölçtüğü sistemi hangi koşullarda değiştirebilir?",
+"Bugün bildiğin bir şeyi yarın yanlış bulsaydın, bunu fark etmeni hangi kanıt sağlardı?"
+];
+function newQuestion(){
+  const q=questions.splice(Math.floor(Math.random()*questions.length),1)[0];
+  questions.push(q);$("question").textContent=q;logEvent("Yeni düşünce sorusu açıldı.");
+}
+function newDiscovery(){
+  const actions=[()=>{burst();$("universe").scrollIntoView({behavior:"smooth"});},()=>{perturbChaos();$("chaos").scrollIntoView({behavior:"smooth",block:"center"});},()=>{generateIdea();$("ideaText").scrollIntoView({behavior:"smooth",block:"center"});},()=>{newQuestion();$("question").scrollIntoView({behavior:"smooth",block:"center"});}];
+  actions[Math.floor(Math.random()*actions.length)]();notify("Yeni bir keşif başladı.");
+}
+function clearConsole(){$("console").replaceChildren();logEvent("Yerel konsol temizlendi.");}
+function exportNotes(){
+  const data={
+    exportedAt:new Date().toISOString(),
+    ideas:ideaHistory,
+    question:$("question").textContent,
+    localEvents:[...$("console").querySelectorAll(".entry")].map(x=>x.innerText)
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="nexus-field-notes.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  notify("Notlar JSON olarak indirildi.");
+}
+
+let frame=0;
+function animate(t){
+  if(!lastFrame)lastFrame=t;
+  const dt=Math.min((t-lastFrame)/16.67,2);lastFrame=t;
+  if(running)elapsed+=(t-(animate.prev||t))/1000;
+  animate.prev=t;
+  drawSpace(dt);drawChaos();drawLife();
+  $("simTime").textContent=elapsed.toFixed(1)+"s";
+  frame=requestAnimationFrame(animate);
+}
+function init(){
+  resetSpace();resetChaos();resetLife();generateIdea();newQuestion();
+  logEvent("NEXUS laboratuvarı başlatıldı.");
+  logEvent("Parçacık evreni hazır.");
+  logEvent("Kaos ve yapay yaşam simülasyonları hazır.");
+  if(reduced)logEvent("Erişilebilirlik tercihi: azaltılmış hareket algılandı.");
+  requestAnimationFrame(animate);
+}
+window.addEventListener("resize",()=>{
+  resetSpace();resetChaos();resetLife();
 });
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){cancelAnimationFrame(frame);}
+  else{lastFrame=0;requestAnimationFrame(animate);}
+});
+init();
 </script>
 </body>
 </html>
