@@ -1,6 +1,0 @@
-{
-  "name": "osint-sistemi",
-  "scripts": {
-    "start": "node server.js"
-  }
-}
