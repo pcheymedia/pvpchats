@@ -26,18 +26,16 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
         }
 
-        /* Skeleton Loader */
         .skeleton { background: linear-gradient(90deg, #18181b 25%, #27272a 50%, #18181b 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center pb-12">
 
-    <!-- Navbar -->
     <header class="w-full glass-header sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
             <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-            <h1 class="text-xl font-bold tracking-tight text-white">NEXUS<span class="text-red-600 font-mono text-sm ml-1">v365.0</span></h1>
+            <h1 class="text-xl font-bold tracking-tight text-white">NEXUS<span class="text-red-600 font-mono text-sm ml-1">v365.1_BYPASS</span></h1>
         </div>
         <div class="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -45,10 +43,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="w-full max-w-5xl px-4 mt-8 flex flex-col gap-6">
         
-        <!-- Search Bar -->
         <div class="glass-card p-2 flex items-center accent-glow focus-within:border-red-500/50 transition-colors">
             <input type="text" id="target-email" placeholder="Hedef E-Posta Adresini Girin..." 
                 class="w-full bg-transparent border-none text-gray-200 p-4 focus:outline-none focus:ring-0 text-lg font-mono placeholder-zinc-600">
@@ -58,18 +54,14 @@
             </button>
         </div>
 
-        <!-- Pre-Scan State -->
         <div id="idle-state" class="text-center py-20 text-zinc-500">
             <svg class="w-16 h-16 mx-auto mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
             <p class="font-mono text-sm tracking-widest uppercase">Waiting for Target Input</p>
         </div>
 
-        <!-- Dashboard (Hidden initially) -->
         <div id="dashboard" class="hidden flex-col gap-6">
             
-            <!-- Top Row: Profile & Quick Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Profile Card -->
                 <div class="glass-card p-6 col-span-1 md:col-span-2 flex items-start gap-6 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rounded-full blur-3xl"></div>
                     <img id="avatar-img" src="" alt="Avatar" class="w-24 h-24 rounded-xl border border-zinc-700 bg-zinc-900 object-cover shadow-lg">
@@ -95,7 +87,6 @@
                     </div>
                 </div>
 
-                <!-- Exposure Score -->
                 <div class="glass-card p-6 flex flex-col justify-center items-center relative">
                     <h3 class="text-xs text-zinc-500 font-mono uppercase mb-4 absolute top-6 left-6">Threat Score</h3>
                     <div class="relative flex justify-center items-center mt-4">
@@ -111,7 +102,6 @@
                 </div>
             </div>
 
-            <!-- Deep Breach Analysis -->
             <div class="glass-card p-6">
                 <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-4">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -122,14 +112,12 @@
                 </div>
                 
                 <div id="breach-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Breach cards will be injected here -->
                 </div>
                 <div id="breach-empty" class="hidden text-center py-10">
-                    <p class="text-green-400 font-mono">NO BREACH RECORDS FOUND IN PUBLIC DATABASES</p>
+                    <p class="text-green-400 font-mono">NO BREACH RECORDS FOUND</p>
                 </div>
             </div>
 
-            <!-- Pastebin / Raw Leaks -->
             <div class="glass-card p-6">
                 <div class="flex justify-between items-center mb-6 border-b border-zinc-800 pb-4">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -140,7 +128,6 @@
                 </div>
                 
                 <div id="paste-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Pastes will be injected here -->
                 </div>
                  <div id="paste-empty" class="hidden text-center py-6">
                     <p class="text-zinc-500 font-mono text-sm">No raw pastes detected.</p>
@@ -170,7 +157,6 @@
             scoreText: document.getElementById('score-text')
         };
 
-        // Enter key support
         UI.input.addEventListener('keypress', (e) => { if(e.key === 'Enter') startDeepScan(); });
 
         async function startDeepScan() {
@@ -180,7 +166,6 @@
                 return;
             }
 
-            // Reset UI
             UI.idle.classList.add('hidden');
             UI.dash.classList.remove('hidden');
             UI.breachContainer.innerHTML = '';
@@ -196,17 +181,14 @@
             UI.pasteCount.textContent = "Querying Pastes...";
             setScore(0, 'zinc');
 
-            // 1. Gravatar OSINT (Profile Picture Extraction)
             const emailHash = md5(email);
             UI.avatar.src = `https://www.gravatar.com/avatar/${emailHash}?d=mp&s=200`;
             checkGravatarProfile(emailHash);
 
-            // 2. XposedOrNot Breach Extraction
             await fetchBreachData(email);
         }
 
         async function checkGravatarProfile(hash) {
-            // Using JSONP or image load trick to see if custom gravatar exists
             const img = new Image();
             img.onload = () => { UI.gravatarRes.innerHTML = `<span class="text-green-400">Custom Profile Found</span>`; };
             img.onerror = () => { UI.gravatarRes.innerHTML = `<span class="text-zinc-500">Default (No Profile)</span>`; };
@@ -218,16 +200,27 @@
             let pasteData = [];
             
             try {
-                // Fetch Breaches
-                const bRes = await fetch(`https://api.xposedornot.com/v1/check-email/${email}`);
-                if(bRes.status === 200) {
+                // CORS Korumalı İkili İstek Sistemi (Direkt hata verirse proxy üzerinden çeker)
+                let bRes;
+                try {
+                    bRes = await fetch(`https://api.xposedornot.com/v1/check-email/${email}`);
+                } catch(e) {
+                    bRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.xposedornot.com/v1/check-email/' + email)}`);
+                }
+
+                if(bRes && bRes.status === 200) {
                     const bJson = await bRes.json();
                     breachData = (bJson.breaches && bJson.breaches[0]) ? bJson.breaches[0] : [];
                 }
 
-                // Fetch Pastes
-                const pRes = await fetch(`https://api.xposedornot.com/v1/paste/email/${email}`);
-                if(pRes.status === 200) {
+                let pRes;
+                try {
+                    pRes = await fetch(`https://api.xposedornot.com/v1/paste/email/${email}`);
+                } catch(e) {
+                    pRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.xposedornot.com/v1/paste/email/' + email)}`);
+                }
+
+                if(pRes && pRes.status === 200) {
                     const pJson = await pRes.json();
                     pasteData = (pJson.pastes && pJson.pastes[0]) ? pJson.pastes[0] : [];
                 }
@@ -237,12 +230,12 @@
             } catch (err) {
                 UI.badge.className = "px-3 py-1 rounded-full text-xs font-bold font-mono bg-red-900/50 text-red-400 border border-red-500/50";
                 UI.badge.textContent = "API CONNECTION FAILED";
-                UI.breachCount.textContent = "ERR";
+                UI.breachCount.textContent = "NETWORK BLOCKED";
+                UI.pasteCount.textContent = "NETWORK BLOCKED";
             }
         }
 
         function renderResults(breaches, pastes) {
-            // Breaches
             UI.breachCount.textContent = `${breaches.length} RECORDS`;
             if(breaches.length === 0) {
                 UI.breachEmpty.classList.remove('hidden');
@@ -263,7 +256,6 @@
                 });
             }
 
-            // Pastes
             UI.pasteCount.textContent = `${pastes.length} RECORDS`;
             if(pastes.length === 0) {
                 UI.pasteEmpty.classList.remove('hidden');
@@ -279,7 +271,6 @@
                 });
             }
 
-            // Calculate Threat Score & Status Badge
             let score = 0;
             let statusClass = "";
             let statusText = "";
@@ -310,7 +301,7 @@
         function setScore(score, color) {
             UI.scoreText.textContent = score;
             const circle = UI.scoreCircle;
-            const circumference = 351.85; // 2 * Math.PI * 56
+            const circumference = 351.85;
             const offset = circumference - (score / 100) * circumference;
             circle.style.strokeDashoffset = offset;
 
