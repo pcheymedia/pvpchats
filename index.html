@@ -5,277 +5,306 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090b12">
-<title>NEXUS | Email OSINT</title>
+<title>NEXUS v365 | Email Intelligence</title>
 <style>
-:root{color-scheme:dark;--bg:#090b12;--panel:#111522;--line:#293147;--text:#edf1fa;--muted:#8b96ae;--red:#ff405b;--green:#35dfa0;--blue:#72a9ff}
+:root{color-scheme:dark;--bg:#090b12;--panel:#111522;--line:#293147;--text:#edf1fa;--muted:#8b96ae;--red:#ff405b;--green:#35dfa0;--blue:#72a9ff;--purple:#b59aff}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#191d35,var(--bg) 58%);color:var(--text);font:15px Inter,system-ui,sans-serif;min-height:100vh}
-header{height:70px;padding:0 max(5%,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#090b12eF;position:sticky;top:0;z-index:3;backdrop-filter:blur(14px)}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#25203b 0%,var(--bg) 55%);color:var(--text);font:14px Inter,system-ui,sans-serif;min-height:100vh}
+header{height:70px;padding:0 max(4%,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#090b12ed;position:sticky;top:0;z-index:4;backdrop-filter:blur(14px)}
 .brand{font-size:21px;font-weight:900;letter-spacing:2px}.brand b{color:var(--red)}
-.status{font:11px monospace;color:var(--green);border:1px solid #35dfa044;padding:8px 10px;border-radius:20px}
-main{max-width:1100px;margin:45px auto;padding:0 20px 55px}
-.eyebrow{font:11px monospace;letter-spacing:3px;color:var(--red)}
-h1{font-size:clamp(30px,5vw,46px);margin:13px 0}
-.sub{color:var(--muted);line-height:1.8;max-width:720px}
-.panel,.stat,.card{background:#111522df;border:1px solid var(--line);border-radius:14px}
-.panel{padding:22px;margin-top:22px}
+.status{font:10px monospace;color:var(--green);border:1px solid #35dfa044;padding:8px 11px;border-radius:20px}
+main{max-width:1180px;margin:38px auto;padding:0 18px 55px}
+.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--red)}
+h1{font-size:clamp(29px,4vw,43px);margin:12px 0}
+.sub{color:var(--muted);line-height:1.8;max-width:740px}
+.panel,.stat,.card{background:#111522e8;border:1px solid var(--line);border-radius:13px}
+.panel{padding:21px;margin-top:19px}
 .search{display:flex;gap:10px}
-input{flex:1;min-width:0;background:#090d17;border:1px solid #30394e;border-radius:10px;padding:16px;color:white;font:14px monospace;outline:none}
+input{flex:1;min-width:0;background:#090d17;border:1px solid #30394e;border-radius:9px;padding:16px;color:white;font:14px monospace;outline:none}
 input:focus{border-color:var(--red)}
-button{border:0;border-radius:10px;padding:14px 21px;background:var(--red);color:white;font-weight:800;cursor:pointer}
-button:disabled{opacity:.55;cursor:wait}
+button{border:0;border-radius:9px;padding:14px 21px;background:var(--red);color:white;font-weight:800;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
 .note,.small{font-size:12px;color:var(--muted);line-height:1.8}
 .hidden{display:none!important}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
-.stat,.card{padding:18px;min-width:0}
-.label{color:var(--muted);font:11px monospace;letter-spacing:1px;text-transform:uppercase}
-.value{font-size:24px;font-weight:800;margin-top:12px;overflow-wrap:anywhere}
-.section-title{font-size:17px;margin:0 0 17px}
-.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card h3{margin:0 0 10px;font-size:16px;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:17px}
+.stat,.card{padding:17px;min-width:0}
+.label{color:var(--muted);font:10px monospace;letter-spacing:1px;text-transform:uppercase}
+.value{font-size:24px;font-weight:850;margin-top:12px;overflow-wrap:anywhere}
+.section-title{font-size:16px;margin:0 0 15px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pastes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card h3{margin:0 0 10px;font-size:15px;overflow-wrap:anywhere}
 .pill{display:inline-block;border-radius:20px;padding:5px 9px;font:10px monospace;background:#252b3c;color:#c5cee0}
-.ok{color:var(--green)}.bad{color:var(--red)}.blue{color:var(--blue)}
-.alert{padding:14px;border:1px solid var(--line);border-radius:10px;line-height:1.8}
-a{color:var(--blue)}
-footer{color:var(--muted);font-size:12px;line-height:1.9;margin-top:30px}
-.loader{width:15px;height:15px;border:2px solid #ffffff55;border-top-color:white;border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
+.ok{color:var(--green)}.bad{color:var(--red)}.blue{color:var(--blue)}.purple{color:var(--purple)}
+.alert{padding:13px;border:1px solid var(--line);border-radius:9px;line-height:1.8}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+footer{color:var(--muted);font-size:11px;line-height:1.9;margin-top:30px}
+.loader{width:14px;height:14px;border:2px solid #ffffff55;border-top-color:white;border-radius:50%;display:inline-block;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:650px){header{padding:0 15px}main{margin-top:30px;padding:0 14px 40px}.search{flex-direction:column}.search button{width:100%}.grid{grid-template-columns:1fr}.results{grid-template-columns:1fr}.panel{padding:16px}}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){header{padding:0 13px}main{margin-top:25px;padding:0 12px 35px}.search{flex-direction:column}.search button{width:100%}.grid,.results,.pastes{grid-template-columns:1fr}.panel{padding:15px}.status{font-size:9px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">NEXUS<b>.</b><span style="font:11px monospace;color:#8b96ae"> EMAIL OSINT</span></div>
+  <div class="brand">NEXUS<b>.</b><span style="font:10px monospace;color:#8b96ae"> INTELLIGENCE</span></div>
   <div class="status">● CLIENT READY</div>
 </header>
 
 <main>
-  <div class="eyebrow">EXPOSURE INTELLIGENCE / 01</div>
-  <h1>E-posta güvenlik analizi.</h1>
-  <p class="sub">Bilinen veri ihlallerini, sızıntı kaynaklarını ve açığa çıktığı bildirilen veri türlerini incele.</p>
+  <div class="eyebrow">EMAIL EXPOSURE / THREAT INTELLIGENCE</div>
+  <h1>Global Exposure Dashboard.</h1>
+  <p class="sub">Bilinen veri ihlallerini, paste özetlerini, açığa çıkan veri türlerini ve risk göstergelerini tek panelde incele.</p>
 
   <section class="panel">
     <form id="scanForm" class="search">
       <input id="email" type="email" maxlength="254" required
         autocomplete="email" placeholder="ornek@eposta.com"
         aria-label="Analiz edilecek e-posta">
-      <button id="scanBtn" type="submit">↗ ANALİZ ET</button>
+      <button id="scanBtn" type="submit">↗ DEEP SCAN</button>
     </form>
-    <p class="note">E-posta adresin sorgulama amacıyla XposedOrNot servisine gönderilir. Yalnızca kontrol etmeye yetkili olduğun adresleri sorgula.</p>
+    <p class="note">Sorgular XposedOrNot API'sine gönderilir. Yalnızca kontrol etmeye yetkili olduğun e-posta adreslerini kullan. API yanıtları kapsam ve hız sınırlarına tabidir.</p>
   </section>
 
   <section id="dashboard" class="hidden">
     <div class="grid">
-      <div class="stat"><div class="label">Sorgulanan hesap</div><div id="outEmail" class="value" style="font-size:16px">—</div></div>
-      <div class="stat"><div class="label">İhlal kaydı</div><div id="outCount" class="value">—</div></div>
-      <div class="stat"><div class="label">Sorgu durumu</div><div id="outStatus" class="value" style="font-size:17px">—</div><p id="outNote" class="small"></p></div>
+      <div class="stat"><div class="label">Target</div><div id="outEmail" class="value" style="font-size:14px">—</div><p class="small">Sorgulanan e-posta</p></div>
+      <div class="stat"><div class="label">Breach records</div><div id="outCount" class="value">—</div><p class="small">Benzersiz ihlal adı</p></div>
+      <div class="stat"><div class="label">Paste records</div><div id="pasteCount" class="value">—</div><p class="small">Kaynak özet sayısı</p></div>
+      <div class="stat"><div class="label">Scan status</div><div id="outStatus" class="value" style="font-size:16px">—</div><p id="outNote" class="small"></p></div>
     </div>
 
     <div class="panel">
-      <h2 class="section-title">01 / Alan adı</h2>
+      <h2 class="section-title">01 / Target intelligence</h2>
       <div class="grid" style="margin-top:0">
-        <div class="stat"><div class="label">Domain</div><div id="domain" class="value" style="font-size:17px">—</div></div>
-        <div class="stat"><div class="label">İhlal sayısı</div><div id="count2" class="value">—</div></div>
-        <div class="stat"><div class="label">Parola kontrolü</div><div class="small" style="margin-top:12px"><a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener noreferrer">Bilinen parola ihlallerini kontrol et ↗</a></div></div>
+        <div class="stat"><div class="label">Domain</div><div id="domain" class="value" style="font-size:16px">—</div></div>
+        <div class="stat"><div class="label">First exposure</div><div id="firstExposure" class="value" style="font-size:15px">Bilinmiyor</div></div>
+        <div class="stat"><div class="label">Last exposure</div><div id="lastExposure" class="value" style="font-size:15px">Bilinmiyor</div></div>
+        <div class="stat"><div class="label">Data types</div><div id="dataTypes" class="value" style="font-size:13px">Bilinmiyor</div></div>
       </div>
     </div>
 
     <div class="panel">
-      <h2 class="section-title">02 / İhlal kayıtları</h2>
+      <div class="section-head">
+        <h2 class="section-title" style="margin:0">02 / Breach intelligence</h2>
+        <span id="breachBadge" class="pill">WAITING</span>
+      </div>
       <div id="message" class="alert small">Sorgu bekleniyor.</div>
       <div id="breaches" class="results" style="margin-top:14px"></div>
     </div>
 
     <div class="panel">
-      <h2 class="section-title">03 / Paste kayıtları</h2>
-      <div id="pasteMessage" class="alert small">Paste verisi analitik yanıtında bulunuyorsa gösterilir.</div>
-      <div id="pastes" class="results" style="margin-top:14px"></div>
+      <div class="section-head">
+        <h2 class="section-title" style="margin:0">03 / Paste intelligence</h2>
+        <span class="pill">PASTE SUMMARY</span>
+      </div>
+      <div id="pasteMessage" class="alert small">Paste özeti bekleniyor.</div>
+      <div id="pastes" class="pastes" style="margin-top:14px"></div>
     </div>
 
     <div class="panel">
-      <h2 class="section-title">04 / Güvenlik önerileri</h2>
+      <h2 class="section-title">04 / Exposure metrics</h2>
+      <div class="grid" style="margin-top:0">
+        <div class="stat"><div class="label">Exposed records</div><div id="recordsTotal" class="value">—</div></div>
+        <div class="stat"><div class="label">Industries</div><div id="industries" class="value" style="font-size:14px">—</div></div>
+        <div class="stat"><div class="label">Password risk</div><div id="passwordRisk" class="value" style="font-size:14px">Bilinmiyor</div></div>
+        <div class="stat"><div class="label">Risk score</div><div id="riskScore" class="value">—</div></div>
+      </div>
+      <p class="note">Risk değerleri yalnızca API yanıtında mevcutsa gösterilir; hesaplanamayan alanlar uydurulmaz.</p>
+    </div>
+
+    <div class="panel">
+      <h2 class="section-title">05 / Recommended actions</h2>
       <div class="alert small">
         <p>✓ Etkilenen hizmetlerde parolanı değiştir.</p>
-        <p>✓ Aynı parolayı başka sitelerde kullandıysan onları da değiştir.</p>
+        <p>✓ Aynı parolayı başka hesaplarda kullandıysan onları da değiştir.</p>
         <p>✓ İki faktörlü doğrulamayı veya geçiş anahtarlarını etkinleştir.</p>
-        <p>✓ E-posta hesabındaki oturumları ve yönlendirme kurallarını kontrol et.</p>
-        <p>✓ Şüpheli giriş uyarılarına ve kimlik avına dikkat et.</p>
+        <p>✓ Hesabındaki aktif oturumları, kurtarma seçeneklerini ve yönlendirme kurallarını kontrol et.</p>
+        <p>✓ <a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener noreferrer">Bilinen parola ihlali kontrolünü aç ↗</a></p>
       </div>
     </div>
   </section>
 
   <footer>
-    Veri kaynağı: XposedOrNot açık API'si.<br>
-    Bu panel gerçek parola değerlerini veya çalınmış kimlik bilgilerini çekmez.
-    İhlal bulunmaması hesabın kesinlikle güvende olduğu anlamına gelmez.
+    Source: XposedOrNot public API.<br>
+    Bu panel gerçek parolaları, parola hash'lerini veya çalınmış hesap bilgilerini döndürmez. API'nin sağladığı ihlal metaverilerini ve analitik özetleri gösterir. Sonuç bulunmaması kesin güvenlik kanıtı değildir.
   </footer>
 </main>
 
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-let requestId = 0;
+let scanId = 0;
 
-function status(text, cls, note) {
-  $("outStatus").textContent = text;
-  $("outStatus").className = "value " + (cls || "");
-  $("outNote").textContent = note || "";
+function text(value, fallback = "Bilinmiyor") {
+  if (value === null || value === undefined || value === "") return fallback;
+  if (Array.isArray(value)) return value.map(x => text(x, "")).filter(Boolean).join(", ") || fallback;
+  if (typeof value === "object") return fallback;
+  return String(value);
 }
-function message(text, cls) {
-  $("message").className = "alert small " + (cls || "");
-  $("message").textContent = text;
+function first(obj, keys) {
+  for (const k of keys) if (obj && obj[k] !== undefined && obj[k] !== null && obj[k] !== "") return obj[k];
+  return null;
 }
-function arr(value) {
+function list(value) {
   if (Array.isArray(value)) return value.flat(Infinity);
   return value == null ? [] : [value];
 }
-function get(obj, keys) {
-  for (const key of keys) {
-    if (obj && obj[key] != null) return obj[key];
-  }
-  return null;
+function setStatus(title, cls, note) {
+  $("outStatus").textContent = title;
+  $("outStatus").className = "value " + cls;
+  $("outNote").textContent = note || "";
 }
-function cleanText(value, fallback = "Belirtilmemiş") {
-  if (value == null || value === "") return fallback;
-  if (typeof value === "string" || typeof value === "number") return String(value);
-  return fallback;
+function setMessage(id, value, cls = "") {
+  $(id).textContent = value;
+  $(id).className = "alert small " + cls;
 }
-function makeCard(titleText, fields, tagText) {
-  const card = document.createElement("article");
-  card.className = "card";
-  const title = document.createElement("h3");
-  title.textContent = titleText;
-  card.appendChild(title);
+function card(titleText, fields, badgeText) {
+  const el = document.createElement("article");
+  el.className = "card";
+  const h = document.createElement("h3");
+  h.textContent = titleText;
+  el.appendChild(h);
 
-  if (tagText) {
-    const tag = document.createElement("span");
-    tag.className = "pill";
-    tag.textContent = tagText;
-    card.appendChild(tag);
+  if (badgeText) {
+    const badge = document.createElement("span");
+    badge.className = "pill";
+    badge.textContent = badgeText;
+    el.appendChild(badge);
   }
 
-  for (const [label, value] of fields) {
+  for (const [label, val] of fields) {
+    if (val === null || val === undefined || val === "") continue;
     const p = document.createElement("p");
     p.className = "small";
-    const strong = document.createElement("strong");
-    strong.style.color = "#dce4f5";
-    strong.textContent = label + ": ";
-    p.append(strong, document.createTextNode(cleanText(value)));
-    card.appendChild(p);
+    const b = document.createElement("strong");
+    b.style.color = "#dce4f5";
+    b.textContent = label + ": ";
+    p.append(b, document.createTextNode(text(val)));
+    el.appendChild(p);
   }
-  return card;
+  return el;
 }
-function normalizeDetailed(data) {
-  const summary = data && data.BreachesSummary;
-  const direct = get(data, ["ExposedBreaches", "exposedBreaches"]);
-  let records = [];
-
-  if (Array.isArray(direct)) {
-    records = direct;
-  } else if (direct && typeof direct === "object") {
-    records = arr(get(direct, ["breaches", "Breaches", "data"]));
-  }
-
-  if (!records.length && summary && typeof summary === "object") {
-    records = arr(get(summary, ["breaches", "Breaches", "sites"]));
-  }
-
-  return records.filter(x => typeof x === "object" && x !== null);
+function detailedRecords(data) {
+  const root = data?.ExposedBreaches;
+  if (Array.isArray(root)) return root;
+  if (root && Array.isArray(root.breaches_details)) return root.breaches_details;
+  if (root && Array.isArray(root.breaches)) return root.breaches;
+  if (Array.isArray(data?.breaches_details)) return data.breaches_details;
+  if (Array.isArray(data?.Breaches_Details)) return data.Breaches_Details;
+  return [];
 }
-function renderRecords(records) {
+function breachNames(data) {
+  const raw = data?.breaches ?? data?.BreachesSummary?.site ?? data?.BreachesSummary?.breaches;
+  return [...new Set(list(raw).filter(x => typeof x === "string").flatMap(x => x.split(/[;,]/)).map(x => x.trim()).filter(Boolean))];
+}
+function renderBreaches(data, fallbackData) {
   const container = $("breaches");
   container.replaceChildren();
 
-  if (!records.length) return;
+  let records = detailedRecords(data);
+  if (!records.length && fallbackData) records = detailedRecords(fallbackData);
 
-  for (const b of records) {
-    const name = get(b, ["breach", "name", "title", "domain", "breachName", "Name"]);
-    const date = get(b, ["breachedDate", "breach_date", "breachDate", "date", "BreachDate"]);
-    const added = get(b, ["addedDate", "added_date", "AddedDate"]);
-    const dataTypes = get(b, ["xposed_data", "exposedData", "data_types", "exposed_data", "DataClasses"]);
-    const domain = get(b, ["domain", "Domain"]);
-    const description = get(b, ["details", "description", "Description"]);
-    const risk = get(b, ["risk", "riskLevel", "risk_level", "Risk"]);
-
-    container.appendChild(makeCard(
-      cleanText(name, "İhlal kaydı"),
-      [
-        ["İhlal tarihi", date],
-        ["Veritabanına eklenme", added],
-        ["Etkilenen domain", domain],
-        ["Açığa çıkan veri türleri", Array.isArray(dataTypes) ? dataTypes.join(", ") : dataTypes],
-        ["Risk", risk],
-        ["Açıklama", description]
-      ],
-      "BREACH RECORD"
-    ));
+  if (records.length) {
+    for (const b of records) {
+      const name = first(b, ["breach", "name", "breachName", "breach_id", "title", "Name"]) || "İhlal kaydı";
+      const types = first(b, ["xposed_data", "exposedData", "exposed_data", "data_types", "DataClasses"]);
+      const fields = [
+        ["Domain", first(b, ["domain", "Domain"])],
+        ["İhlal tarihi", first(b, ["breachedDate", "breach_date", "xposed_date", "breachDate", "date"])],
+        ["Açıklama", first(b, ["details", "description", "exposureDescription"])],
+        ["Veri türleri", types],
+        ["Etkilenen kayıtlar", first(b, ["xposed_records", "exposedRecords", "records", "record_count"])],
+        ["Risk", first(b, ["risk", "riskLevel", "password_risk", "passwordRisk"])],
+        ["Sektör", first(b, ["industry", "sector"])],
+        ["Kaynak", first(b, ["referenceURL", "reference", "references"])]
+      ];
+      container.appendChild(card(name, fields, "BREACH RECORD"));
+    }
+    $("breachBadge").textContent = records.length + " DETAILS";
+    return records.length;
   }
+
+  const names = breachNames(data).concat(breachNames(fallbackData || {}));
+  const unique = [...new Set(names)];
+  for (const name of unique) {
+    container.appendChild(card(name, [
+      ["İhlal tarihi", null],
+      ["Veri türleri", null],
+      ["Açıklama", "Temel API yanıtında ayrıntı bulunmuyor."]
+    ], "BREACH NAME"));
+  }
+  $("breachBadge").textContent = unique.length + " NAMES";
+  return unique.length;
+}
+function renderAnalytics(data) {
+  const summary = data?.BreachesSummary || {};
+  const metrics = data?.BreachMetrics || data?.breachMetrics || {};
+  const allTypes = first(data, ["xposed_data", "XposedData"]) ||
+    first(summary, ["xposed_data", "exposed_data", "data_types"]);
+
+  $("firstExposure").textContent = text(first(summary, ["first_breach", "firstBreach", "first_seen"]));
+  $("lastExposure").textContent = text(first(summary, ["latest_breach", "last_breach", "latestBreach", "last_seen"]));
+  $("dataTypes").textContent = text(allTypes);
+
+  const records = first(summary, ["exposed_records", "records", "total_records"]) ||
+    first(metrics, ["exposed_records", "total_records", "records"]);
+  $("recordsTotal").textContent = text(records);
+
+  const industries = first(metrics, ["industry", "industries", "affected_industries"]);
+  $("industries").textContent = text(industries);
+
+  const passRisk = first(metrics, ["password_strength", "password_risk", "passwordRisk", "risk_level"]);
+  $("passwordRisk").textContent = text(passRisk);
+
+  const score = first(metrics, ["risk_score", "riskScore", "risk"]);
+  $("riskScore").textContent = text(score);
 }
 function renderPastes(data) {
   const container = $("pastes");
   container.replaceChildren();
 
-  const summary = get(data, ["PastesSummary", "pastesSummary"]);
-  const raw = get(data, ["ExposedPastes", "exposedPastes"]);
+  const summary = data?.PastesSummary || data?.pastes_summary || {};
+  const raw = data?.ExposedPastes || data?.exposed_pastes || [];
   const records = Array.isArray(raw) ? raw : [];
 
+  const count = first(summary, ["count", "Count", "total", "paste_count"]);
+  const latest = first(summary, ["latest", "most_recent", "mostRecent", "date"]);
+  $("pasteCount").textContent = text(count, records.length ? records.length : "—");
+
   if (records.length) {
-    $("pasteMessage").textContent = records.length + " paste kaydı döndürüldü.";
+    setMessage("pasteMessage", records.length + " ayrıntılı paste kaydı döndürüldü.");
     for (const p of records) {
-      if (typeof p !== "object" || !p) continue;
-      container.appendChild(makeCard(
-        cleanText(get(p, ["source", "title", "name"]), "Paste kaydı"),
+      if (!p || typeof p !== "object") continue;
+      container.appendChild(card(
+        text(first(p, ["source", "title", "name"]), "Paste kaydı"),
         [
-          ["Tarih", get(p, ["date", "addedDate", "timestamp"])],
-          ["Kayıt kimliği", get(p, ["id", "identifier"])],
-          ["Kaynak", get(p, ["source", "url"])]
+          ["Tarih", first(p, ["date", "addedDate", "timestamp"])],
+          ["Kayıt kimliği", first(p, ["id", "identifier"])],
+          ["Kaynak", first(p, ["source", "url"])]
         ],
-        "PASTE"
+        "PASTE RECORD"
       ));
     }
-  } else if (summary) {
-    const count = get(summary, ["count", "Count", "total"]);
-    const latest = get(summary, ["latest", "mostRecent", "MostRecent"]);
-    $("pasteMessage").textContent =
-      "API özet bilgisi: " + cleanText(count, "Sayı belirtilmemiş") +
-      " kayıt; son görülme: " + cleanText(latest, "Tarih belirtilmemiş") +
-      ". Ayrıntılı kayıtlar bu yanıtta sağlanmadı.";
+  } else if (count !== null || latest !== null) {
+    setMessage("pasteMessage",
+      "Paste özeti: " + text(count, "Sayı belirtilmemiş") +
+      " kayıt; son görülme: " + text(latest) +
+      ". Ayrıntılı kayıtlar bu yanıtta bulunmuyor.");
   } else {
-    $("pasteMessage").textContent =
-      "Bu yanıt ayrıntılı paste kayıtları içermiyor. Bu, paste bulunmadığı anlamına gelmez.";
+    $("pasteCount").textContent = "—";
+    setMessage("pasteMessage", "Bu API yanıtında paste özeti yok. Bu durum kesinlikle paste bulunmadığı anlamına gelmez.");
   }
 }
-function renderSummary(data, simpleBreaches) {
-  const records = normalizeDetailed(data);
-  const names = [...new Set(arr(simpleBreaches).filter(x => typeof x === "string"))];
-
-  $("outCount").textContent = String(records.length || names.length);
-  $("count2").textContent = $("outCount").textContent;
-
-  if (records.length) {
-    renderRecords(records);
-    status("İHLAL BULUNDU", "bad", "Ayrıntılı API kayıtları alındı.");
-    message("İhlal ayrıntıları kaynak API yanıtından gösteriliyor.", "bad");
-  } else if (names.length) {
-    const container = $("breaches");
-    container.replaceChildren();
-
-    for (const name of names) {
-      container.appendChild(makeCard(name, [
-        ["İhlal tarihi", "API yanıtında bulunmuyor"],
-        ["Açığa çıkan veri türleri", "Bu uç noktada belirtilmemiş"],
-        ["Parola değeri", "Bu API tarafından sağlanmıyor"]
-      ], "BREACH NAME"));
-    }
-
-    status("İHLAL BULUNDU", "bad", "İhlal adları bulundu; ayrıntılı alanlar mevcut değil.");
-    message("İhlal isimleri bulundu. Tarih ve veri türleri bu yanıttan doğrulanamadı.", "bad");
-  } else {
-    $("outCount").textContent = "0";
-    $("count2").textContent = "0";
-    status("KAYIT YOK", "ok", "Bu API yanıtında ihlal adı bulunmadı.");
-    message("Eşleşen kayıt dönmedi. Bu, e-postanın tüm sızıntılarda bulunmadığını kanıtlamaz.", "ok");
+async function getJson(url) {
+  const response = await fetch(url, {headers:{"Accept":"application/json"}});
+  if (!response.ok) {
+    const error = new Error("HTTP_" + response.status);
+    error.status = response.status;
+    throw error;
   }
+  return response.json();
 }
 
 $("scanForm").addEventListener("submit", async event => {
@@ -286,65 +315,78 @@ $("scanForm").addEventListener("submit", async event => {
     return;
   }
 
-  const id = ++requestId;
+  const id = ++scanId;
   const btn = $("scanBtn");
   $("dashboard").classList.remove("hidden");
   $("outEmail").textContent = email;
   $("domain").textContent = email.split("@").pop();
   $("outCount").textContent = "…";
-  $("count2").textContent = "…";
+  $("pasteCount").textContent = "…";
   $("breaches").replaceChildren();
   $("pastes").replaceChildren();
-  message("API sorgulanıyor…");
-  status("SORGULANIYOR", "blue", "Harici servis yanıtı bekleniyor.");
-  $("pasteMessage").textContent = "Analitik yanıtı bekleniyor.";
+  $("breachBadge").textContent = "QUERYING";
+  setStatus("SORGULANIYOR", "blue", "Birden fazla API kaynağı kontrol ediliyor.");
+  setMessage("message", "İhlal analitiği sorgulanıyor…");
+  setMessage("pasteMessage", "Paste özeti sorgulanıyor…");
   btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span>SORGULANIYOR';
+  btn.innerHTML = '<span class="loader"></span>SCANNING';
   $("dashboard").scrollIntoView({behavior:"smooth",block:"start"});
 
+  const base = "https://api.xposedornot.com/v1/";
+  const analyticsUrl = base + "breach-analytics?email=" + encodeURIComponent(email);
+  const checkUrl = base + "check-email/" + encodeURIComponent(email) + "?details=true";
+  let analytics = null, check = null, errors = [];
+
   try {
-    const url = "https://api.xposedornot.com/v1/breach-analytics?email=" +
-      encodeURIComponent(email);
-    const response = await fetch(url, {
-      headers: {"Accept":"application/json"}
-    });
-    if (id !== requestId) return;
+    // Seri çağrılar: ücretsiz API hız limitlerine saygı göstermek için.
+    try { analytics = await getJson(analyticsUrl); }
+    catch (e) { errors.push("Analitik: " + e.message); }
 
-    if (response.status === 429) throw new Error("RATE_LIMIT");
-    if (!response.ok) throw new Error("HTTP_" + response.status);
+    if (id !== scanId) return;
 
-    const data = await response.json();
-    if (id !== requestId) return;
+    await new Promise(resolve => setTimeout(resolve, 700));
 
-    const simple = get(data, ["breaches", "Breaches"]);
-    const error = get(data, ["Error", "error"]);
-    if (error && !simple && !data.BreachesSummary && !data.ExposedBreaches) {
-      if (/not found/i.test(String(error))) {
-        renderSummary({}, []);
-      } else {
-        throw new Error("API_ERROR");
-      }
+    try { check = await getJson(checkUrl); }
+    catch (e) { errors.push("İhlal kontrolü: " + e.message); }
+
+    if (id !== scanId) return;
+
+    const count = renderBreaches(analytics || {}, check || {});
+    if (analytics) renderAnalytics(analytics);
+    renderPastes(analytics || {});
+
+    if (count > 0) {
+      $("outCount").textContent = String(count);
+      setStatus("İHLAL BULUNDU", "bad", "Kaynak yanıtında ihlal kayıtları bulundu.");
+      setMessage("message",
+        "Bulgular API yanıtlarından birleştirildi. Ayrıntısı olmayan alanlar tahmin edilmedi.",
+        "bad");
+    } else if (analytics || check) {
+      $("outCount").textContent = "0";
+      setStatus("KAYIT YOK", "ok", "Yanıtlarda gösterilebilir ihlal adı bulunmadı.");
+      setMessage("message",
+        "Bu yanıtlar eşleşen ihlal adı sağlamadı. Tüm sızıntıların kapsandığı garanti edilmez.",
+        "ok");
     } else {
-      renderSummary(data, simple);
-      renderPastes(data);
+      $("outCount").textContent = "—";
+      setStatus("DOĞRULANAMADI", "bad", "Her iki sorgu da başarısız oldu.");
+      setMessage("message", errors.join(" | "), "bad");
+    }
+
+    if (errors.length) {
+      const p = document.createElement("p");
+      p.className = "small";
+      p.textContent = "Bazı kaynaklar yanıt vermedi: " + errors.join("; ");
+      $("breaches").prepend(p);
     }
   } catch (err) {
-    if (id !== requestId) return;
-    $("outCount").textContent = "—";
-    $("count2").textContent = "—";
-    status("DOĞRULANAMADI", "bad", "Başarısız sorgu temiz sonuç sayılmaz.");
-
-    if (err.message === "RATE_LIMIT") {
-      message("API istek sınırına ulaşıldı. Daha sonra tekrar dene.", "bad");
-    } else {
-      message("API'ye ulaşılamadı veya yanıt doğrulanamadı (" +
-        err.message + "). CORS, ağ bağlantısı veya servis kısıtlamalarını kontrol et.", "bad");
-    }
-    $("pasteMessage").textContent = "Paste sonuçları alınamadı.";
+    if (id !== scanId) return;
+    setStatus("HATA", "bad", "Sonuç doğrulanamadı.");
+    setMessage("message", err.message, "bad");
   } finally {
-    if (id === requestId) {
+    if (id === scanId) {
       btn.disabled = false;
-      btn.textContent = "↗ ANALİZ ET";
+      btn.textContent = "↗ DEEP SCAN";
     }
   }
 });
