@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V6 DEEP BREACH | OSINT LAB</title>
+    <title>V7 STABLE | OSINT LAB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #020617; color: #10b981; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; margin: 0; }
@@ -23,9 +23,9 @@
     <header class="mb-6 border-b border-emerald-500/30 pb-4 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
         <div>
             <h1 class="text-3xl font-bold tracking-widest text-emerald-400 glitch-text">
-                [ V6.0_DEEP_BREACH ] CORE
+                [ V7.0_STABLE ] CORE
             </h1>
-            <p class="text-xs text-emerald-700 mt-1">> GLOBAL DATA LEAK & OSINT SCANNER ACTIVE</p>
+            <p class="text-xs text-emerald-700 mt-1">> SYSTEM ARCHITECTURE REBUILT & ISOLATED</p>
         </div>
         <div class="flex items-center gap-3 border border-emerald-500/50 bg-emerald-900/20 px-4 py-2 rounded shadow-[0_0_15px_rgba(16,185,129,0.3)]">
             <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_#10b981]"></div>
@@ -41,7 +41,7 @@
                 <span id="scan-percent" class="text-emerald-500">0%</span>
             </h2>
             <div id="fingerprint-data" class="space-y-3 font-mono mt-4 text-emerald-300">
-                <div id="loading-text" class="text-emerald-600 animate-pulse">> Telemetri bypass ediliyor...</div>
+                <div id="loading-text" class="text-emerald-600 animate-pulse">> Modüller yükleniyor...</div>
             </div>
         </div>
 
@@ -52,10 +52,11 @@
             
             <div class="mb-6 relative">
                 <input type="text" id="osint-input" placeholder="> E-posta adresi girin (örn: target@gmail.com)" 
-                    class="w-full bg-slate-950 border border-emerald-500/50 text-emerald-400 p-4 rounded focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all font-mono shadow-[inset_0_0_20px_rgba(16,185,129,0.05)] relative z-10">
+                    class="w-full bg-slate-950 border border-emerald-500/50 text-emerald-400 p-4 rounded focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all font-mono shadow-[inset_0_0_20px_rgba(16,185,129,0.05)] relative z-10"
+                    onkeypress="if(event.key === 'Enter') executeLiveScan()">
             </div>
             
-            <button id="scan-btn" class="w-full bg-emerald-950 border border-emerald-500 hover:bg-emerald-500 hover:text-black text-emerald-500 font-bold py-4 px-4 rounded transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] uppercase tracking-widest">
+            <button onclick="executeLiveScan()" class="w-full bg-emerald-950 border border-emerald-500 hover:bg-emerald-500 hover:text-black text-emerald-500 font-bold py-4 px-4 rounded transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] uppercase tracking-widest">
                 [ DERİN SIZINTI TARAMASINI BAŞLAT ]
             </button>
             
@@ -88,21 +89,25 @@
         initParticles(); animateParticles();
     </script>
 
-    <!-- SCRIPT 2: TELEMETRİ KORUNDU -->
+    <!-- SCRIPT 2: BAĞIMSIZ TELEMETRİ (Direkt Çalıştırılır, Çökmez) -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            const fpDiv = document.getElementById('fingerprint-data');
-            function appendData(label, value, colorClass = "text-emerald-400") { 
-                const p = document.createElement('div'); p.className = `data-row py-2 border-b border-emerald-500/10 flex justify-between items-center`; 
-                p.innerHTML = `<span class="text-emerald-700/80">[+] ${label}</span> <span class="${colorClass} font-bold text-right">${value}</span>`; fpDiv.appendChild(p); 
-            }
-            async function runSafeTelemetry() {
-                try {
-                    document.getElementById('loading-text').style.display = 'none'; const pct = document.getElementById('scan-percent');
-                    pct.innerText = "25%"; await delay(600); appendData("Browser", navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome") ? "Apple Safari (iOS)" : navigator.userAgent.split(' ')[0], "text-slate-300");
-                    pct.innerText = "50%"; await delay(600); appendData("Platform", navigator.platform || "Mobil Cihaz", "text-white");
-                    pct.innerText = "75%"; await delay(600);
-                    try {
-                        const req = await fetch('https://ipapi.co/json/'); const net = await req.json();
-                        appendData("Public IP", net.ip, "text-red-500"); appendData("Location", `${net.city}, ${net.country_name}`, "text-emerald-500"); appendData("ISP", net.org, "text-yellow-4
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        const fpDiv = document.getElementById('fingerprint-data');
+        function appendData(label, value, colorClass = "text-emerald-400") { 
+            const p = document.createElement('div'); p.className = `data-row py-2 border-b border-emerald-500/10 flex justify-between items-center`; 
+            p.innerHTML = `<span class="text-emerald-700/80">[+] ${label}</span> <span class="${colorClass} font-bold text-right">${value}</span>`; fpDiv.appendChild(p); 
+        }
+        
+        async function runSafeTelemetry() {
+            try {
+                const loadingText = document.getElementById('loading-text');
+                if(loadingText) loadingText.style.display = 'none';
+                
+                const pct = document.getElementById('scan-percent');
+                pct.innerText = "25%"; await delay(500); 
+                appendData("Browser", navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome") ? "Apple Safari (iOS)" : navigator.userAgent.split(' ')[0], "text-slate-300");
+                
+                pct.innerText = "50%"; await delay(500); 
+                appendData("Platform", navigator.platform || "Mobil Cihaz", "text-white");
+                
+                pct.innerText = "75%"; await delay(500);
