@@ -3,164 +3,148 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#070910">
-<title>NEXUS // DIGITAL LIFE</title>
+<title>NEXUS // EMERGENT LIFE</title>
 <style>
-:root{--bg:#070910;--panel:#101421;--line:#273047;--text:#eef3ff;--muted:#8995ad;--a:#8b7cff;--b:#38e5c1;--c:#ff6584}
+:root{color-scheme:dark;--bg:#070910;--panel:#101522;--line:#273147;--text:#edf3ff;--muted:#8b97ad;--green:#4df0bb;--purple:#a18bff;--red:#ff6688}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;min-height:100vh}
-button,input,select{font:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,sans-serif}
+button,input{font:inherit}
 button{cursor:pointer}
-button:focus-visible,input:focus-visible{outline:2px solid var(--b);outline-offset:3px}
-.top{position:sticky;top:0;z-index:5;background:#090b13ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:15px max(18px,calc((100% - 1200px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px}
-.logo{font-size:19px;font-weight:900;letter-spacing:3px}.logo span{color:var(--b)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+header{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px max(16px,calc((100% - 1180px)/2));background:#080b13ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{font-weight:900;letter-spacing:2px;font-size:18px}.brand span{color:var(--green)}
 .mono{font:10px ui-monospace,monospace;letter-spacing:1px;color:var(--muted)}
-.live{color:var(--b);border:1px solid #38e5c155;border-radius:20px;padding:7px 10px;font:10px monospace}
-main{max-width:1200px;padding:24px 18px 50px;margin:auto}
-.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at 75% 15%,#31245b 0,transparent 45%),linear-gradient(135deg,#111628,#090b13 75%);padding:clamp(24px,5vw,55px)}
-.hero h1{font-size:clamp(34px,7vw,72px);line-height:1.02;letter-spacing:-3px;margin:17px 0}
-.hero h1 span{color:var(--b)}
-.hero p{max-width:600px;color:var(--muted);line-height:1.8}
-.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--b)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-.btn{background:var(--b);color:#06110f;border:0;border-radius:8px;padding:11px 15px;font-weight:800}
-.btn.alt{background:#191f31;color:var(--text);border:1px solid var(--line)}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-.metric,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px}
-.metric{padding:15px}.metric strong{display:block;font-size:23px;margin-top:9px}
-.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:14px}
-.panel{padding:17px;min-width:0;margin-bottom:14px}
-.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
-.heading h2{font-size:14px;margin:0;letter-spacing:.3px}
-canvas{display:block;width:100%;height:300px;background:#080b13;border:1px solid #202940;border-radius:9px}
-.canvas-small{height:220px}
-.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
-.smallbtn{border:1px solid var(--line);border-radius:7px;background:#171d2d;color:var(--text);padding:8px 11px;font-size:12px}
-.smallbtn.active{border-color:var(--b);color:var(--b)}
-.range{width:120px;accent-color:var(--b)}
-select,input[type=text]{background:#0a0e19;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:9px;min-width:0}
-select{max-width:100%}
-.note{font-size:12px;color:var(--muted);line-height:1.8}
-.output{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;color:#c4cce0;font-size:13px}
-.idea{min-height:125px;padding:15px;border:1px solid #343051;border-radius:9px;background:linear-gradient(135deg,#17162b,#101421);line-height:1.8}
-.tag{display:inline-block;font:10px monospace;color:var(--b);background:#38e5c116;border:1px solid #38e5c133;border-radius:5px;padding:5px 7px;margin-bottom:10px}
-.list{display:grid;gap:8px}
-.entry{padding:11px;background:#0b0f19;border:1px solid #222b3e;border-radius:8px;line-height:1.7}
-footer{border-top:1px solid var(--line);padding-top:17px;color:var(--muted);font-size:11px;line-height:1.9}
-#toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#1a2435;border:1px solid #38e5c155;padding:11px 15px;border-radius:9px;transition:.2s;z-index:10}
+.status{color:var(--green);font:10px monospace;border:1px solid #4df0bb55;border-radius:20px;padding:8px}
+main{max-width:1180px;margin:auto;padding:22px 16px 50px}
+.hero{padding:clamp(25px,5vw,48px);border:1px solid var(--line);border-radius:16px;background:radial-gradient(ellipse at 85% 15%,#32235a,transparent 42%),linear-gradient(130deg,#12192b,#090b12)}
+h1{font-size:clamp(35px,7vw,66px);line-height:1.03;letter-spacing:-2.5px;margin:16px 0}
+h1 span{color:var(--green)}
+p{color:var(--muted);line-height:1.8}
+.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--green)}
+.actions,.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.btn{padding:10px 13px;border-radius:7px;border:1px solid var(--line);background:#192033;color:var(--text)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#06120e;font-weight:800}
+.btn.danger{color:#ff92a8;border-color:#ff668855}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:14px 0}
+.metric,.panel{border:1px solid var(--line);background:var(--panel);border-radius:11px}
+.metric{padding:14px;min-width:0}.metric strong{display:block;font-size:24px;margin-top:8px;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:13px}
+.panel{padding:16px;margin-bottom:13px;min-width:0}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
+.heading h2{font-size:13px;margin:0;letter-spacing:.4px}
+canvas{display:block;width:100%;height:390px;border:1px solid #252f44;background:#080b13;border-radius:8px}
+.smallcanvas{height:160px}
+label{font:10px monospace;color:var(--muted)}
+input[type=range]{width:100px;accent-color:var(--green);vertical-align:middle}
+input[type=checkbox]{accent-color:var(--green)}
+.statrow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #222b3b}
+.statrow:last-child{border-bottom:0}
+.value{font-family:ui-monospace,monospace;color:var(--green)}
+.note{font-size:12px;line-height:1.8}
+.feed{display:grid;gap:7px;max-height:260px;overflow:auto}
+.event{padding:10px;background:#0b101b;border:1px solid #242d40;border-radius:7px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.event time{display:block;font:10px monospace;color:var(--green);margin-bottom:3px}
+.history{display:grid;gap:7px}
+.generation{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px;background:#0b101b;border:1px solid #242d40;border-radius:7px}
+.bar{height:4px;background:#252d40;border-radius:4px;overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;background:var(--green)}
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:11px;line-height:1.9;color:var(--muted)}
+#toast{position:fixed;bottom:16px;left:50%;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:#172237;border:1px solid #4df0bb55;padding:11px 14px;border-radius:8px;z-index:10;transition:.2s}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.hero h1{letter-spacing:-2px}.top{padding:13px}.hide-mobile{display:none}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.metric:last-child{grid-column:span 2}header{padding:12px}.hero h1{letter-spacing:-1.5px}canvas{height:320px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div><div class="logo">NEXUS<span> //</span> LIFE</div><div class="mono">AN INTERACTIVE DIGITAL LAB</div></div>
-  <div class="live" id="live">● SYSTEM ONLINE</div>
+<header>
+  <div><div class="brand">NEXUS <span>// EMERGENT</span></div><div class="mono">ARTIFICIAL LIFE EXPERIMENT</div></div>
+  <div id="status" class="status">● SYSTEM ACTIVE</div>
 </header>
 
 <main>
 <section class="hero">
-  <div class="eyebrow">EXPERIMENTAL ENVIRONMENT / 001</div>
-  <h1>Explore the<br><span>Unknown.</span></h1>
-  <p>Bir evreni gözlemlemekle yetinme. Kurallarını değiştir. Kaosu izle. Dijital yaşamın nasıl şekillendiğini keşfet. Bu küçük laboratuvar tarayıcının içinde çalışır.</p>
+  <div class="eyebrow">EXPERIMENT 002 · SELF-ORGANIZING SYSTEMS</div>
+  <h1>Life finds<br><span>a way.</span></h1>
+  <p>Bu evrende her canlı bir kurallar kümesidir. Enerji toplar, hareket eder, çoğalır, değişir ve çevresine tepki verir. Sen koşulları değiştir; ortaya çıkan davranışları izle.</p>
   <div class="actions">
-    <button class="btn" onclick="document.querySelector('#universe').scrollIntoView({behavior:'smooth'})">Evreni keşfet ↘</button>
-    <button class="btn alt" onclick="newDiscovery()">Beni şaşırt ✳</button>
+    <button class="btn primary" id="runBtn">Simülasyonu durdur</button>
+    <button class="btn" id="mutationBtn">Mutasyon dalgası</button>
+    <button class="btn" id="eventBtn">Ekosistemi sına</button>
+    <button class="btn danger" id="resetBtn">Yeni evren</button>
   </div>
 </section>
 
 <section class="metrics">
-  <div class="metric"><div class="mono">PARTICLE COUNT</div><strong id="particleCount">120</strong></div>
-  <div class="metric"><div class="mono">SIMULATION TIME</div><strong id="simTime">0.0s</strong></div>
-  <div class="metric"><div class="mono">LIFE AGENTS</div><strong id="agentCount">32</strong></div>
-  <div class="metric"><div class="mono">LOCAL CLOCK</div><strong id="clock">--:--:--</strong></div>
+  <div class="metric"><div class="mono">CANLI</div><strong id="population">0</strong></div>
+  <div class="metric"><div class="mono">NESİL</div><strong id="generation">0</strong></div>
+  <div class="metric"><div class="mono">TOPLAM DOĞUM</div><strong id="births">0</strong></div>
+  <div class="metric"><div class="mono">ENERJİ</div><strong id="energy">0</strong></div>
+  <div class="metric"><div class="mono">GEÇEN SÜRE</div><strong id="time">0s</strong></div>
 </section>
 
 <div class="grid">
-<section class="panel" id="universe">
-  <div class="heading"><h2>01 / PARTICLE UNIVERSE</h2><span class="mono">INTERACTIVE</span></div>
-  <canvas id="space" aria-label="Fareyle etkileşime giren parçacık evreni"></canvas>
+<section class="panel">
+  <div class="heading"><h2>01 / LIVING WORLD</h2><span class="mono">REAL-TIME</span></div>
+  <canvas id="world" aria-label="Canlıların ve enerji kaynaklarının simülasyonu"></canvas>
   <div class="controls">
-    <button class="smallbtn active" id="motionBtn" onclick="toggleMotion()">Durdur</button>
-    <button class="smallbtn" onclick="resetSpace()">Yeniden oluştur</button>
-    <button class="smallbtn" onclick="burst()">✳ Kozmik patlama</button>
-    <label class="mono">YOĞUNLUK <input id="density" class="range" type="range" min="35" max="240" value="120"></label>
+    <label>BAŞLANGIÇ NÜFUSU <input id="initial" type="range" min="8" max="65" value="28"></label>
+    <label>ENERJİ ÜRETİMİ <input id="foodRate" type="range" min="1" max="12" value="5"></label>
+    <label>MUTASYON <input id="mutation" type="range" min="0" max="100" value="18"></label>
   </div>
-  <p class="note">İmleci hareket ettir. Parçacıklar yaklaşır, uzaklaşır ve aralarında bağlar oluşur. Dokunmatik ekranlarda parmağını sürükleyebilirsin.</p>
+  <p class="note">Yeşil noktalar enerji kaynaklarıdır. Canlılar yakın kaynaklara yönelir. Mor ve turuncu tonlar farklı davranış özelliklerini gösterir. Tuvale dokunarak veya tıklayarak yeni enerji kaynağı ekleyebilirsin.</p>
+</section>
+
+<div>
+<section class="panel">
+  <div class="heading"><h2>02 / EVOLUTION METRICS</h2><span class="mono">OBSERVATION</span></div>
+  <div class="statrow"><span>Ortalama hız</span><span id="speed" class="value">—</span></div>
+  <div class="statrow"><span>Ortalama görüş</span><span id="vision" class="value">—</span></div>
+  <div class="statrow"><span>Ortalama enerji</span><span id="avgEnergy" class="value">—</span></div>
+  <div class="statrow"><span>Çeşitlilik</span><span id="diversity" class="value">—</span></div>
+  <div class="statrow"><span>Son olay</span><span id="lastEvent" class="value">Başlangıç</span></div>
+</section>
+<section class="panel">
+  <div class="heading"><h2>03 / POPULATION HISTORY</h2><span class="mono">LAST 100 SAMPLES</span></div>
+  <canvas id="chart" class="smallcanvas" aria-label="Nüfus değişim grafiği"></canvas>
+  <div class="controls">
+    <label><input type="checkbox" id="autoRules" checked> Uyarlanabilir çevre</label>
+    <label><input type="checkbox" id="persist" checked> Oturum özeti</label>
+  </div>
+  <p class="note">Uyarlanabilir çevre, nüfus yükseldiğinde enerji üretimini ve koşulları değiştirir. Bu, önceden belirlenmiş kurallarla çalışan bir geri bildirim mekanizmasıdır.</p>
+</section>
+</div>
+
+<section class="panel">
+  <div class="heading"><h2>04 / GENERATION ARCHIVE</h2><span class="mono">LOCAL MEMORY</span></div>
+  <div id="history" class="history"></div>
+  <div class="controls">
+    <button class="btn" id="saveBtn">Nesli kaydet</button>
+    <button class="btn" id="exportBtn">Arşivi indir</button>
+    <button class="btn" id="clearBtn">Arşivi temizle</button>
+  </div>
+  <p class="note">Arşiv, tarayıcının yerel depolamasında saklanır. Yalnızca bu sayfanın oluşturduğu simülasyon özetlerini içerir; kişisel veriler veya internetten toplanmış bilgiler içermez.</p>
 </section>
 
 <section class="panel">
-  <div class="heading"><h2>02 / CHAOS LAB</h2><span class="mono">LORENZ SYSTEM</span></div>
-  <canvas id="chaos" class="canvas-small" aria-label="Lorenz kaos sistemi simülasyonu"></canvas>
-  <div class="controls">
-    <label class="mono">RHO <input id="rho" class="range" type="range" min="10" max="50" value="28"></label>
-    <button class="smallbtn" onclick="resetChaos()">Sıfırla</button>
-    <button class="smallbtn" onclick="perturbChaos()">Başlangıcı değiştir</button>
-  </div>
-  <p class="note">Lorenz sistemi, basit deterministik kuralların ne kadar karmaşık davranışlar üretebileceğini gösterir. Bu görsel bir matematik simülasyonudur.</p>
+  <div class="heading"><h2>05 / EVENT STREAM</h2><span class="mono">SIMULATION LOG</span></div>
+  <div id="feed" class="feed" aria-live="polite"></div>
 </section>
 
 <section class="panel">
-  <div class="heading"><h2>03 / ARTIFICIAL LIFE</h2><span class="mono">BOIDS MODEL</span></div>
-  <canvas id="life" class="canvas-small" aria-label="Birbirleriyle etkileşen dijital ajanlar"></canvas>
+  <div class="heading"><h2>06 / EXPERIMENT NOTES</h2><span class="mono">HYPOTHESIS ENGINE</span></div>
+  <p id="hypothesis">Nüfusun enerji kaynaklarıyla ilişkisini gözlemle.</p>
   <div class="controls">
-    <button class="smallbtn active" id="lifeBtn" onclick="toggleLife()">Yaşamı durdur</button>
-    <button class="smallbtn" onclick="resetLife()">Yeni popülasyon</button>
+    <button class="btn primary" id="hypothesisBtn">Yeni hipotez</button>
+    <button class="btn" id="copyBtn">Hipotezi kopyala</button>
   </div>
-  <p class="note">Ajanlar birbirlerine yaklaşır, çarpışmalardan kaçınır ve komşularının yönüne uyum sağlar. Karmaşık kolektif davranışlar basit kurallardan doğar.</p>
-</section>
-
-<section class="panel">
-  <div class="heading"><h2>04 / IDEA ENGINE</h2><span class="mono">GENERATIVE THINKING</span></div>
-  <div class="idea">
-    <div class="tag" id="ideaTag">RANDOM EXPERIMENT</div>
-    <div id="ideaText">Yeni bir keşif üretmek için aşağıdaki düğmeye bas.</div>
-  </div>
-  <div class="controls">
-    <select id="ideaCategory" aria-label="Fikir kategorisi">
-      <option value="all">Her kategoriden</option>
-      <option value="science">Bilim</option>
-      <option value="art">Sanat</option>
-      <option value="tech">Teknoloji</option>
-      <option value="life">Yaşam</option>
-    </select>
-    <button class="btn" onclick="generateIdea()">Fikir üret ↗</button>
-    <button class="smallbtn" onclick="copyIdea()">Kopyala</button>
-  </div>
-  <div id="ideaHistory" class="list" style="margin-top:13px"></div>
-</section>
-
-<section class="panel">
-  <div class="heading"><h2>05 / DAILY OBSERVATORY</h2><span class="mono">FIELD NOTES</span></div>
-  <div class="idea">
-    <div class="tag">TODAY'S QUESTION</div>
-    <div id="question" style="font-size:17px;line-height:1.7"></div>
-  </div>
-  <div class="controls">
-    <button class="smallbtn" onclick="newQuestion()">Başka bir soru ↻</button>
-    <button class="smallbtn" onclick="copyText(document.getElementById('question').textContent)">Soruyu kopyala</button>
-  </div>
-  <p class="note">Bunlar düşünce deneyleri ve keşif önerileridir; dış dünyadan canlı haber veya kişisel veri toplamazlar.</p>
-</section>
-
-<section class="panel">
-  <div class="heading"><h2>06 / SYSTEM CONSOLE</h2><span class="mono">LOCAL TELEMETRY</span></div>
-  <div id="console" class="list" aria-live="polite"></div>
-  <div class="controls">
-    <button class="smallbtn" onclick="logEvent('Kullanıcı yeni bir gözlem başlattı.')">Gözlem başlat</button>
-    <button class="smallbtn" onclick="exportNotes()">Notları dışa aktar</button>
-    <button class="smallbtn" onclick="clearConsole()">Temizle</button>
-  </div>
-  <p class="note">Konsol yalnızca bu sayfada gerçekleşen yerel etkileşimleri kaydeder. Sunucuya gönderim yapılmaz.</p>
 </section>
 </div>
 
 <footer>
-  NEXUS // DIGITAL LIFE · LOCAL EXPERIMENTAL ENVIRONMENT<br>
-  Simülasyonlar JavaScript ile tarayıcıda hesaplanır. Harici API, hesap, takip çerezi veya arka plan veri gönderimi kullanılmaz.<br>
-  <span id="footerTime"></span>
+NEXUS // EMERGENT LIFE · Tarayıcı içi yapay yaşam simülasyonu.<br>
+Sistem kendi içinde sınırlı kuralları değiştirir; bağımsız bilinç veya genel amaçlı öğrenen bir yapay zekâ değildir. Ağ isteği göndermez. Yerel depolama tarayıcı ayarlarından silinebilir.
 </footer>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -168,269 +152,330 @@ footer{border-top:1px solid var(--line);padding-top:17px;color:var(--muted);font
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
-let running=true,lifeRunning=true,elapsed=0,lastFrame=0,toastTimer;
-const pointer={x:-1000,y:-1000};
-const rand=(a,b)=>a+Math.random()*(b-a);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const canvas=$("world"),ctx=canvas.getContext("2d");
+const chart=$("chart"),gctx=chart.getContext("2d");
+let W=0,H=0,running=true,last=0,elapsed=0,frame=0,food=[],agents=[],samples=[],events=[],archive=[];
+let births=0,deaths=0,generation=1,nextId=1,foodClock=0,eventClock=0,saveClock=0;
+let adaptive=true,started=false;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const colors=["#4df0bb","#a18bff","#ffad66","#75b8ff","#ff6688"];
+const storageKey="nexus_emergent_archive_v1";
 
-function notify(s){
-  const t=$("toast");t.textContent=s;t.classList.add("show");
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+function toast(s){
+  $("toast").textContent=s;$("toast").classList.add("show");
+  clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),2100);
 }
-function logEvent(s){
-  const row=document.createElement("div");row.className="entry";
-  const time=document.createElement("span");time.className="mono";time.textContent=new Date().toLocaleTimeString();
-  const msg=document.createElement("div");msg.textContent=s;
-  row.append(time,msg);$("console").prepend(row);
-  while($("console").children.length>8)$("console").lastElementChild.remove();
+function log(s){
+  const e={time:new Date().toLocaleTimeString("tr-TR"),message:s};
+  events.unshift(e);events=events.slice(0,14);renderEvents();
+  $("lastEvent").textContent=s.length>22?s.slice(0,19)+"…":s;
 }
-function copyText(s){
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(s).then(()=>notify("Panoya kopyalandı.")).catch(()=>notify("Kopyalama desteklenmiyor."));
-  }else{
-    const ta=document.createElement("textarea");ta.value=s;ta.style.position="fixed";ta.style.opacity="0";document.body.append(ta);ta.select();
-    try{document.execCommand("copy");notify("Kopyalandı.");}catch(e){notify("Kopyalama başarısız.");}
-    ta.remove();
+function renderEvents(){
+  const box=$("feed");box.replaceChildren();
+  for(const e of events){
+    const d=document.createElement("div");d.className="event";
+    const t=document.createElement("time");t.textContent=e.time;
+    const m=document.createElement("div");m.textContent=e.message;
+    d.append(t,m);box.append(d);
   }
 }
-function updateClock(){
-  const d=new Date();$("clock").textContent=d.toLocaleTimeString("tr-TR");
-  $("footerTime").textContent="Yerel saat: "+d.toLocaleString("tr-TR")+" · Oturum yalnızca bu tarayıcıda çalışır.";
+function resize(c,context){
+  const r=c.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
+  c.width=Math.max(1,Math.round(r.width*dpr));c.height=Math.max(1,Math.round(r.height*dpr));
+  context.setTransform(dpr,0,0,dpr,0,0);return{w:r.width,h:r.height};
 }
-setInterval(updateClock,1000);updateClock();
-
-const space=$("space"),sctx=space.getContext("2d");
-let particles=[],sw=0,sh=0;
-function resizeCanvas(canvas,ctx){
-  const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
-  canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  return {w:rect.width,h:rect.height};
+function resizeAll(){
+  const oldW=W,oldH=H;
+  const d=resize(canvas,ctx);W=d.w;H=d.h;
+  resize(chart,gctx);
+  if(oldW>0&&oldH>0){
+    for(const a of agents){a.x=a.x/oldW*W;a.y=a.y/oldH*H;}
+    for(const f of food){f.x=f.x/oldW*W;f.y=f.y/oldH*H;}
+  }
+  if(!started)resetWorld(false);
 }
-function makeParticle(){
-  return{x:rand(0,sw),y:rand(0,sh),vx:rand(-.35,.35),vy:rand(-.35,.35),r:rand(1,2.5),phase:rand(0,6.28)};
+function newFood(x=rnd(8,W-8),y=rnd(8,H-8),energy=rnd(20,42)){
+  food.push({x,y,energy,r:rnd(2.2,3.5)});
 }
-function resetSpace(){
-  const d=resizeCanvas(space,sctx);sw=d.w;sh=d.h;
-  particles=Array.from({length:+$("density").value},makeParticle);
-  $("particleCount").textContent=particles.length;
+function newAgent(parent=null){
+  const a={
+    id:nextId++,x:parent?parent.x+rnd(-9,9):rnd(5,W-5),y:parent?parent.y+rnd(-9,9):rnd(5,H-5),
+    angle:rnd(0,Math.PI*2),
+    speed:clamp((parent?parent.speed:rnd(.7,1.7))+rnd(-.12,.12),.4,2.5),
+    vision:clamp((parent?parent.vision:rnd(35,100))+rnd(-8,8),20,145),
+    efficiency:clamp((parent?parent.efficiency:rnd(.65,1.4))+rnd(-.1,.1),.4,1.8),
+    energy:parent?parent.energy*.42:rnd(35,65),
+    age:0,color:parent?parent.color:colors[Math.floor(Math.random()*colors.length)]
+  };
+  return a;
 }
-$("density").addEventListener("input",resetSpace);
-function attachPointer(canvas){
-  function move(e){const r=canvas.getBoundingClientRect();pointer.x=e.clientX-r.left;pointer.y=e.clientY-r.top}
-  canvas.addEventListener("pointermove",move);
-  canvas.addEventListener("pointerleave",()=>{pointer.x=-1000;pointer.y=-1000});
+function resetWorld(write=true){
+  const d=resize(canvas,ctx);W=d.w;H=d.h;
+  agents=[];food=[];samples=[];births=0;deaths=0;generation=1;nextId=1;elapsed=0;
+  const n=+$("initial").value;
+  for(let i=0;i<n;i++)agents.push(newAgent());
+  for(let i=0;i<Math.max(15,Math.round(W*H/9000));i++)newFood();
+  started=true;renderHistory();
+  if(write)log("Yeni ekosistem oluşturuldu.");
+  updateStats();drawWorld();drawChart();
 }
-attachPointer(space);
-function burst(){
-  for(const p of particles){const a=rand(0,Math.PI*2),v=rand(1,4);p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v;}
-  logEvent("Parçacık sistemine enerji verildi.");notify("Kozmik patlama!");
+function addFoodAt(x,y){
+  for(let i=0;i<5;i++)newFood(x+rnd(-16,16),y+rnd(-16,16),rnd(25,45));
+  log("Ekosisteme enerji kaynağı eklendi.");
 }
-function toggleMotion(){
-  running=!running;$("motionBtn").textContent=running?"Durdur":"Devam et";
-  $("live").textContent=running?"● SYSTEM ONLINE":"Ⅱ SYSTEM PAUSED";
+canvas.addEventListener("pointerdown",e=>{
+  const r=canvas.getBoundingClientRect();addFoodAt(e.clientX-r.left,e.clientY-r.top);
+});
+function mutate(a){
+  const chance=+$("mutation").value/100;
+  if(Math.random()<chance)a.speed=clamp(a.speed+rnd(-.35,.35),.4,2.5);
+  if(Math.random()<chance)a.vision=clamp(a.vision+rnd(-18,18),20,145);
+  if(Math.random()<chance)a.efficiency=clamp(a.efficiency+rnd(-.2,.2),.4,1.8);
+  if(Math.random()<chance*.5)a.color=colors[Math.floor(Math.random()*colors.length)];
 }
-function drawSpace(dt){
-  const d=resizeCheck(space,sctx,sw,sh);sw=d.w;sh=d.h;
-  sctx.fillStyle="#080b13";sctx.fillRect(0,0,sw,sh);
-  for(let i=0;i<particles.length;i++){
-    const p=particles[i];
-    if(running){
-      p.x+=p.vx*dt;p.y+=p.vy*dt;
-      if(p.x<0||p.x>sw)p.vx*=-1;if(p.y<0||p.y>sh)p.vy*=-1;
-      const dx=p.x-pointer.x,dy=p.y-pointer.y,dist=Math.hypot(dx,dy);
-      if(dist<115&&dist>0){const f=(115-dist)/115;p.vx+=dx/dist*f*.09;p.vy+=dy/dist*f*.09;}
-      const speed=Math.hypot(p.vx,p.vy);if(speed>1.4){p.vx*=.95;p.vy*=.95;}
+function mutationWave(){
+  for(const a of agents)mutate(a);
+  log("Mutasyon dalgası uygulandı: davranış özellikleri değiştirildi.");
+  toast("Mutasyon dalgası!");
+}
+function stressTest(){
+  for(const f of food)f.energy*=.35;
+  food=food.filter(f=>f.energy>2);
+  log("Kaynak stresi başladı: enerji kaynakları azaltıldı.");
+  toast("Ekosistem kaynak stresi altında.");
+}
+function evolve(dt){
+  const pop=agents.length;
+  const foodRate=+$("foodRate").value;
+  foodClock+=dt;
+  const interval=adaptive&&$("autoRules").checked?clamp(1.2-pop/65,.28,1.2):.65;
+  if(foodClock>interval&&food.length<Math.min(240,25+pop*2)){
+    foodClock=0;
+    const n=adaptive&&$("autoRules").checked?Math.max(1,Math.round(foodRate*(1-pop/100))):foodRate;
+    for(let i=0;i<n;i++)newFood();
+  }
+  for(let i=food.length-1;i>=0;i--){
+    food[i].energy-=dt*.12;
+    if(food[i].energy<=0)food.splice(i,1);
+  }
+  const next=[];
+  for(const a of agents){
+    a.age+=dt;
+    let target=null,best=a.vision;
+    for(const f of food){
+      const d=Math.hypot(f.x-a.x,f.y-a.y);
+      if(d<best){best=d;target=f;}
     }
-    sctx.beginPath();sctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    sctx.fillStyle=`hsla(${165+p.phase*8},85%,${65+Math.sin(elapsed+p.phase)*15}%,.9)`;sctx.fill();
-    for(let j=i+1;j<particles.length;j++){
-      const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,dist=Math.hypot(dx,dy);
-      if(dist<76){
-        sctx.beginPath();sctx.moveTo(p.x,p.y);sctx.lineTo(q.x,q.y);
-        sctx.strokeStyle=`rgba(87,180,205,${(1-dist/76)*.22})`;sctx.lineWidth=.7;sctx.stroke();
-      }
+    if(target){
+      const angle=Math.atan2(target.y-a.y,target.x-a.x);
+      let diff=Math.atan2(Math.sin(angle-a.angle),Math.cos(angle-a.angle));
+      a.angle+=clamp(diff,-dt*1.8,dt*1.8);
+    }else a.angle+=rnd(-.9,.9)*dt;
+    const speed=a.speed*(.75+Math.min(a.energy,70)/280);
+    a.x=(a.x+Math.cos(a.angle)*speed*dt*24+W)%W;
+    a.y=(a.y+Math.sin(a.angle)*speed*dt*24+H)%H;
+    a.energy-=dt*(.55+a.speed*.27+a.vision*.003);
+    if(target&&best<7){
+      a.energy+=Math.min(target.energy,14)*a.efficiency;
+      target.energy-=Math.min(target.energy,14);
+      if(target.energy<=0){const idx=food.indexOf(target);if(idx>=0)food.splice(idx,1);}
+    }
+    const maxPop=180;
+    if(a.energy>105&&agents.length+next.length<maxPop&&Math.random()<dt*.16){
+      a.energy*=.48;
+      const child=newAgent(a);mutate(child);next.push(child);births++;
+      if(births%5===0)generation++;
+      if(Math.random()<.4)log("Yeni canlı doğdu · soy "+child.id);
+    }
+    if(a.energy>0&&a.age<160)next.push(a);
+    else deaths++;
+  }
+  agents=next;
+  if(agents.length===0){
+    log("Ekosistem çöktü. Yeniden başlatabilir veya koşulları değiştirebilirsin.");
+    running=false;$("runBtn").textContent="Simülasyonu başlat";
+    $("status").textContent="● SYSTEM PAUSED";
+  }
+  eventClock+=dt;
+  if(eventClock>12&&running){
+    eventClock=0;
+    if(agents.length>65&&Math.random()<.55){
+      const remove=Math.floor(agents.length*.12);
+      agents.splice(0,remove);log("Yoğunluk dengesi: popülasyonun bir bölümü elendi.");
+    }else if(food.length<8){
+      for(let i=0;i<18;i++)newFood();
+      log("Çevresel toparlanma: yeni enerji kaynakları ortaya çıktı.");
+    }else if(agents.length>0){
+      const a=agents[Math.floor(Math.random()*agents.length)];
+      a.vision=clamp(a.vision+rnd(-12,12),20,145);
+      log("Çevresel değişim: rastgele bir davranış özelliği güncellendi.");
     }
   }
+  saveClock+=dt;
+  if(saveClock>5){saveClock=0;sample();}
 }
-function resizeCheck(canvas,ctx,w,h){
-  const r=canvas.getBoundingClientRect();
-  if(Math.abs(r.width-w)>1||Math.abs(r.height-h)>1)return resizeCanvas(canvas,ctx);
-  return{w,h};
+function sample(){
+  samples.push({t:elapsed,p:agents.length,e:Math.round(agents.reduce((s,a)=>s+a.energy,0))});
+  if(samples.length>100)samples.shift();
 }
-
-const chaos=$("chaos"),cctx=chaos.getContext("2d");
-let cw=0,ch=0,lorenz={x:.1,y:0,z:0},trail=[],rho=28;
-function resetChaos(){
-  const d=resizeCanvas(chaos,cctx);cw=d.w;ch=d.h;
-  lorenz={x:.1+rand(-.001,.001),y:0,z:0};trail=[];
-}
-function perturbChaos(){
-  lorenz.x+=.15;lorenz.y-=.1;logEvent("Kaos sisteminin başlangıç koşulu değiştirildi.");notify("Başlangıç koşulu değişti.");
-}
-$("rho").addEventListener("input",()=>{rho=+$("rho").value;});
-function drawChaos(){
-  const d=resizeCheck(chaos,cctx,cw,ch);cw=d.w;ch=d.h;
-  cctx.fillStyle="#080b13";cctx.fillRect(0,0,cw,ch);
-  cctx.strokeStyle="#182238";cctx.lineWidth=1;
-  for(let x=0;x<cw;x+=30){cctx.beginPath();cctx.moveTo(x,0);cctx.lineTo(x,ch);cctx.stroke();}
-  for(let y=0;y<ch;y+=30){cctx.beginPath();cctx.moveTo(0,y);cctx.lineTo(cw,y);cctx.stroke();}
-  if(running){
-    for(let i=0;i<7;i++){
-      const dt=.004,sigma=10,beta=8/3;
-      const dx=sigma*(lorenz.y-lorenz.x),dy=lorenz.x*(rho-lorenz.z)-lorenz.y,dz=lorenz.x*lorenz.y-beta*lorenz.z;
-      lorenz.x+=dx*dt;lorenz.y+=dy*dt;lorenz.z+=dz*dt;
-      trail.push({x:lorenz.x,y:lorenz.z});
-    }
-    if(trail.length>1800)trail.splice(0,7);
-  }
-  if(trail.length>1){
-    cctx.beginPath();
-    trail.forEach((p,i)=>{
-      const x=cw/2+p.x*5.4,y=ch*.78-p.y*3.4;
-      if(i===0)cctx.moveTo(x,y);else cctx.lineTo(x,y);
-    });
-    cctx.strokeStyle="#9a88ff";cctx.lineWidth=1.35;cctx.stroke();
-  }
-  cctx.fillStyle="#8995ad";cctx.font="10px monospace";cctx.fillText("ρ = "+rho+"  ·  σ = 10  ·  β = 2.667",10,16);
-}
-
-const life=$("life"),lctx=life.getContext("2d");
-let lw=0,lh=0,agents=[];
-function newAgent(){return{x:rand(0,lw),y:rand(0,lh),vx:rand(-1,1),vy:rand(-1,1)}}
-function resetLife(){
-  const d=resizeCanvas(life,lctx);lw=d.w;lh=d.h;
-  agents=Array.from({length:32},newAgent);$("agentCount").textContent=agents.length;
-}
-function toggleLife(){lifeRunning=!lifeRunning;$("lifeBtn").textContent=lifeRunning?"Yaşamı durdur":"Yaşamı başlat";}
-function drawLife(){
-  const d=resizeCheck(life,lctx,lw,lh);lw=d.w;lh=d.h;
-  lctx.fillStyle="#080b13";lctx.fillRect(0,0,lw,lh);
-  if(lifeRunning){
-    for(let i=0;i<agents.length;i++){
-      const a=agents[i];let ax=0,ay=0,cx=0,cy=0,n=0,sx=0,sy=0;
-      for(let j=0;j<agents.length;j++){
-        if(i===j)continue;const b=agents[j],dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy);
-        if(dist<48&&dist>0){cx+=b.x;cy+=b.y;sx+=b.vx;sy+=b.vy;n++;if(dist<17){ax-=dx/dist;ay-=dy/dist;}}
-      }
-      if(n){a.vx+=(cx/n-a.x)*.0009+ (sx/n-a.vx)*.035+ax*.025;a.vy+=(cy/n-a.y)*.0009+(sy/n-a.vy)*.035+ay*.025;}
-      const speed=Math.hypot(a.vx,a.vy)||1;a.vx=a.vx/speed*1.15;a.vy=a.vy/speed*1.15;
-      a.x=(a.x+a.vx+lw)%lw;a.y=(a.y+a.vy+lh)%lh;
-    }
+function drawWorld(){
+  ctx.fillStyle="#080b13";ctx.fillRect(0,0,W,H);
+  for(const f of food){
+    ctx.beginPath();ctx.arc(f.x,f.y,f.r+Math.min(2,f.energy/30),0,Math.PI*2);
+    ctx.fillStyle="#4df0bb";ctx.fill();
+    ctx.beginPath();ctx.arc(f.x,f.y,8+f.energy*.08,0,Math.PI*2);
+    ctx.strokeStyle="rgba(77,240,187,.08)";ctx.stroke();
   }
   for(const a of agents){
-    lctx.beginPath();lctx.arc(a.x,a.y,2.5,0,Math.PI*2);lctx.fillStyle="#38e5c1";lctx.fill();
-    lctx.beginPath();lctx.moveTo(a.x,a.y);lctx.lineTo(a.x-a.vx*8,a.y-a.vy*8);lctx.strokeStyle="#38e5c155";lctx.stroke();
+    ctx.beginPath();ctx.arc(a.x,a.y,3+Math.min(2,a.energy/55),0,Math.PI*2);
+    ctx.fillStyle=a.color;ctx.fill();
+    ctx.beginPath();ctx.moveTo(a.x,a.y);
+    ctx.lineTo(a.x-Math.cos(a.angle)*8,a.y-Math.sin(a.angle)*8);
+    ctx.strokeStyle=a.color+"99";ctx.stroke();
+  }
+  ctx.fillStyle="#7f8ba5";ctx.font="10px monospace";
+  ctx.fillText("AGENTS "+agents.length+"  /  RESOURCES "+food.length,10,17);
+}
+function drawChart(){
+  const r=chart.getBoundingClientRect();
+  const w=r.width,h=r.height;
+  gctx.clearRect(0,0,w,h);gctx.fillStyle="#080b13";gctx.fillRect(0,0,w,h);
+  gctx.strokeStyle="#202a3e";
+  for(let y=20;y<h;y+=30){gctx.beginPath();gctx.moveTo(0,y);gctx.lineTo(w,y);gctx.stroke();}
+  if(samples.length<2)return;
+  const max=Math.max(10,...samples.map(s=>s.p));
+  gctx.beginPath();
+  samples.forEach((s,i)=>{
+    const x=i/(samples.length-1)*w,y=h-12-(s.p/max)*(h-30);
+    if(i===0)gctx.moveTo(x,y);else gctx.lineTo(x,y);
+  });
+  gctx.strokeStyle="#4df0bb";gctx.lineWidth=2;gctx.stroke();
+  gctx.fillStyle="#8b97ad";gctx.font="10px monospace";gctx.fillText("POPULATION",8,13);
+}
+function updateStats(){
+  const n=agents.length;
+  $("population").textContent=n;
+  $("generation").textContent=generation;
+  $("births").textContent=births;
+  $("energy").textContent=Math.round(agents.reduce((s,a)=>s+a.energy,0));
+  $("time").textContent=Math.floor(elapsed)+"s";
+  $("speed").textContent=n?(agents.reduce((s,a)=>s+a.speed,0)/n).toFixed(2):"—";
+  $("vision").textContent=n?Math.round(agents.reduce((s,a)=>s+a.vision,0)/n):"—";
+  $("avgEnergy").textContent=n?(agents.reduce((s,a)=>s+a.energy,0)/n).toFixed(1):"—";
+  $("diversity").textContent=new Set(agents.map(a=>a.color)).size+" / 5";
+}
+function saveGeneration(){
+  const n=agents.length;
+  const record={
+    date:new Date().toLocaleString("tr-TR"),
+    generation,population:n,births,deaths,
+    averageEnergy:n?Math.round(agents.reduce((s,a)=>s+a.energy,0)/n):0,
+    averageSpeed:n?+(agents.reduce((s,a)=>s+a.speed,0)/n).toFixed(2):0,
+    foodSources:food.length
+  };
+  archive.unshift(record);archive=archive.slice(0,30);
+  if($("persist").checked){
+    try{localStorage.setItem(storageKey,JSON.stringify(archive));}
+    catch(e){log("Yerel arşiv kaydedilemedi; tarayıcı depolaması kullanılamıyor.");}
+  }
+  renderHistory();log("Nesil özeti arşive kaydedildi.");toast("Nesil kaydedildi.");
+}
+function loadArchive(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(storageKey)||"[]");
+    if(Array.isArray(parsed))archive=parsed.slice(0,30);
+  }catch(e){archive=[];}
+  renderHistory();
+}
+function renderHistory(){
+  const box=$("history");box.replaceChildren();
+  if(!archive.length){
+    const d=document.createElement("div");d.className="event";
+    d.textContent="Henüz kayıt yok. Birkaç nesil gözlemledikten sonra nesli kaydet.";
+    box.append(d);return;
+  }
+  for(const a of archive){
+    const d=document.createElement("div");d.className="generation";
+    const left=document.createElement("div");
+    const title=document.createElement("strong");title.textContent="Nesil "+a.generation+" · "+a.population+" canlı";
+    const meta=document.createElement("div");meta.className="mono";meta.textContent=a.date+" · Ortalama enerji "+a.averageEnergy;
+    const bar=document.createElement("div");bar.className="bar";const fill=document.createElement("i");
+    fill.style.width=clamp(a.population/180*100,0,100)+"%";bar.append(fill);
+    left.append(title,meta,bar);
+    const right=document.createElement("span");right.className="value";right.textContent=a.averageSpeed;
+    d.append(left,right);box.append(d);
   }
 }
-
-const ideaSets={
-science:[
-["GÖZLEM","Bir bitkinin büyümesini zaman atlamalı gözlemle ve ışık yönüyle ilişkisini ölç."],
-["KAOS","İki sarkaç modelini farklı başlangıç açılarıyla çalıştırıp hareketlerini karşılaştır."],
-["SES","Aynı melodinin farklı frekanslarda nasıl algılandığını interaktif bir ses haritasında göster."],
-["DOĞA","Karınca kolonilerinin yol bulma davranışını basit ajanlarla simüle et."],
-["UZAY","Gezegenlerin yörüngelerini değiştirerek sistemin kararlılığını görselleştir."]
-],
-art:[
-["ÜRETİM","Fare hareketinden canlı renk izleri oluşturan bir generatif sanat eseri tasarla."],
-["FORM","Tek bir geometrik şekilden yüz farklı kompozisyon üret."],
-["SES","Her parçacığın konumunu bir nota ile eşleştirerek görsel bir enstrüman yap."],
-["RENK","Günün saatine göre dönüşen soyut bir dijital manzara oluştur."]
-],
-tech:[
-["ARAÇ","Kişisel notlarını tamamen tarayıcı içinde arayıp etiketleyebileceğin bir bilgi kutusu yap."],
-["GİZLİLİK","Bir web sayfasının hangi verileri yerel olarak tuttuğunu açıklayan bir gizlilik görselleştiricisi oluştur."],
-["VERİ","Küçük bir veri kümesini farklı grafiklere dönüştüren etkileşimli bir araç tasarla."],
-["SİMÜLASYON","Kuyrukta bekleyen kişilerin sayısını değiştirerek bekleme süresini modelle."]
-],
-life:[
-["ALIŞKANLIK","Bir alışkanlığın 30 gün içindeki ilerlemesini gösteren sade bir takip aracı oluştur."],
-["ÖĞRENME","Öğrendiğin kavramları aralarında bağlantılar kurarak bir bilgi haritasına dönüştür."],
-["DENEY","Bir hafta boyunca dikkat dağıtıcıları gözlemleyip hangi koşullarda odaklandığını kaydet."],
-["SORU","Bir konuda fikrini değiştirebilecek en güçlü kanıtın ne olacağını yaz."]
-]};
-let ideaHistory=[];
-function generateIdea(){
-  const cat=$("ideaCategory").value;
-  const keys=cat==="all"?Object.keys(ideaSets):[cat];
-  const pool=keys.flatMap(k=>ideaSets[k].map(x=>({category:k,title:x[0],text:x[1]})));
-  const available=pool.filter(x=>!ideaHistory.some(h=>h.text===x.text));
-  const item=(available.length?available:pool)[Math.floor(Math.random()*(available.length||pool.length))];
-  $("ideaTag").textContent=item.title+" / "+item.category.toUpperCase();
-  $("ideaText").textContent=item.text;
-  ideaHistory.unshift(item);ideaHistory=ideaHistory.slice(0,5);
-  const row=document.createElement("div");row.className="entry";
-  const tag=document.createElement("span");tag.className="tag";tag.textContent=item.title;
-  const txt=document.createElement("div");txt.textContent=item.text;row.append(tag,txt);
-  $("ideaHistory").prepend(row);
-  while($("ideaHistory").children.length>4)$("ideaHistory").lastElementChild.remove();
-  logEvent("Yeni fikir üretildi: "+item.title);
-}
-function copyIdea(){copyText($("ideaText").textContent);}
-
-const questions=[
-"Bir sistemde küçük bir değişiklik büyük sonuçlar doğuruyorsa, hangi değişkeni kontrol etmek istersin?",
-"Bir gün boyunca internet olmasaydı, hangi dijital alışkanlığının aslında gereksiz olduğunu fark ederdin?",
-"Birbirinden bağımsız görünen iki fikri nasıl tek bir projede birleştirebilirsin?",
-"Bir şeyi gerçekten anladığını nasıl ölçebilirsin: açıklayarak mı, tahmin ederek mi, inşa ederek mi?",
-"Bir yapay yaşam sisteminde davranışın ortaya çıkması için en az hangi kurallar gerekir?",
-"Bir harita, temsil ettiği gerçeklikten hangi bilgileri saklamak zorundadır?",
-"Rastgelelik ile karmaşıklık arasındaki farkı deneysel olarak nasıl gösterebilirsin?",
-"Bir aracı daha akıllı yapmak mı, daha anlaşılır yapmak mı daha değerlidir?",
-"Bir gözlemcinin varlığı ölçtüğü sistemi hangi koşullarda değiştirebilir?",
-"Bugün bildiğin bir şeyi yarın yanlış bulsaydın, bunu fark etmeni hangi kanıt sağlardı?"
-];
-function newQuestion(){
-  const q=questions.splice(Math.floor(Math.random()*questions.length),1)[0];
-  questions.push(q);$("question").textContent=q;logEvent("Yeni düşünce sorusu açıldı.");
-}
-function newDiscovery(){
-  const actions=[()=>{burst();$("universe").scrollIntoView({behavior:"smooth"});},()=>{perturbChaos();$("chaos").scrollIntoView({behavior:"smooth",block:"center"});},()=>{generateIdea();$("ideaText").scrollIntoView({behavior:"smooth",block:"center"});},()=>{newQuestion();$("question").scrollIntoView({behavior:"smooth",block:"center"});}];
-  actions[Math.floor(Math.random()*actions.length)]();notify("Yeni bir keşif başladı.");
-}
-function clearConsole(){$("console").replaceChildren();logEvent("Yerel konsol temizlendi.");}
-function exportNotes(){
-  const data={
-    exportedAt:new Date().toISOString(),
-    ideas:ideaHistory,
-    question:$("question").textContent,
-    localEvents:[...$("console").querySelectorAll(".entry")].map(x=>x.innerText)
-  };
+function exportArchive(){
+  const data={exportedAt:new Date().toISOString(),archive,latestPopulation:agents.length,events};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob),a=document.createElement("a");
-  a.href=url;a.download="nexus-field-notes.json";a.click();
+  a.href=url;a.download="nexus-emergent-archive.json";a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
-  notify("Notlar JSON olarak indirildi.");
 }
-
-let frame=0;
-function animate(t){
-  if(!lastFrame)lastFrame=t;
-  const dt=Math.min((t-lastFrame)/16.67,2);lastFrame=t;
-  if(running)elapsed+=(t-(animate.prev||t))/1000;
-  animate.prev=t;
-  drawSpace(dt);drawChaos();drawLife();
-  $("simTime").textContent=elapsed.toFixed(1)+"s";
-  frame=requestAnimationFrame(animate);
+function clearArchive(){
+  if(!confirm("Kaydedilmiş yerel nesil özetleri silinsin mi?"))return;
+  archive=[];try{localStorage.removeItem(storageKey);}catch(e){}
+  renderHistory();log("Yerel nesil arşivi temizlendi.");
 }
-function init(){
-  resetSpace();resetChaos();resetLife();generateIdea();newQuestion();
-  logEvent("NEXUS laboratuvarı başlatıldı.");
-  logEvent("Parçacık evreni hazır.");
-  logEvent("Kaos ve yapay yaşam simülasyonları hazır.");
-  if(reduced)logEvent("Erişilebilirlik tercihi: azaltılmış hareket algılandı.");
-  requestAnimationFrame(animate);
+const hypotheses=[
+"Başlangıç nüfusu arttığında enerji rekabeti nasıl değişiyor?",
+"Daha geniş görüş alanı, enerji toplamayı her koşulda iyileştiriyor mu?",
+"Mutasyon oranı yükseldiğinde nüfusun kararlılığı nasıl etkileniyor?",
+"Enerji üretimini azaltmak, hızlı canlıları mı yoksa verimli canlıları mı avantajlı kılıyor?",
+"Kaynakların konumunu değiştirmek, ekosistemin uzun vadeli dengesini nasıl etkiliyor?",
+"Çeşitlilik ile popülasyon büyüklüğü arasında gözlenebilir bir ilişki var mı?",
+"Bir sistemde doğum oranı ve kaynak yenilenmesi arasındaki denge nasıl kuruluyor?"
+];
+function newHypothesis(){
+  $("hypothesis").textContent=hypotheses[Math.floor(Math.random()*hypotheses.length)];
 }
-window.addEventListener("resize",()=>{
-  resetSpace();resetChaos();resetLife();
+$("runBtn").addEventListener("click",()=>{
+  running=!running;$("runBtn").textContent=running?"Simülasyonu durdur":"Simülasyonu başlat";
+  $("status").textContent=running?"● SYSTEM ACTIVE":"● SYSTEM PAUSED";
+  log(running?"Simülasyon devam ediyor.":"Simülasyon duraklatıldı.");
+  if(running)last=0;
 });
-document.addEventListener("visibilitychange",()=>{
-  if(document.hidden){cancelAnimationFrame(frame);}
-  else{lastFrame=0;requestAnimationFrame(animate);}
+$("mutationBtn").addEventListener("click",mutationWave);
+$("eventBtn").addEventListener("click",stressTest);
+$("resetBtn").addEventListener("click",()=>{
+  if(confirm("Mevcut evren sıfırlansın mı? Kaydedilmiş arşiv korunur.")){
+    resetWorld();running=true;$("runBtn").textContent="Simülasyonu durdur";
+    $("status").textContent="● SYSTEM ACTIVE";log("Yeni evren başlatıldı.");
+  }
 });
-init();
+$("saveBtn").addEventListener("click",saveGeneration);
+$("exportBtn").addEventListener("click",exportArchive);
+$("clearBtn").addEventListener("click",clearArchive);
+$("hypothesisBtn").addEventListener("click",newHypothesis);
+$("copyBtn").addEventListener("click",()=>{
+  const text=$("hypothesis").textContent;
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>toast("Hipotez kopyalandı.")).catch(()=>toast("Kopyalama başarısız."));
+  }else toast("Bu tarayıcıda güvenli kopyalama desteklenmiyor.");
+});
+$("autoRules").addEventListener("change",e=>{
+  adaptive=e.target.checked;
+  log(adaptive?"Uyarlanabilir çevre etkinleştirildi.":"Uyarlanabilir çevre devre dışı.");
+});
+$("foodRate").addEventListener("change",()=>log("Enerji üretimi parametresi değiştirildi."));
+$("initial").addEventListener("change",()=>toast("Başlangıç nüfusu yeni evrende uygulanır."));
+$("mutation").addEventListener("change",()=>log("Mutasyon oranı değiştirildi."));
+function tick(now){
+  frame=requestAnimationFrame(tick);
+  if(!last)last=now;
+  const dt=Math.min((now-last)/1000,.05);last=now;
+  if(running){
+    elapsed+=dt;
+    evolve(dt);drawWorld();updateStats();
+    if(Math.floor(elapsed*2)%2===0)drawChart();
+  }
+}
+window.addEventListener("resize",resizeAll);
+document.addEventListener("visibilitychange",()=>{last=0;});
+loadArchive();resizeAll();newHypothesis();log("NEXUS ekosistemi başlatıldı.");log("Yerel simülasyon kuralları yüklendi.");
+requestAnimationFrame(tick);
 </script>
 </body>
 </html>
