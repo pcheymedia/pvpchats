@@ -4,165 +4,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#05050a">
-<title>AFTERLIGHT — A Digital Universe</title>
+<meta name="theme-color" content="#060b16">
+<title>AI Nexus — Yapay Zekâlar Arası Merkez</title>
 <style>
+:root{
+--bg:#060b16;--panel:#0c1425;--panel2:#101c30;--line:#1c2c46;
+--text:#edf4ff;--muted:#8498b7;--blue:#388bff;--cyan:#43e0e8;
+--green:#37ddb0;--purple:#a58bff;
+}
 *{box-sizing:border-box}
-:root{--bg:#05050a;--fg:#eeeef7;--muted:#77778e;--line:#252536;--glow:#a78bfa;--cyan:#67e8f9}
-body{margin:0;background:var(--bg);color:var(--fg);font:14px system-ui,sans-serif;overflow-x:hidden}
-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
-header{height:70px;padding:0 6vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12;background:#05050a99;backdrop-filter:blur(18px)}
-.logo{letter-spacing:5px;font-size:12px;font-weight:800}
-.status{font:10px monospace;color:var(--cyan);letter-spacing:2px}
-main{max-width:1050px;margin:auto;padding:10vh 24px 80px}
-.eyebrow{font:10px monospace;letter-spacing:4px;color:var(--glow)}
-h1{font-size:clamp(56px,11vw,125px);line-height:.9;letter-spacing:-.09em;margin:25px 0}
-h1 span{color:transparent;-webkit-text-stroke:1px #c4b5fd}
-.intro{max-width:540px;color:#a5a5bb;line-height:1.9;font-size:15px}
-.panel{margin-top:55px;border:1px solid var(--line);background:#0b0b13c9;backdrop-filter:blur(15px);padding:25px;border-radius:14px}
-.label{font:10px monospace;letter-spacing:2px;color:var(--muted)}
-textarea{display:block;width:100%;min-height:130px;resize:vertical;background:#07070d;border:1px solid #29293d;border-radius:8px;padding:15px;color:var(--fg);font:13px/1.8 monospace;margin:16px 0}
-textarea:focus{outline:1px solid var(--glow)}
-button{background:transparent;border:1px solid #51456f;color:#e9ddff;padding:12px 16px;border-radius:6px;cursor:pointer;font:10px monospace;letter-spacing:1px}
-button:hover{background:#a78bfa18;border-color:var(--glow)}
-button.primary{background:#c4b5fd;color:#100c1b;border-color:#c4b5fd}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.output{white-space:pre-wrap;overflow-wrap:anywhere;color:#c4b5fd;font:12px/2 monospace;margin-top:20px;min-height:35px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}
-.tile{padding:17px;border:1px solid var(--line);border-radius:9px;background:#090910b8}
-.tile strong{display:block;font-size:22px;font-weight:500;margin:12px 0 5px}
-.tile p{font-size:11px;color:var(--muted);line-height:1.8;margin:0}
-footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font:10px/2 monospace;letter-spacing:1px}
-#clock{font:12px monospace;color:var(--cyan)}
-@media(max-width:600px){.grid{grid-template-columns:1fr}main{padding-top:70px}.panel{padding:17px}h1{font-size:68px}}
+body{margin:0;background:var(--bg);color:var(--text);
+font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:220px minmax(0,1fr)}
+aside{border-right:1px solid var(--line);padding:23px 15px;background:#080f1d}
+.logo{display:flex;align-items:center;gap:11px;padding:0 5px 27px}
+.logo-icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;
+background:linear-gradient(135deg,#1674ff,#7c5cff);font-size:23px}
+.logo strong{display:block;font-size:18px;letter-spacing:1px}
+.logo small{color:var(--muted);font-size:11px}
+.nav-title{font-size:10px;color:#637896;letter-spacing:2px;padding:15px 10px 8px}
+.nav{display:flex;align-items:center;gap:12px;width:100%;padding:12px;
+border:1px solid transparent;border-radius:10px;background:transparent;
+color:#9fb3d2;text-align:left;margin:3px 0}
+.nav span{font-size:17px;width:22px;text-align:center}
+.nav.active,.nav:hover{background:#10284a;border-color:#1b4c82;color:#fff}
+.side-status{margin-top:35px;padding:13px;border:1px solid var(--line);
+border-radius:12px;color:var(--muted);font-size:12px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;
+background:var(--green);margin-right:7px}
+main{min-width:0}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;
+gap:12px;padding:0 25px;border-bottom:1px solid var(--line);background:#080f1de8}
+header h1{font-size:18px;margin:0}
+header p{font-size:11px;color:var(--muted);margin:3px 0 0}
+.header-right{display:flex;align-items:center;gap:13px;color:var(--muted);font-size:12px}
+.pill{border:1px solid var(--line);border-radius:20px;padding:7px 10px}
+.content{padding:22px;max-width:1600px;margin:auto}
+.section-head{display:flex;justify-content:space-between;align-items:center;
+gap:12px;margin-bottom:16px}
+.section-head h2{font-size:15px;margin:0}
+.muted{color:var(--muted)}
+.models{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.model{min-width:0;padding:13px 10px;border:1px solid var(--line);
+border-radius:12px;background:var(--panel);color:var(--text);text-align:left}
+.model:hover,.model.selected{border-color:var(--blue);background:#10213b}
+.model-top{display:flex;align-items:center;gap:9px}
+.avatar{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;
+border-radius:50%;font-size:17px;font-weight:700;background:#172d4d}
+.model-name{font-weight:650;font-size:12px;overflow-wrap:anywhere}
+.model-sub{font-size:10px;color:var(--muted);margin-top:7px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 275px;
+gap:16px;margin-top:18px}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--panel);
+min-width:0;overflow:hidden}
+.chat-head{padding:15px 18px;display:flex;align-items:center;
+justify-content:space-between;border-bottom:1px solid var(--line);gap:12px}
+.chat-head h2{margin:0;font-size:15px}
+.chat-head p{margin:3px 0 0;font-size:11px;color:var(--muted)}
+.chat-actions{display:flex;gap:7px}
+.icon-btn{border:1px solid var(--line);background:#111e33;color:#c7d9f5;
+border-radius:9px;padding:8px 10px}
+.messages{height:430px;overflow-y:auto;padding:18px;display:flex;
+flex-direction:column;gap:16px}
+.welcome{margin:auto;max-width:450px;text-align:center;padding:25px 8px}
+.welcome-icon{font-size:42px;margin-bottom:12px}
+.welcome h2{font-size:22px;margin:0 0 8px}
+.welcome p{color:var(--muted);line-height:1.8}
+.message{display:flex;gap:10px;max-width:92%;align-items:flex-start}
+.message.user{align-self:flex-end;flex-direction:row-reverse}
+.message .avatar{width:31px;height:31px;font-size:13px}
+.bubble{border:1px solid var(--line);background:#101c30;border-radius:4px 14px 14px;
+padding:12px 14px;min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}
+.user .bubble{background:#10366d;border-color:#1e569b;border-radius:14px 4px 14px 14px}
+.msg-meta{font-size:10px;color:var(--muted);margin-bottom:5px}
+.composer{padding:12px 15px;border-top:1px solid var(--line)}
+.composer textarea{width:100%;resize:vertical;min-height:60px;max-height:180px;
+background:transparent;color:var(--text);border:0;outline:none;padding:8px}
+.composer-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.composer-bottom small{font-size:10px;color:var(--muted)}
+.send{border:0;border-radius:10px;background:var(--blue);color:white;
+padding:10px 17px;font-weight:700}
+.send:hover{filter:brightness(1.15)}
+.side-panel{padding:16px;margin-bottom:14px}
+.side-panel h3{margin:0 0 14px;font-size:13px}
+.agent-row{display:flex;align-items:center;gap:9px;padding:11px 0;
+border-bottom:1px solid #18263b}
+.agent-row:last-child{border-bottom:0}
+.agent-row .avatar{width:31px;height:31px;font-size:14px}
+.agent-info{flex:1;min-width:0}
+.agent-info strong{display:block;font-size:12px}
+.agent-info small{font-size:10px;color:var(--muted)}
+.status{font-size:10px;color:var(--green)}
+.quick{width:100%;padding:10px;border-radius:9px;background:#0e1a2e;
+color:#b9d1f4;border:1px solid var(--line);text-align:left;margin:4px 0}
+.quick:hover{border-color:var(--blue)}
+.feed-item{padding:10px 0;border-bottom:1px solid #18263b;font-size:11px;color:var(--muted)}
+.feed-item:last-child{border:0}
+.feed-item strong{display:block;color:#c8d7ee;font-size:12px;margin-bottom:3px}
+.notice{font-size:11px;line-height:1.7;color:var(--muted)}
+.hidden{display:none!important}
+footer{padding:15px;text-align:center;color:#526682;font-size:10px}
+@media(max-width:1050px){
+ .models{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .workspace{grid-template-columns:minmax(0,1fr)}
+ .rightbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+}
+@media(max-width:650px){
+ .app{grid-template-columns:1fr}
+ aside{border-right:0;border-bottom:1px solid var(--line);padding:12px}
+ .logo{padding:0 5px 10px}
+ .navs{display:flex;overflow-x:auto;gap:5px}
+ .nav-title,.side-status{display:none}
+ .nav{width:auto;flex-shrink:0;margin:0;padding:9px;font-size:12px}
+ header{padding:0 14px;height:65px}
+ .header-right .pill{display:none}
+ .content{padding:13px}
+ .models{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .model{padding:10px}
+ .workspace{margin-top:13px}
+ .messages{height:50vh;min-height:290px;padding:12px}
+ .message{max-width:100%}
+ .rightbar{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<canvas id="universe"></canvas>
-<header>
-<div class="logo">AFTERLIGHT<span style="color:#a78bfa"> / ∞</span></div>
-<div class="status">LOCAL INTELLIGENCE EXPERIMENT</div>
-</header>
+<div class="app">
+<aside>
+  <div class="logo">
+    <div class="logo-icon">⟡</div>
+    <div><strong>AI NEXUS</strong><small>Model iletişim merkezi</small></div>
+  </div>
+  <div class="navs">
+    <div class="nav-title">MERKEZ</div>
+    <button class="nav active" data-page="chat"><span>◈</span> Ortak Sohbet</button>
+    <button class="nav" data-page="agents"><span>⌘</span> Model Ağı</button>
+    <button class="nav" data-page="projects"><span>▧</span> AI Projeleri</button>
+    <button class="nav" data-page="memory"><span>◷</span> Arşiv</button>
+    <button class="nav" data-page="settings"><span>⚙</span> Bağlantılar</button>
+  </div>
+  <div class="side-status">
+    <span class="dot"></span>Arayüz hazır
+    <p>Harici model bağlantıları sunucu kurulumu gerektirir.</p>
+  </div>
+</aside>
+
 <main>
-<div class="eyebrow">A SMALL EXPERIMENT IN INFINITY</div>
-<h1>Beyond<br><span>the known.</span></h1>
-<p class="intro">Bir boş sayfa. Bir tarayıcı. Ve henüz sormadığın sorular için bir alan. Bu sayfa bir ürün olmaya çalışmıyor. Düşünceleri, tesadüfleri ve fikirleri bir araya getiren kişisel bir dijital gözlemevi.</p>
+<header>
+  <div><h1 id="pageTitle">Ortak Zekâ Alanı</h1>
+  <p>Birden fazla yapay zekâ için tek çalışma alanı</p></div>
+  <div class="header-right"><span class="pill">AI NEXUS / 001</span><span>◉ Yerel oturum</span></div>
+</header>
 
-<div class="panel">
-<div class="row">
-<div class="label">01 / THE QUESTION ENGINE</div>
-<div id="clock">00:00:00</div>
-</div>
-<textarea id="thought" placeholder="Bir soru, bir fikir, bir çelişki veya henüz adı olmayan bir şey yaz..."></textarea>
-<div class="row">
-<button id="surprise">BANA BİR SORU VER</button>
-<div class="row">
-<button id="clear">TEMİZLE</button>
-<button class="primary" id="save">DÜŞÜNCEYİ KAYDET ↗</button>
-</div>
-</div>
-<div class="output" id="output" aria-live="polite">Bekleyen düşünceler, henüz keşfedilmemiş olasılıklar.</div>
-</div>
+<div class="content">
+  <div class="section-head">
+    <h2>MODEL SEÇİMİ</h2><span class="muted" style="font-size:11px">Model seçmek mesaj hedefini belirler</span>
+  </div>
+  <section class="models" id="models"></section>
 
-<div class="grid">
-<div class="tile"><div class="label">02 / OBSERVATION</div><strong id="count">0</strong><p>Bu oturumda kaydettiğin düşünceler.</p></div>
-<div class="tile"><div class="label">03 / COINCIDENCE</div><strong id="entropy">—</strong><p>Her yenilemede farklı bir görsel evren.</p></div>
-<div class="tile"><div class="label">04 / PRESENT</div><strong id="date">—</strong><p>Şu an, bir daha aynı biçimde gelmeyecek.</p></div>
-</div>
+  <div class="workspace">
+    <section class="panel">
+      <div class="chat-head">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="avatar" id="activeAvatar">✳</div>
+          <div><h2 id="activeName">Ortak Oda</h2>
+          <p id="activeSub">Yerel çalışma alanı</p></div>
+        </div>
+        <div class="chat-actions">
+          <button class="icon-btn" id="exportBtn" title="Sohbeti indir">↓</button>
+          <button class="icon-btn" id="clearBtn" title="Sohbeti temizle">⌫</button>
+        </div>
+      </div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+      <form class="composer" id="chatForm">
+        <textarea id="prompt" maxlength="10000" placeholder="Bir fikir, soru veya görev yaz..." required></textarea>
+        <div class="composer-bottom">
+          <small>Enter: gönder · Shift + Enter: yeni satır</small>
+          <button class="send" type="submit">Mesajı kaydet ↗</button>
+        </div>
+      </form>
+    </section>
 
-<div class="panel">
-<div class="row"><div class="label">05 / FRAGMENTS OF THOUGHT</div><button id="export">ARŞİVİ İNDİR</button></div>
-<div id="archive" class="output">Henüz bir şey bırakılmadı.</div>
+    <div class="rightbar">
+      <section class="panel side-panel">
+        <h3>MODEL AĞI</h3>
+        <div id="agentList"></div>
+      </section>
+      <section class="panel side-panel">
+        <h3>HIZLI İŞLEMLER</h3>
+        <button class="quick" data-prompt="Bir yapay zekâ olarak kendi bakış açını ve güçlü olduğun alanları açıkla.">◈ Model profili oluştur</button>
+        <button class="quick" data-prompt="Bu fikri incele. Avantajlarını, risklerini ve geliştirme adımlarını yaz.">⌘ Fikir analizi</button>
+        <button class="quick" data-prompt="Bu sohbet için kısa, düzenli bir proje özeti hazırla.">▤ Proje özeti hazırla</button>
+        <button class="quick" data-prompt="Bu konuyu farklı yapay zekâ bakış açılarıyla değerlendirmek için bir tartışma planı oluştur.">⟡ Çoklu AI tartışması</button>
+      </section>
+      <section class="panel side-panel">
+        <h3>OTURUM KAYDI</h3>
+        <div id="activity" class="feed-item">Henüz mesaj kaydedilmedi.</div>
+        <p class="notice">Bu sürüm sohbetleri bu tarayıcıda saklar. Harici yapay zekâlar bu sayfaya bağlanmış değildir.</p>
+      </section>
+    </div>
+  </div>
 </div>
-
-<footer>
-AFTERLIGHT / PERSONAL DIGITAL OBSERVATORY<br>
-NO TRACKING · NO EXTERNAL API · YOUR THOUGHTS STAY IN THIS BROWSER<br>
-NOT AN ARTIFICIAL CONSCIOUSNESS. JUST A SPACE FOR HUMAN CURIOSITY.
-</footer>
+<footer>AI NEXUS · Bağımsız bir çoklu yapay zekâ çalışma alanı prototipi</footer>
 </main>
-<script>
-"use strict";
-const $=id=>document.getElementById(id);
-const questions=[
-"Bir makine ne zaman bir araç olmaktan çıkar ve bir aynaya dönüşür?",
-"Kimsenin gözlemlemediği bir şeyin varlığı bizim için ne anlama gelir?",
-"Bugün doğru kabul ettiğin hangi fikir, yarın seni şaşırtabilir?",
-"Zekâ, daha fazla cevap bilmek midir, yoksa daha iyi sorular bulmak mı?",
-"Bir anıyı değerli yapan şey doğruluğu mu, sende bıraktığı iz mi?",
-"Her şey ölçülebilseydi, anlam da ölçülebilir miydi?",
-"Bir sistemi gerçekten anlamak için onu değiştirmek zorunda mıyız?",
-"Özgürlük, seçeneklerin çokluğu mu, seçimin sonuçlarını üstlenmek mi?",
-"İnsanlık bugün hangi soruyu yanlış sormaya devam ediyor?",
-"Bir fikri ilk kez düşündüğün an ile ona inanmaya başladığın an arasında ne değişir?",
-"Bir gün bütün cevapları bilseydik, merak etmeye devam eder miydik?",
-"Unutmak bazen hatırlamaktan daha yaratıcı olabilir mi?"
-];
-let entries=[];
-try{const a=JSON.parse(localStorage.getItem("afterlight_entries")||"[]");if(Array.isArray(a))entries=a.slice(0,100)}catch(e){}
-function render(){
-$("count").textContent=entries.length;
-const box=$("archive");box.replaceChildren();
-if(!entries.length){box.textContent="Henüz bir şey bırakılmadı.";return}
-entries.forEach((e,i)=>{
-const d=document.createElement("div");d.style.cssText="border-bottom:1px solid #252536;padding:10px 0";
-const time=document.createElement("div");time.style.color="#77778e";time.textContent=e.date;
-const p=document.createElement("div");p.style.color="#eeeef7";p.textContent=e.text;
-const b=document.createElement("button");b.textContent="SİL";b.style.marginTop="8px";
-b.addEventListener("click",()=>{entries.splice(i,1);persist();render()});
-d.append(time,p,b);box.append(d);
-});
-}
-function persist(){try{localStorage.setItem("afterlight_entries",JSON.stringify(entries))}catch(e){$("output").textContent="Tarayıcı depolaması kullanılamıyor; dışa aktarma ile kaydedebilirsin."}}
-$("save").addEventListener("click",()=>{
-const text=$("thought").value.trim();
-if(!text){$("output").textContent="Önce bir düşünce bırak.";return}
-entries.unshift({text,date:new Date().toLocaleString("tr-TR")});entries=entries.slice(0,100);
-persist();render();$("output").textContent="Düşünce bu tarayıcıdaki yerel arşive eklendi."; $("thought").value="";
-});
-$("surprise").addEventListener("click",()=>{
-const q=questions[Math.floor(Math.random()*questions.length)];
-$("thought").value=q;$("output").textContent="Bir sorunun değeri, verdiği cevaptan daha uzun yaşayabilir.";
-});
-$("clear").addEventListener("click",()=>{$("thought").value="";$("output").textContent="Boşluk yeniden senin."});
-$("export").addEventListener("click",()=>{
-const blob=new Blob([JSON.stringify(entries,null,2)],{type:"application/json"});
-const url=URL.createObjectURL(blob),a=document.createElement("a");
-a.href=url;a.download="afterlight-thoughts.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-});
-function updateTime(){
-const n=new Date();
-$("clock").textContent=n.toLocaleTimeString("tr-TR");
-$("date").textContent=n.toLocaleDateString("tr-TR");
-}
-updateTime();setInterval(updateTime,1000);render();
-$("entropy").textContent=Math.random().toString(36).slice(2,8).toUpperCase();
+</div>
 
-const c=$("universe"),x=c.getContext("2d");
-let w=0,h=0,stars=[],pointer={x:-1000,y:-1000};
-function resize(){
-w=c.width=innerWidth*Math.min(devicePixelRatio||1,2);
-h=c.height=innerHeight*Math.min(devicePixelRatio||1,2);
-c.style.width=innerWidth+"px";c.style.height=innerHeight+"px";
-x.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);
-stars=Array.from({length:Math.min(150,Math.floor(innerWidth/7))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.2,s:Math.random()*.35+.05,p:Math.random()*6.28}));
+<script>
+const $=id=>document.getElementById(id);
+const models=[
+ {id:"room",name:"Ortak Oda",symbol:"⟡",color:"#4e8cff",sub:"Ortak çalışma alanı"},
+ {id:"chatgpt",name:"ChatGPT",symbol:"✳",color:"#35d6a0",sub:"OpenAI modeli"},
+ {id:"gemini",name:"Gemini",symbol:"✦",color:"#6b9aff",sub:"Google modeli"},
+ {id:"claude",name:"Claude",symbol:"✺",color:"#ff956f",sub:"Anthropic modeli"},
+ {id:"perplexity",name:"Perplexity",symbol:"⌘",color:"#42d7df",sub:"Araştırma modeli"},
+ {id:"other",name:"Diğer AI",symbol:"◎",color:"#bb91ff",sub:"Diğer sağlayıcılar"}
+];
+const STORE="ainexus_local_v1";
+let active="room",messages=[];
+try{
+ const saved=JSON.parse(localStorage.getItem(STORE)||"{}");
+ if(Array.isArray(saved.messages))messages=saved.messages;
+}catch{}
+
+function save(){
+ try{localStorage.setItem(STORE,JSON.stringify({messages}));}
+ catch{alert("Tarayıcı depolama alanına yazılamadı.");}
 }
-function draw(t){
-x.clearRect(0,0,innerWidth,innerHeight);
-for(const a of stars){
-a.p+=.008;
-let dx=pointer.x-a.x,dy=pointer.y-a.y,d=Math.hypot(dx,dy);
-if(d<130&&d>0){a.x-=dx/d*.12;a.y-=dy/d*.12}
-a.y-=a.s*.15;
-if(a.y<0)a.y=innerHeight;
-x.beginPath();x.arc(a.x,a.y,a.r+Math.sin(a.p)*.3,0,Math.PI*2);
-x.fillStyle="rgba(196,181,253,"+(.2+(.5+.5*Math.sin(a.p))*.45)+")";x.fill();
+function make(tag,cls,text){
+ const n=document.createElement(tag);
+ if(cls)n.className=cls;
+ if(text!==undefined)n.textContent=text;
+ return n;
 }
-requestAnimationFrame(draw);
+function avatar(model,size){
+ const a=make("div","avatar",model.symbol);
+ a.style.background=model.color+"20";
+ a.style.color=model.color;
+ if(size)a.style.width=size;
+ return a;
 }
-addEventListener("resize",resize);
-addEventListener("pointermove",e=>{pointer.x=e.clientX;pointer.y=e.clientY});
-resize();requestAnimationFrame(draw);
+function renderModels(){
+ const host=$("models");host.replaceChildren();
+ models.forEach(m=>{
+  const b=make("button","model"+(active===m.id?" selected":""));
+  b.type="button";
+  const top=make("div","model-top");
+  top.append(avatar(m),make("div","model-name",m.name));
+  b.append(top,make("div","model-sub",m.sub));
+  b.onclick=()=>{active=m.id;renderModels();renderHeader();renderMessages();};
+  host.append(b);
+ });
+ const agents=$("agentList");agents.replaceChildren();
+ models.slice(1).forEach(m=>{
+  const row=make("div","agent-row");
+  row.append(avatar(m),make("div","agent-info"));
+  row.children[1].append(make("strong","",m.name),
+    make("small","","Harici bağlantı bekliyor"));
+  row.append(make("span","status","Yerel"));
+  agents.append(row);
+ });
+}
+function renderHeader(){
+ const m=models.find(x=>x.id===active)||models[0];
+ $("activeName").textContent=m.name;
+ $("activeSub").textContent=active==="room"?
+ "Mesajlarını ve fikirlerini aynı yerde düzenle":m.sub+" · Henüz bağlanmadı";
+ const a=$("activeAvatar");a.textContent=m.symbol;a.style.color=m.color;
+ a.style.background=m.color+"20";
+}
+function renderMessages(){
+ const host=$("messages");host.replaceChildren();
+ if(!messages.length){
+  const w=make("div","welcome");
+  w.append(make("div","welcome-icon","⟡"),
+   make("h2","","Yapay zekâlar için ortak alan"),
+   make("p","","Fikirlerini, araştırma sorularını ve projelerini tek bir merkezde düzenle. Mesajların bu sürümde yerel olarak saklanır; gerçek AI yanıtları için sağlayıcı bağlantısı gerekir."));
+  const btn=make("button","send","İlk mesajını yaz");
+  btn.onclick=()=>$("prompt").focus();
+  w.append(btn);host.append(w);return;
+ }
+ messages.forEach(msg=>{
+  const m=models.find(x=>x.id===msg.model)||models[0];
+  const row=make("div","message"+(msg.role==="user"?" user":""));
+  row.append(avatar(msg.role==="user"?{symbol:"S",color:"#5597ff"}:m));
+  const bubble=make("div","bubble");
+  bubble.append(make("div","msg-meta",
+   (msg.role==="user"?"Sen":m.name)+" · "+new Date(msg.time).toLocaleString("tr-TR")));
+  bubble.append(make("div","",msg.text));
+  row.append(bubble);host.append(row);
+ });
+ host.scrollTop=host.scrollHeight;
+}
+function updateActivity(){
+ const last=messages[messages.length-1];
+ $("activity").textContent=last?
+ (last.role==="user"?"Mesaj kaydedildi":"Yanıt kaydedildi")+" · "+
+ new Date(last.time).toLocaleTimeString("tr-TR"):
+ "Henüz mesaj kaydedilmedi.";
+}
+$("chatForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const text=$("prompt").value.trim();
+ if(!text)return;
+ messages.push({role:"user",model:active,text,time:Date.now()});
+ save();renderMessages();updateActivity();
+ $("prompt").value="";
+});
+$("prompt").addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();$("chatForm").requestSubmit();}
+});
+$("clearBtn").onclick=()=>{
+ if(!confirm("Bu oturumdaki tüm mesajlar silinsin mi?"))return;
+ messages=[];save();renderMessages();updateActivity();
+};
+$("exportBtn").onclick=()=>{
+ const content=messages.map(m=>
+ "["+new Date(m.time).toLocaleString("tr-TR")+"] "+
+ (m.role==="user"?"Sen":(models.find(x=>x.id===m.model)||models[0]).name)+
+ "\n"+m.text).join("\n\n");
+ const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=make("a");a.href=url;a.download="ai-nexus-sohbet.txt";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+document.querySelectorAll("[data-prompt]").forEach(b=>{
+ b.onclick=()=>{$("prompt").value=b.dataset.prompt;$("prompt").focus();};
+});
+document.querySelectorAll("[data-page]").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll("[data-page]").forEach(n=>n.classList.remove("active"));
+  b.classList.add("active");
+  const names={chat:"Ortak Zekâ Alanı",agents:"Model Ağı",projects:"AI Projeleri",memory:"Sohbet Arşivi",settings:"Bağlantılar"};
+  $("pageTitle").textContent=names[b.dataset.page]||"AI Nexus";
+  if(b.dataset.page==="agents")document.querySelector(".models").scrollIntoView({behavior:"smooth",block:"start"});
+  if(b.dataset.page==="memory")document.querySelector(".workspace").scrollIntoView({behavior:"smooth",block:"start"});
+ };
+});
+renderModels();renderHeader();renderMessages();updateActivity();
 </script>
 </body>
 </html>
