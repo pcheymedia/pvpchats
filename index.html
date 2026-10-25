@@ -4,103 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OSINT & Fingerprint Lab</title>
-    <!-- Tailwind CSS (Modern Tasarım İçin) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { 
-            background-color: #0f172a; /* Koyu Slate Arka Plan */
-            color: #10b981; /* Zümrüt Yeşili Yazılar */
-            font-family: 'Courier New', Courier, monospace; 
+        body { background-color: #050505; color: #10b981; font-family: 'Courier New', Courier, monospace; }
+        .glass-panel { background: rgba(10, 15, 20, 0.85); border: 1px solid #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); backdrop-filter: blur(10px); }
+        .scan-line { width: 100%; height: 2px; background: #00ff88; opacity: 0.5; position: absolute; top: 0; left: 0; animation: scan 3s linear infinite; box-shadow: 0 0 10px #00ff88; z-index: 10; pointer-events: none; }
+        @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        .data-row { opacity: 0; animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 3px; }
+        .glitch-text { animation: glitch 2s infinite; }
+        @keyframes glitch {
+            0% { text-shadow: 1px 0 0 red, -1px 0 0 blue; }
+            5% { text-shadow: -1px 0 0 red, 1px 0 0 blue; }
+            10% { text-shadow: 0 0 0 transparent; }
+            100% { text-shadow: 0 0 0 transparent; }
         }
-        .glass-panel { 
-            background: rgba(15, 23, 42, 0.8); 
-            border: 1px solid #10b981; 
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15); 
-        }
-        /* Özel Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
+<body class="p-4 md:p-8 min-h-screen relative">
     
-    <!-- Üst Başlık (Header) -->
-    <header class="mb-8 border-b border-emerald-500/50 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <header class="mb-8 border-b border-[#00ff88]/30 pb-4 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
         <div>
-            <h1 class="text-2xl md:text-3xl font-bold tracking-widest text-white shadow-emerald-500/50 drop-shadow-md">
-                [ V1.0 ] OSINT_LAB
+            <h1 class="text-3xl font-bold tracking-widest text-[#00ff88] glitch-text">
+                [ V2.0_NEXUS ] OSINT_LAB
             </h1>
-            <p class="text-xs text-gray-400 mt-1">Gelişmiş Parmak İzi Analizi ve Veri Sızıntısı Tarayıcısı</p>
+            <p class="text-xs text-gray-400 mt-1">> ADVANCED TELEMETRY & BREACH SCANNER</p>
         </div>
-        <div class="flex items-center gap-2 border border-red-500/30 bg-red-500/10 px-4 py-2 rounded">
-            <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span class="text-sm text-red-400 font-bold tracking-wider">SİSTEM AKTİF</span>
+        <div class="flex items-center gap-3 border border-[#00ff88]/50 bg-[#00ff88]/10 px-4 py-2 rounded">
+            <div class="w-3 h-3 bg-[#00ff88] rounded-full animate-pulse shadow-[0_0_10px_#00ff88]"></div>
+            <span class="text-sm text-[#00ff88] font-bold tracking-wider">SECURE CONNECTION</span>
         </div>
     </header>
 
-    <!-- Ana Panel Izgarası -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
         
-        <!-- SOL PANEL: Cihaz Parmak İzi (Fingerprint) -->
-        <div class="glass-panel p-6 rounded-lg relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-2 opacity-20">
-                <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-            </div>
-            <h2 class="text-xl font-semibold mb-6 border-b border-emerald-500/30 pb-2 text-white">
-                > TARGET_FINGERPRINT
+        <div class="glass-panel p-6 rounded-lg relative overflow-hidden min-h-[500px]">
+            <div class="scan-line hidden" id="scanner-line"></div>
+            <h2 class="text-xl font-bold mb-4 border-b border-[#00ff88]/30 pb-2 text-white flex justify-between">
+                <span>> TARGET_FINGERPRINT</span>
+                <span id="scan-status" class="text-sm text-yellow-500 animate-pulse">INITIATING...</span>
             </h2>
             
-            <!-- Aşama 3'te burayı gerçek verilerle dolduracağız -->
-            <div id="fingerprint-data" class="space-y-3 text-sm text-emerald-300">
-                <p class="animate-pulse">> Modüller yükleniyor...</p>
-                <p class="text-gray-500">> Ağ analizi başlatılıyor...</p>
-                <p class="text-gray-500">> Donanım sızıntıları taranıyor...</p>
+            <div id="fingerprint-data" class="space-y-2 text-sm text-[#00ff88] font-mono mt-4">
             </div>
+            
+            <canvas id="hidden-canvas" style="display:none;"></canvas>
         </div>
 
-        <!-- SAĞ PANEL: Derin Sorgulama (OSINT) -->
-        <div class="glass-panel p-6 rounded-lg">
-            <h2 class="text-xl font-semibold mb-6 border-b border-emerald-500/30 pb-2 text-white">
-                > OSINT_QUERY_MODULE
+        <div class="glass-panel p-6 rounded-lg min-h-[500px] flex flex-col">
+            <h2 class="text-xl font-bold mb-6 border-b border-[#00ff88]/30 pb-2 text-white">
+                > DEEP_OSINT_QUERY
             </h2>
             
             <div class="mb-4">
-                <label class="block text-sm mb-2 text-gray-300">> Hedef E-posta veya Telefon No:</label>
-                <input type="text" id="osint-input" placeholder="örnek: target@email.com veya 555..." 
-                    class="w-full bg-slate-900 border border-emerald-500/50 text-emerald-400 p-3 rounded focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all placeholder-emerald-800">
+                <input type="text" id="osint-input" placeholder="> target@email.com / +905..." 
+                    class="w-full bg-[#0a0f14] border border-[#00ff88]/50 text-[#00ff88] p-4 rounded focus:outline-none focus:border-[#00ff88] focus:ring-1 focus:ring-[#00ff88] transition-all placeholder-[#00ff88]/30 font-mono text-lg shadow-[inset_0_0_10px_rgba(0,255,136,0.1)]">
             </div>
             
-            <button onclick="startTargetScan()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-900 font-bold py-3 px-4 rounded transition-colors shadow-[0_0_10px_rgba(16,185,129,0.4)] hover:shadow-[0_0_20px_rgba(16,185,129,0.6)]">
-                [ VERİ TABANLARINI TARA ]
-            </button>
-            
-            <!-- Sonuç Ekranı (İlk başta gizli) -->
-            <div id="osint-results" class="mt-6 p-4 bg-slate-900 border border-emerald-800 rounded hidden font-mono text-sm">
-                <!-- Aşama 4'te buraya API sonuçları gelecek -->
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Geçici Test Scripti (UI Tepkilerini görmek için) -->
-    <script>
-        function startTargetScan() {
-            const input = document.getElementById('osint-input').value;
-            const results = document.getElementById('osint-results');
-            
-            if(!input) {
-                alert('[!] HATA: Geçerli bir hedef belirtilmedi.');
-                return;
-            }
-            
-            results.classList.remove('hidden');
-            results.innerHTML = `
-                <div class="text-yellow-400 animate-pulse mb-2">> Hedef kilitlendi: [${input}]</div>
-                <div class="text-gray-400">> Küresel sızıntı veri tabanları ile bağlantı kuruluyor...</div>
-                <div class="text-gray-400">> Operatör & İhlal (Breach) kayıtları taranıyor... (Modül Bekleniyor)</div>
-            `;
-        }
-    </script>
-</body>
-</html>
+            <button onclick="startTargetScan()" class="w-full
