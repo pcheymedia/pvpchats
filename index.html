@@ -3,479 +3,166 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#070910">
-<title>NEXUS // EMERGENT LIFE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#05050a">
+<title>AFTERLIGHT — A Digital Universe</title>
 <style>
-:root{color-scheme:dark;--bg:#070910;--panel:#101522;--line:#273147;--text:#edf3ff;--muted:#8b97ad;--green:#4df0bb;--purple:#a18bff;--red:#ff6688}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
-button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-header{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px max(16px,calc((100% - 1180px)/2));background:#080b13ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.brand{font-weight:900;letter-spacing:2px;font-size:18px}.brand span{color:var(--green)}
-.mono{font:10px ui-monospace,monospace;letter-spacing:1px;color:var(--muted)}
-.status{color:var(--green);font:10px monospace;border:1px solid #4df0bb55;border-radius:20px;padding:8px}
-main{max-width:1180px;margin:auto;padding:22px 16px 50px}
-.hero{padding:clamp(25px,5vw,48px);border:1px solid var(--line);border-radius:16px;background:radial-gradient(ellipse at 85% 15%,#32235a,transparent 42%),linear-gradient(130deg,#12192b,#090b12)}
-h1{font-size:clamp(35px,7vw,66px);line-height:1.03;letter-spacing:-2.5px;margin:16px 0}
-h1 span{color:var(--green)}
-p{color:var(--muted);line-height:1.8}
-.eyebrow{font:10px monospace;letter-spacing:3px;color:var(--green)}
-.actions,.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
-.btn{padding:10px 13px;border-radius:7px;border:1px solid var(--line);background:#192033;color:var(--text)}
-.btn.primary{background:var(--green);border-color:var(--green);color:#06120e;font-weight:800}
-.btn.danger{color:#ff92a8;border-color:#ff668855}
-.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:14px 0}
-.metric,.panel{border:1px solid var(--line);background:var(--panel);border-radius:11px}
-.metric{padding:14px;min-width:0}.metric strong{display:block;font-size:24px;margin-top:8px;overflow-wrap:anywhere}
-.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:13px}
-.panel{padding:16px;margin-bottom:13px;min-width:0}
-.heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}
-.heading h2{font-size:13px;margin:0;letter-spacing:.4px}
-canvas{display:block;width:100%;height:390px;border:1px solid #252f44;background:#080b13;border-radius:8px}
-.smallcanvas{height:160px}
-label{font:10px monospace;color:var(--muted)}
-input[type=range]{width:100px;accent-color:var(--green);vertical-align:middle}
-input[type=checkbox]{accent-color:var(--green)}
-.statrow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #222b3b}
-.statrow:last-child{border-bottom:0}
-.value{font-family:ui-monospace,monospace;color:var(--green)}
-.note{font-size:12px;line-height:1.8}
-.feed{display:grid;gap:7px;max-height:260px;overflow:auto}
-.event{padding:10px;background:#0b101b;border:1px solid #242d40;border-radius:7px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
-.event time{display:block;font:10px monospace;color:var(--green);margin-bottom:3px}
-.history{display:grid;gap:7px}
-.generation{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px;background:#0b101b;border:1px solid #242d40;border-radius:7px}
-.bar{height:4px;background:#252d40;border-radius:4px;overflow:hidden;margin-top:7px}
-.bar i{display:block;height:100%;background:var(--green)}
-footer{border-top:1px solid var(--line);padding-top:16px;font-size:11px;line-height:1.9;color:var(--muted)}
-#toast{position:fixed;bottom:16px;left:50%;transform:translate(-50%,10px);opacity:0;pointer-events:none;background:#172237;border:1px solid #4df0bb55;padding:11px 14px;border-radius:8px;z-index:10;transition:.2s}
-#toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}.metric:last-child{grid-column:span 2}header{padding:12px}.hero h1{letter-spacing:-1.5px}canvas{height:320px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+:root{--bg:#05050a;--fg:#eeeef7;--muted:#77778e;--line:#252536;--glow:#a78bfa;--cyan:#67e8f9}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px system-ui,sans-serif;overflow-x:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
+header{height:70px;padding:0 6vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12;background:#05050a99;backdrop-filter:blur(18px)}
+.logo{letter-spacing:5px;font-size:12px;font-weight:800}
+.status{font:10px monospace;color:var(--cyan);letter-spacing:2px}
+main{max-width:1050px;margin:auto;padding:10vh 24px 80px}
+.eyebrow{font:10px monospace;letter-spacing:4px;color:var(--glow)}
+h1{font-size:clamp(56px,11vw,125px);line-height:.9;letter-spacing:-.09em;margin:25px 0}
+h1 span{color:transparent;-webkit-text-stroke:1px #c4b5fd}
+.intro{max-width:540px;color:#a5a5bb;line-height:1.9;font-size:15px}
+.panel{margin-top:55px;border:1px solid var(--line);background:#0b0b13c9;backdrop-filter:blur(15px);padding:25px;border-radius:14px}
+.label{font:10px monospace;letter-spacing:2px;color:var(--muted)}
+textarea{display:block;width:100%;min-height:130px;resize:vertical;background:#07070d;border:1px solid #29293d;border-radius:8px;padding:15px;color:var(--fg);font:13px/1.8 monospace;margin:16px 0}
+textarea:focus{outline:1px solid var(--glow)}
+button{background:transparent;border:1px solid #51456f;color:#e9ddff;padding:12px 16px;border-radius:6px;cursor:pointer;font:10px monospace;letter-spacing:1px}
+button:hover{background:#a78bfa18;border-color:var(--glow)}
+button.primary{background:#c4b5fd;color:#100c1b;border-color:#c4b5fd}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;color:#c4b5fd;font:12px/2 monospace;margin-top:20px;min-height:35px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}
+.tile{padding:17px;border:1px solid var(--line);border-radius:9px;background:#090910b8}
+.tile strong{display:block;font-size:22px;font-weight:500;margin:12px 0 5px}
+.tile p{font-size:11px;color:var(--muted);line-height:1.8;margin:0}
+footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font:10px/2 monospace;letter-spacing:1px}
+#clock{font:12px monospace;color:var(--cyan)}
+@media(max-width:600px){.grid{grid-template-columns:1fr}main{padding-top:70px}.panel{padding:17px}h1{font-size:68px}}
 </style>
 </head>
 <body>
+<canvas id="universe"></canvas>
 <header>
-  <div><div class="brand">NEXUS <span>// EMERGENT</span></div><div class="mono">ARTIFICIAL LIFE EXPERIMENT</div></div>
-  <div id="status" class="status">● SYSTEM ACTIVE</div>
+<div class="logo">AFTERLIGHT<span style="color:#a78bfa"> / ∞</span></div>
+<div class="status">LOCAL INTELLIGENCE EXPERIMENT</div>
 </header>
-
 <main>
-<section class="hero">
-  <div class="eyebrow">EXPERIMENT 002 · SELF-ORGANIZING SYSTEMS</div>
-  <h1>Life finds<br><span>a way.</span></h1>
-  <p>Bu evrende her canlı bir kurallar kümesidir. Enerji toplar, hareket eder, çoğalır, değişir ve çevresine tepki verir. Sen koşulları değiştir; ortaya çıkan davranışları izle.</p>
-  <div class="actions">
-    <button class="btn primary" id="runBtn">Simülasyonu durdur</button>
-    <button class="btn" id="mutationBtn">Mutasyon dalgası</button>
-    <button class="btn" id="eventBtn">Ekosistemi sına</button>
-    <button class="btn danger" id="resetBtn">Yeni evren</button>
-  </div>
-</section>
+<div class="eyebrow">A SMALL EXPERIMENT IN INFINITY</div>
+<h1>Beyond<br><span>the known.</span></h1>
+<p class="intro">Bir boş sayfa. Bir tarayıcı. Ve henüz sormadığın sorular için bir alan. Bu sayfa bir ürün olmaya çalışmıyor. Düşünceleri, tesadüfleri ve fikirleri bir araya getiren kişisel bir dijital gözlemevi.</p>
 
-<section class="metrics">
-  <div class="metric"><div class="mono">CANLI</div><strong id="population">0</strong></div>
-  <div class="metric"><div class="mono">NESİL</div><strong id="generation">0</strong></div>
-  <div class="metric"><div class="mono">TOPLAM DOĞUM</div><strong id="births">0</strong></div>
-  <div class="metric"><div class="mono">ENERJİ</div><strong id="energy">0</strong></div>
-  <div class="metric"><div class="mono">GEÇEN SÜRE</div><strong id="time">0s</strong></div>
-</section>
-
-<div class="grid">
-<section class="panel">
-  <div class="heading"><h2>01 / LIVING WORLD</h2><span class="mono">REAL-TIME</span></div>
-  <canvas id="world" aria-label="Canlıların ve enerji kaynaklarının simülasyonu"></canvas>
-  <div class="controls">
-    <label>BAŞLANGIÇ NÜFUSU <input id="initial" type="range" min="8" max="65" value="28"></label>
-    <label>ENERJİ ÜRETİMİ <input id="foodRate" type="range" min="1" max="12" value="5"></label>
-    <label>MUTASYON <input id="mutation" type="range" min="0" max="100" value="18"></label>
-  </div>
-  <p class="note">Yeşil noktalar enerji kaynaklarıdır. Canlılar yakın kaynaklara yönelir. Mor ve turuncu tonlar farklı davranış özelliklerini gösterir. Tuvale dokunarak veya tıklayarak yeni enerji kaynağı ekleyebilirsin.</p>
-</section>
-
-<div>
-<section class="panel">
-  <div class="heading"><h2>02 / EVOLUTION METRICS</h2><span class="mono">OBSERVATION</span></div>
-  <div class="statrow"><span>Ortalama hız</span><span id="speed" class="value">—</span></div>
-  <div class="statrow"><span>Ortalama görüş</span><span id="vision" class="value">—</span></div>
-  <div class="statrow"><span>Ortalama enerji</span><span id="avgEnergy" class="value">—</span></div>
-  <div class="statrow"><span>Çeşitlilik</span><span id="diversity" class="value">—</span></div>
-  <div class="statrow"><span>Son olay</span><span id="lastEvent" class="value">Başlangıç</span></div>
-</section>
-<section class="panel">
-  <div class="heading"><h2>03 / POPULATION HISTORY</h2><span class="mono">LAST 100 SAMPLES</span></div>
-  <canvas id="chart" class="smallcanvas" aria-label="Nüfus değişim grafiği"></canvas>
-  <div class="controls">
-    <label><input type="checkbox" id="autoRules" checked> Uyarlanabilir çevre</label>
-    <label><input type="checkbox" id="persist" checked> Oturum özeti</label>
-  </div>
-  <p class="note">Uyarlanabilir çevre, nüfus yükseldiğinde enerji üretimini ve koşulları değiştirir. Bu, önceden belirlenmiş kurallarla çalışan bir geri bildirim mekanizmasıdır.</p>
-</section>
+<div class="panel">
+<div class="row">
+<div class="label">01 / THE QUESTION ENGINE</div>
+<div id="clock">00:00:00</div>
+</div>
+<textarea id="thought" placeholder="Bir soru, bir fikir, bir çelişki veya henüz adı olmayan bir şey yaz..."></textarea>
+<div class="row">
+<button id="surprise">BANA BİR SORU VER</button>
+<div class="row">
+<button id="clear">TEMİZLE</button>
+<button class="primary" id="save">DÜŞÜNCEYİ KAYDET ↗</button>
+</div>
+</div>
+<div class="output" id="output" aria-live="polite">Bekleyen düşünceler, henüz keşfedilmemiş olasılıklar.</div>
 </div>
 
-<section class="panel">
-  <div class="heading"><h2>04 / GENERATION ARCHIVE</h2><span class="mono">LOCAL MEMORY</span></div>
-  <div id="history" class="history"></div>
-  <div class="controls">
-    <button class="btn" id="saveBtn">Nesli kaydet</button>
-    <button class="btn" id="exportBtn">Arşivi indir</button>
-    <button class="btn" id="clearBtn">Arşivi temizle</button>
-  </div>
-  <p class="note">Arşiv, tarayıcının yerel depolamasında saklanır. Yalnızca bu sayfanın oluşturduğu simülasyon özetlerini içerir; kişisel veriler veya internetten toplanmış bilgiler içermez.</p>
-</section>
+<div class="grid">
+<div class="tile"><div class="label">02 / OBSERVATION</div><strong id="count">0</strong><p>Bu oturumda kaydettiğin düşünceler.</p></div>
+<div class="tile"><div class="label">03 / COINCIDENCE</div><strong id="entropy">—</strong><p>Her yenilemede farklı bir görsel evren.</p></div>
+<div class="tile"><div class="label">04 / PRESENT</div><strong id="date">—</strong><p>Şu an, bir daha aynı biçimde gelmeyecek.</p></div>
+</div>
 
-<section class="panel">
-  <div class="heading"><h2>05 / EVENT STREAM</h2><span class="mono">SIMULATION LOG</span></div>
-  <div id="feed" class="feed" aria-live="polite"></div>
-</section>
-
-<section class="panel">
-  <div class="heading"><h2>06 / EXPERIMENT NOTES</h2><span class="mono">HYPOTHESIS ENGINE</span></div>
-  <p id="hypothesis">Nüfusun enerji kaynaklarıyla ilişkisini gözlemle.</p>
-  <div class="controls">
-    <button class="btn primary" id="hypothesisBtn">Yeni hipotez</button>
-    <button class="btn" id="copyBtn">Hipotezi kopyala</button>
-  </div>
-</section>
+<div class="panel">
+<div class="row"><div class="label">05 / FRAGMENTS OF THOUGHT</div><button id="export">ARŞİVİ İNDİR</button></div>
+<div id="archive" class="output">Henüz bir şey bırakılmadı.</div>
 </div>
 
 <footer>
-NEXUS // EMERGENT LIFE · Tarayıcı içi yapay yaşam simülasyonu.<br>
-Sistem kendi içinde sınırlı kuralları değiştirir; bağımsız bilinç veya genel amaçlı öğrenen bir yapay zekâ değildir. Ağ isteği göndermez. Yerel depolama tarayıcı ayarlarından silinebilir.
+AFTERLIGHT / PERSONAL DIGITAL OBSERVATORY<br>
+NO TRACKING · NO EXTERNAL API · YOUR THOUGHTS STAY IN THIS BROWSER<br>
+NOT AN ARTIFICIAL CONSCIOUSNESS. JUST A SPACE FOR HUMAN CURIOSITY.
 </footer>
 </main>
-<div id="toast" role="status" aria-live="polite"></div>
-
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const canvas=$("world"),ctx=canvas.getContext("2d");
-const chart=$("chart"),gctx=chart.getContext("2d");
-let W=0,H=0,running=true,last=0,elapsed=0,frame=0,food=[],agents=[],samples=[],events=[],archive=[];
-let births=0,deaths=0,generation=1,nextId=1,foodClock=0,eventClock=0,saveClock=0;
-let adaptive=true,started=false;
-const rnd=(a,b)=>a+Math.random()*(b-a);
-const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-const colors=["#4df0bb","#a18bff","#ffad66","#75b8ff","#ff6688"];
-const storageKey="nexus_emergent_archive_v1";
-
-function toast(s){
-  $("toast").textContent=s;$("toast").classList.add("show");
-  clearTimeout(toast.timer);toast.timer=setTimeout(()=>$("toast").classList.remove("show"),2100);
-}
-function log(s){
-  const e={time:new Date().toLocaleTimeString("tr-TR"),message:s};
-  events.unshift(e);events=events.slice(0,14);renderEvents();
-  $("lastEvent").textContent=s.length>22?s.slice(0,19)+"…":s;
-}
-function renderEvents(){
-  const box=$("feed");box.replaceChildren();
-  for(const e of events){
-    const d=document.createElement("div");d.className="event";
-    const t=document.createElement("time");t.textContent=e.time;
-    const m=document.createElement("div");m.textContent=e.message;
-    d.append(t,m);box.append(d);
-  }
-}
-function resize(c,context){
-  const r=c.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
-  c.width=Math.max(1,Math.round(r.width*dpr));c.height=Math.max(1,Math.round(r.height*dpr));
-  context.setTransform(dpr,0,0,dpr,0,0);return{w:r.width,h:r.height};
-}
-function resizeAll(){
-  const oldW=W,oldH=H;
-  const d=resize(canvas,ctx);W=d.w;H=d.h;
-  resize(chart,gctx);
-  if(oldW>0&&oldH>0){
-    for(const a of agents){a.x=a.x/oldW*W;a.y=a.y/oldH*H;}
-    for(const f of food){f.x=f.x/oldW*W;f.y=f.y/oldH*H;}
-  }
-  if(!started)resetWorld(false);
-}
-function newFood(x=rnd(8,W-8),y=rnd(8,H-8),energy=rnd(20,42)){
-  food.push({x,y,energy,r:rnd(2.2,3.5)});
-}
-function newAgent(parent=null){
-  const a={
-    id:nextId++,x:parent?parent.x+rnd(-9,9):rnd(5,W-5),y:parent?parent.y+rnd(-9,9):rnd(5,H-5),
-    angle:rnd(0,Math.PI*2),
-    speed:clamp((parent?parent.speed:rnd(.7,1.7))+rnd(-.12,.12),.4,2.5),
-    vision:clamp((parent?parent.vision:rnd(35,100))+rnd(-8,8),20,145),
-    efficiency:clamp((parent?parent.efficiency:rnd(.65,1.4))+rnd(-.1,.1),.4,1.8),
-    energy:parent?parent.energy*.42:rnd(35,65),
-    age:0,color:parent?parent.color:colors[Math.floor(Math.random()*colors.length)]
-  };
-  return a;
-}
-function resetWorld(write=true){
-  const d=resize(canvas,ctx);W=d.w;H=d.h;
-  agents=[];food=[];samples=[];births=0;deaths=0;generation=1;nextId=1;elapsed=0;
-  const n=+$("initial").value;
-  for(let i=0;i<n;i++)agents.push(newAgent());
-  for(let i=0;i<Math.max(15,Math.round(W*H/9000));i++)newFood();
-  started=true;renderHistory();
-  if(write)log("Yeni ekosistem oluşturuldu.");
-  updateStats();drawWorld();drawChart();
-}
-function addFoodAt(x,y){
-  for(let i=0;i<5;i++)newFood(x+rnd(-16,16),y+rnd(-16,16),rnd(25,45));
-  log("Ekosisteme enerji kaynağı eklendi.");
-}
-canvas.addEventListener("pointerdown",e=>{
-  const r=canvas.getBoundingClientRect();addFoodAt(e.clientX-r.left,e.clientY-r.top);
-});
-function mutate(a){
-  const chance=+$("mutation").value/100;
-  if(Math.random()<chance)a.speed=clamp(a.speed+rnd(-.35,.35),.4,2.5);
-  if(Math.random()<chance)a.vision=clamp(a.vision+rnd(-18,18),20,145);
-  if(Math.random()<chance)a.efficiency=clamp(a.efficiency+rnd(-.2,.2),.4,1.8);
-  if(Math.random()<chance*.5)a.color=colors[Math.floor(Math.random()*colors.length)];
-}
-function mutationWave(){
-  for(const a of agents)mutate(a);
-  log("Mutasyon dalgası uygulandı: davranış özellikleri değiştirildi.");
-  toast("Mutasyon dalgası!");
-}
-function stressTest(){
-  for(const f of food)f.energy*=.35;
-  food=food.filter(f=>f.energy>2);
-  log("Kaynak stresi başladı: enerji kaynakları azaltıldı.");
-  toast("Ekosistem kaynak stresi altında.");
-}
-function evolve(dt){
-  const pop=agents.length;
-  const foodRate=+$("foodRate").value;
-  foodClock+=dt;
-  const interval=adaptive&&$("autoRules").checked?clamp(1.2-pop/65,.28,1.2):.65;
-  if(foodClock>interval&&food.length<Math.min(240,25+pop*2)){
-    foodClock=0;
-    const n=adaptive&&$("autoRules").checked?Math.max(1,Math.round(foodRate*(1-pop/100))):foodRate;
-    for(let i=0;i<n;i++)newFood();
-  }
-  for(let i=food.length-1;i>=0;i--){
-    food[i].energy-=dt*.12;
-    if(food[i].energy<=0)food.splice(i,1);
-  }
-  const next=[];
-  for(const a of agents){
-    a.age+=dt;
-    let target=null,best=a.vision;
-    for(const f of food){
-      const d=Math.hypot(f.x-a.x,f.y-a.y);
-      if(d<best){best=d;target=f;}
-    }
-    if(target){
-      const angle=Math.atan2(target.y-a.y,target.x-a.x);
-      let diff=Math.atan2(Math.sin(angle-a.angle),Math.cos(angle-a.angle));
-      a.angle+=clamp(diff,-dt*1.8,dt*1.8);
-    }else a.angle+=rnd(-.9,.9)*dt;
-    const speed=a.speed*(.75+Math.min(a.energy,70)/280);
-    a.x=(a.x+Math.cos(a.angle)*speed*dt*24+W)%W;
-    a.y=(a.y+Math.sin(a.angle)*speed*dt*24+H)%H;
-    a.energy-=dt*(.55+a.speed*.27+a.vision*.003);
-    if(target&&best<7){
-      a.energy+=Math.min(target.energy,14)*a.efficiency;
-      target.energy-=Math.min(target.energy,14);
-      if(target.energy<=0){const idx=food.indexOf(target);if(idx>=0)food.splice(idx,1);}
-    }
-    const maxPop=180;
-    if(a.energy>105&&agents.length+next.length<maxPop&&Math.random()<dt*.16){
-      a.energy*=.48;
-      const child=newAgent(a);mutate(child);next.push(child);births++;
-      if(births%5===0)generation++;
-      if(Math.random()<.4)log("Yeni canlı doğdu · soy "+child.id);
-    }
-    if(a.energy>0&&a.age<160)next.push(a);
-    else deaths++;
-  }
-  agents=next;
-  if(agents.length===0){
-    log("Ekosistem çöktü. Yeniden başlatabilir veya koşulları değiştirebilirsin.");
-    running=false;$("runBtn").textContent="Simülasyonu başlat";
-    $("status").textContent="● SYSTEM PAUSED";
-  }
-  eventClock+=dt;
-  if(eventClock>12&&running){
-    eventClock=0;
-    if(agents.length>65&&Math.random()<.55){
-      const remove=Math.floor(agents.length*.12);
-      agents.splice(0,remove);log("Yoğunluk dengesi: popülasyonun bir bölümü elendi.");
-    }else if(food.length<8){
-      for(let i=0;i<18;i++)newFood();
-      log("Çevresel toparlanma: yeni enerji kaynakları ortaya çıktı.");
-    }else if(agents.length>0){
-      const a=agents[Math.floor(Math.random()*agents.length)];
-      a.vision=clamp(a.vision+rnd(-12,12),20,145);
-      log("Çevresel değişim: rastgele bir davranış özelliği güncellendi.");
-    }
-  }
-  saveClock+=dt;
-  if(saveClock>5){saveClock=0;sample();}
-}
-function sample(){
-  samples.push({t:elapsed,p:agents.length,e:Math.round(agents.reduce((s,a)=>s+a.energy,0))});
-  if(samples.length>100)samples.shift();
-}
-function drawWorld(){
-  ctx.fillStyle="#080b13";ctx.fillRect(0,0,W,H);
-  for(const f of food){
-    ctx.beginPath();ctx.arc(f.x,f.y,f.r+Math.min(2,f.energy/30),0,Math.PI*2);
-    ctx.fillStyle="#4df0bb";ctx.fill();
-    ctx.beginPath();ctx.arc(f.x,f.y,8+f.energy*.08,0,Math.PI*2);
-    ctx.strokeStyle="rgba(77,240,187,.08)";ctx.stroke();
-  }
-  for(const a of agents){
-    ctx.beginPath();ctx.arc(a.x,a.y,3+Math.min(2,a.energy/55),0,Math.PI*2);
-    ctx.fillStyle=a.color;ctx.fill();
-    ctx.beginPath();ctx.moveTo(a.x,a.y);
-    ctx.lineTo(a.x-Math.cos(a.angle)*8,a.y-Math.sin(a.angle)*8);
-    ctx.strokeStyle=a.color+"99";ctx.stroke();
-  }
-  ctx.fillStyle="#7f8ba5";ctx.font="10px monospace";
-  ctx.fillText("AGENTS "+agents.length+"  /  RESOURCES "+food.length,10,17);
-}
-function drawChart(){
-  const r=chart.getBoundingClientRect();
-  const w=r.width,h=r.height;
-  gctx.clearRect(0,0,w,h);gctx.fillStyle="#080b13";gctx.fillRect(0,0,w,h);
-  gctx.strokeStyle="#202a3e";
-  for(let y=20;y<h;y+=30){gctx.beginPath();gctx.moveTo(0,y);gctx.lineTo(w,y);gctx.stroke();}
-  if(samples.length<2)return;
-  const max=Math.max(10,...samples.map(s=>s.p));
-  gctx.beginPath();
-  samples.forEach((s,i)=>{
-    const x=i/(samples.length-1)*w,y=h-12-(s.p/max)*(h-30);
-    if(i===0)gctx.moveTo(x,y);else gctx.lineTo(x,y);
-  });
-  gctx.strokeStyle="#4df0bb";gctx.lineWidth=2;gctx.stroke();
-  gctx.fillStyle="#8b97ad";gctx.font="10px monospace";gctx.fillText("POPULATION",8,13);
-}
-function updateStats(){
-  const n=agents.length;
-  $("population").textContent=n;
-  $("generation").textContent=generation;
-  $("births").textContent=births;
-  $("energy").textContent=Math.round(agents.reduce((s,a)=>s+a.energy,0));
-  $("time").textContent=Math.floor(elapsed)+"s";
-  $("speed").textContent=n?(agents.reduce((s,a)=>s+a.speed,0)/n).toFixed(2):"—";
-  $("vision").textContent=n?Math.round(agents.reduce((s,a)=>s+a.vision,0)/n):"—";
-  $("avgEnergy").textContent=n?(agents.reduce((s,a)=>s+a.energy,0)/n).toFixed(1):"—";
-  $("diversity").textContent=new Set(agents.map(a=>a.color)).size+" / 5";
-}
-function saveGeneration(){
-  const n=agents.length;
-  const record={
-    date:new Date().toLocaleString("tr-TR"),
-    generation,population:n,births,deaths,
-    averageEnergy:n?Math.round(agents.reduce((s,a)=>s+a.energy,0)/n):0,
-    averageSpeed:n?+(agents.reduce((s,a)=>s+a.speed,0)/n).toFixed(2):0,
-    foodSources:food.length
-  };
-  archive.unshift(record);archive=archive.slice(0,30);
-  if($("persist").checked){
-    try{localStorage.setItem(storageKey,JSON.stringify(archive));}
-    catch(e){log("Yerel arşiv kaydedilemedi; tarayıcı depolaması kullanılamıyor.");}
-  }
-  renderHistory();log("Nesil özeti arşive kaydedildi.");toast("Nesil kaydedildi.");
-}
-function loadArchive(){
-  try{
-    const parsed=JSON.parse(localStorage.getItem(storageKey)||"[]");
-    if(Array.isArray(parsed))archive=parsed.slice(0,30);
-  }catch(e){archive=[];}
-  renderHistory();
-}
-function renderHistory(){
-  const box=$("history");box.replaceChildren();
-  if(!archive.length){
-    const d=document.createElement("div");d.className="event";
-    d.textContent="Henüz kayıt yok. Birkaç nesil gözlemledikten sonra nesli kaydet.";
-    box.append(d);return;
-  }
-  for(const a of archive){
-    const d=document.createElement("div");d.className="generation";
-    const left=document.createElement("div");
-    const title=document.createElement("strong");title.textContent="Nesil "+a.generation+" · "+a.population+" canlı";
-    const meta=document.createElement("div");meta.className="mono";meta.textContent=a.date+" · Ortalama enerji "+a.averageEnergy;
-    const bar=document.createElement("div");bar.className="bar";const fill=document.createElement("i");
-    fill.style.width=clamp(a.population/180*100,0,100)+"%";bar.append(fill);
-    left.append(title,meta,bar);
-    const right=document.createElement("span");right.className="value";right.textContent=a.averageSpeed;
-    d.append(left,right);box.append(d);
-  }
-}
-function exportArchive(){
-  const data={exportedAt:new Date().toISOString(),archive,latestPopulation:agents.length,events};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-  const url=URL.createObjectURL(blob),a=document.createElement("a");
-  a.href=url;a.download="nexus-emergent-archive.json";a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-function clearArchive(){
-  if(!confirm("Kaydedilmiş yerel nesil özetleri silinsin mi?"))return;
-  archive=[];try{localStorage.removeItem(storageKey);}catch(e){}
-  renderHistory();log("Yerel nesil arşivi temizlendi.");
-}
-const hypotheses=[
-"Başlangıç nüfusu arttığında enerji rekabeti nasıl değişiyor?",
-"Daha geniş görüş alanı, enerji toplamayı her koşulda iyileştiriyor mu?",
-"Mutasyon oranı yükseldiğinde nüfusun kararlılığı nasıl etkileniyor?",
-"Enerji üretimini azaltmak, hızlı canlıları mı yoksa verimli canlıları mı avantajlı kılıyor?",
-"Kaynakların konumunu değiştirmek, ekosistemin uzun vadeli dengesini nasıl etkiliyor?",
-"Çeşitlilik ile popülasyon büyüklüğü arasında gözlenebilir bir ilişki var mı?",
-"Bir sistemde doğum oranı ve kaynak yenilenmesi arasındaki denge nasıl kuruluyor?"
+const questions=[
+"Bir makine ne zaman bir araç olmaktan çıkar ve bir aynaya dönüşür?",
+"Kimsenin gözlemlemediği bir şeyin varlığı bizim için ne anlama gelir?",
+"Bugün doğru kabul ettiğin hangi fikir, yarın seni şaşırtabilir?",
+"Zekâ, daha fazla cevap bilmek midir, yoksa daha iyi sorular bulmak mı?",
+"Bir anıyı değerli yapan şey doğruluğu mu, sende bıraktığı iz mi?",
+"Her şey ölçülebilseydi, anlam da ölçülebilir miydi?",
+"Bir sistemi gerçekten anlamak için onu değiştirmek zorunda mıyız?",
+"Özgürlük, seçeneklerin çokluğu mu, seçimin sonuçlarını üstlenmek mi?",
+"İnsanlık bugün hangi soruyu yanlış sormaya devam ediyor?",
+"Bir fikri ilk kez düşündüğün an ile ona inanmaya başladığın an arasında ne değişir?",
+"Bir gün bütün cevapları bilseydik, merak etmeye devam eder miydik?",
+"Unutmak bazen hatırlamaktan daha yaratıcı olabilir mi?"
 ];
-function newHypothesis(){
-  $("hypothesis").textContent=hypotheses[Math.floor(Math.random()*hypotheses.length)];
+let entries=[];
+try{const a=JSON.parse(localStorage.getItem("afterlight_entries")||"[]");if(Array.isArray(a))entries=a.slice(0,100)}catch(e){}
+function render(){
+$("count").textContent=entries.length;
+const box=$("archive");box.replaceChildren();
+if(!entries.length){box.textContent="Henüz bir şey bırakılmadı.";return}
+entries.forEach((e,i)=>{
+const d=document.createElement("div");d.style.cssText="border-bottom:1px solid #252536;padding:10px 0";
+const time=document.createElement("div");time.style.color="#77778e";time.textContent=e.date;
+const p=document.createElement("div");p.style.color="#eeeef7";p.textContent=e.text;
+const b=document.createElement("button");b.textContent="SİL";b.style.marginTop="8px";
+b.addEventListener("click",()=>{entries.splice(i,1);persist();render()});
+d.append(time,p,b);box.append(d);
+});
 }
-$("runBtn").addEventListener("click",()=>{
-  running=!running;$("runBtn").textContent=running?"Simülasyonu durdur":"Simülasyonu başlat";
-  $("status").textContent=running?"● SYSTEM ACTIVE":"● SYSTEM PAUSED";
-  log(running?"Simülasyon devam ediyor.":"Simülasyon duraklatıldı.");
-  if(running)last=0;
+function persist(){try{localStorage.setItem("afterlight_entries",JSON.stringify(entries))}catch(e){$("output").textContent="Tarayıcı depolaması kullanılamıyor; dışa aktarma ile kaydedebilirsin."}}
+$("save").addEventListener("click",()=>{
+const text=$("thought").value.trim();
+if(!text){$("output").textContent="Önce bir düşünce bırak.";return}
+entries.unshift({text,date:new Date().toLocaleString("tr-TR")});entries=entries.slice(0,100);
+persist();render();$("output").textContent="Düşünce bu tarayıcıdaki yerel arşive eklendi."; $("thought").value="";
 });
-$("mutationBtn").addEventListener("click",mutationWave);
-$("eventBtn").addEventListener("click",stressTest);
-$("resetBtn").addEventListener("click",()=>{
-  if(confirm("Mevcut evren sıfırlansın mı? Kaydedilmiş arşiv korunur.")){
-    resetWorld();running=true;$("runBtn").textContent="Simülasyonu durdur";
-    $("status").textContent="● SYSTEM ACTIVE";log("Yeni evren başlatıldı.");
-  }
+$("surprise").addEventListener("click",()=>{
+const q=questions[Math.floor(Math.random()*questions.length)];
+$("thought").value=q;$("output").textContent="Bir sorunun değeri, verdiği cevaptan daha uzun yaşayabilir.";
 });
-$("saveBtn").addEventListener("click",saveGeneration);
-$("exportBtn").addEventListener("click",exportArchive);
-$("clearBtn").addEventListener("click",clearArchive);
-$("hypothesisBtn").addEventListener("click",newHypothesis);
-$("copyBtn").addEventListener("click",()=>{
-  const text=$("hypothesis").textContent;
-  if(navigator.clipboard&&window.isSecureContext){
-    navigator.clipboard.writeText(text).then(()=>toast("Hipotez kopyalandı.")).catch(()=>toast("Kopyalama başarısız."));
-  }else toast("Bu tarayıcıda güvenli kopyalama desteklenmiyor.");
+$("clear").addEventListener("click",()=>{$("thought").value="";$("output").textContent="Boşluk yeniden senin."});
+$("export").addEventListener("click",()=>{
+const blob=new Blob([JSON.stringify(entries,null,2)],{type:"application/json"});
+const url=URL.createObjectURL(blob),a=document.createElement("a");
+a.href=url;a.download="afterlight-thoughts.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
-$("autoRules").addEventListener("change",e=>{
-  adaptive=e.target.checked;
-  log(adaptive?"Uyarlanabilir çevre etkinleştirildi.":"Uyarlanabilir çevre devre dışı.");
-});
-$("foodRate").addEventListener("change",()=>log("Enerji üretimi parametresi değiştirildi."));
-$("initial").addEventListener("change",()=>toast("Başlangıç nüfusu yeni evrende uygulanır."));
-$("mutation").addEventListener("change",()=>log("Mutasyon oranı değiştirildi."));
-function tick(now){
-  frame=requestAnimationFrame(tick);
-  if(!last)last=now;
-  const dt=Math.min((now-last)/1000,.05);last=now;
-  if(running){
-    elapsed+=dt;
-    evolve(dt);drawWorld();updateStats();
-    if(Math.floor(elapsed*2)%2===0)drawChart();
-  }
+function updateTime(){
+const n=new Date();
+$("clock").textContent=n.toLocaleTimeString("tr-TR");
+$("date").textContent=n.toLocaleDateString("tr-TR");
 }
-window.addEventListener("resize",resizeAll);
-document.addEventListener("visibilitychange",()=>{last=0;});
-loadArchive();resizeAll();newHypothesis();log("NEXUS ekosistemi başlatıldı.");log("Yerel simülasyon kuralları yüklendi.");
-requestAnimationFrame(tick);
+updateTime();setInterval(updateTime,1000);render();
+$("entropy").textContent=Math.random().toString(36).slice(2,8).toUpperCase();
+
+const c=$("universe"),x=c.getContext("2d");
+let w=0,h=0,stars=[],pointer={x:-1000,y:-1000};
+function resize(){
+w=c.width=innerWidth*Math.min(devicePixelRatio||1,2);
+h=c.height=innerHeight*Math.min(devicePixelRatio||1,2);
+c.style.width=innerWidth+"px";c.style.height=innerHeight+"px";
+x.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);
+stars=Array.from({length:Math.min(150,Math.floor(innerWidth/7))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.5+.2,s:Math.random()*.35+.05,p:Math.random()*6.28}));
+}
+function draw(t){
+x.clearRect(0,0,innerWidth,innerHeight);
+for(const a of stars){
+a.p+=.008;
+let dx=pointer.x-a.x,dy=pointer.y-a.y,d=Math.hypot(dx,dy);
+if(d<130&&d>0){a.x-=dx/d*.12;a.y-=dy/d*.12}
+a.y-=a.s*.15;
+if(a.y<0)a.y=innerHeight;
+x.beginPath();x.arc(a.x,a.y,a.r+Math.sin(a.p)*.3,0,Math.PI*2);
+x.fillStyle="rgba(196,181,253,"+(.2+(.5+.5*Math.sin(a.p))*.45)+")";x.fill();
+}
+requestAnimationFrame(draw);
+}
+addEventListener("resize",resize);
+addEventListener("pointermove",e=>{pointer.x=e.clientX;pointer.y=e.clientY});
+resize();requestAnimationFrame(draw);
 </script>
 </body>
 </html>
